@@ -1,4 +1,6 @@
 import React from 'react';
+import Inspection from './pages/Inspection'
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,10 +14,7 @@ function App() {
   return (
     <div>
       <div>
-        hello react
-      </div>
-      <div>
-        hello react-router
+        <Inspection />
       </div>
     </div>
   );
