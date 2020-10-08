@@ -12,7 +12,7 @@ import {
 
 function App() {
   return (
-    <div>
+    <div className="container">
       <div>
         <Inspection />
       </div>
