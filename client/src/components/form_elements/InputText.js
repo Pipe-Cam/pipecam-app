@@ -12,7 +12,7 @@ function InputText(props) {
     }
     return(
         <div className='pb-3'>
-            <label htmlFor={data.name}>{data.placeholder}</label>
+            <label className="h6" htmlFor={data.name}>{data.placeholder}</label>
             <input className="form-control" id={`${data.name}-${data.input_type}-input`} type={data.input_type} name={data.name} step={stepInterval} min={min} defaultValue={dateVal}/>
         </div>
     )

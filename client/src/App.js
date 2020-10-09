@@ -1,9 +1,14 @@
 import React from 'react';
 import Inspection from './pages/Inspection'
+import Dashboard from './pages/Dashboard'
+import Header from './layout/Header'
+import Footer from './layout/Footer'
+
 
 import {
   BrowserRouter as Router,
-  Routes,
+  Switch,
+  Route,
   Link,
   Redirect,
   useHistory,
@@ -12,11 +17,22 @@ import {
 
 function App() {
   return (
-    <div className="container">
+    <Router>
       <div>
-        <Inspection />
+        <Header />
+        <div id="mainBody" className="container">
+            <Switch>
+              <Route path="/" exact>
+                <Dashboard />
+              </Route>
+              <Route path="/inspection/:mode">
+                <Inspection />
+              </Route>
+            </Switch>
+        </div>
+        <Footer />
       </div>
-    </div>
+    </Router>
   );
 }
 

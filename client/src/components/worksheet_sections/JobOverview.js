@@ -1,14 +1,14 @@
 import React from 'react'
-import InputElements from '../InputElements'
+import FormInputs from '../FormInputs'
 import {jobOverview} from '../../inputsMetadata'
 // import {jobOverview, jobLocation, accessLocation, accessDetails, observations} from '../inputsMetadata'
 
 function JobOverview() {
     return (
-        <div className="pt-3">
+        <div className="mt-3 pt-3 pb-2 px-4 border">
             <h3>Job Overview</h3>
             <div className="pt-2">
-                <InputElements data={jobOverview}/>
+                <FormInputs data={jobOverview}/>
             </div>
         </div>
     )
