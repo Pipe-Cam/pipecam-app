@@ -1,4 +1,4 @@
-import React, {useRef, useContext} from 'react'
+import React, {useRef, useContext, useEffect} from 'react'
 import InspectionContext from '../../context/InspectionContext'
 const _ = require('lodash')
 
@@ -55,11 +55,11 @@ function JobLocation() {
         let tmpJob = job
 
         if(type === 'text' || type === 'date' || elementType === 'textarea' || type === 'radio'){
-            job[objBranch][name] = e.target.value
-            console.log(job)
+            tmpJob[objBranch][name] = e.target.value
+            setJob(tmpJob)
         }
+        console.log(job)
     }
-    
 
 
     return (

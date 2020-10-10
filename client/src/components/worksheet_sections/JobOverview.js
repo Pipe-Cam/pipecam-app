@@ -14,8 +14,8 @@ function JobOverview() {
         let tmpJob = job
 
         if(type === 'text' || type === 'date' || elementType === 'textarea' || type === 'radio'){
-            job[objBranch][name] = e.target.value
-            console.log(job)
+            tmpJob[objBranch][name] = e.target.value
+            setJob(tmpJob)
         }
     }
 
