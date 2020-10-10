@@ -2,6 +2,8 @@ import React from 'react'
 
 function InputText(props) {
     const {data} = props
+    const {display} = data
+
     const stepInterval = (data.input_type === 'number') ? (data.number.step_interval) : ''
     const min = (data.input_type === 'number') ? (data.number.min) : ''
     const dateVal = (data.input_type === 'date') ? (formatDateValue()) : ''
@@ -11,7 +13,7 @@ function InputText(props) {
         console.log(typeof e.target.value)
     }
     return(
-        <div className='pb-3'>
+        <div className='pb-3' style={{display}}>
             <label className="h6" htmlFor={data.name}>{data.placeholder}</label>
             <input className="form-control" id={`${data.name}-${data.input_type}-input`} type={data.input_type} name={data.name} step={stepInterval} min={min} defaultValue={dateVal}/>
         </div>

@@ -3,8 +3,10 @@ const _ = require('lodash')
 
 function InputCheckbox(props) {
     const {data} = props
+    const {display} = data
+    
     return (
-        <div className='pb-3'>
+        <div className='pb-3' style={{display}}>
             <div>{data.placeholder.toString()}</div>
             {data.value_choices.map(item=>{
                 return (

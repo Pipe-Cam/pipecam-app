@@ -61,7 +61,7 @@ const FormInputsIfs = (props) => {
     return (
         <>
             {doiKeys.map(item=>{
-                console.log(hasIf(dataObjIfs[item]))
+                console.log(hasIf(dataObjIfs[item]), dataObjIfs[item])
                 if(hasIf(dataObjIfs[item])){
                     return (
                         <div key={`${JSON.stringify(dataObjIfs[item])}-ifs`}>
@@ -70,15 +70,16 @@ const FormInputsIfs = (props) => {
                     )
                 } else {
                     if(_.startsWith(dataObjIfs[item].name, 'if__')){
-                        let nameSplit = dataObjIfs[item].name.split('__')
+                        {/* let nameSplit = dataObjIfs[item].name.split('__')
                         let parentName = nameSplit[1]
                         let parentChoice = nameSplit[2]
                         let parentElem = document.getElementsByName(parentName) 
-                        var parent = {element: parentElem, choice: parentChoice}
+                        var parent = {element: parentElem, choice: parentChoice} */}
+                        
+                        return(
+                            <FormInputsSwitch data={dataObjIfs[item]} key={JSON.stringify(dataObjIfs[item])}/>
+                        )
                     }
-                    return(
-                        <FormInputsSwitch data={dataObjIfs[item]} parent={parent} key={JSON.stringify(dataObjIfs[item])}/>
-                    )
                 }
             })}
         </>
@@ -91,7 +92,7 @@ const FormInputsSwitch = (props) => {
     if(data.input_type === 'text' || data.input_type === 'number' || data.input_type === 'date'){
         return(
             <div className="py-1" key={`${data.name}-${data.input_type}-input`} step={(data.input_type === 'number')?('0.1'):('')}>
-                <InputText data={data} />
+                <InputText data={data}/>
             </div>
         )
     }
@@ -99,7 +100,7 @@ const FormInputsSwitch = (props) => {
     if(data.input_type === 'textarea'){
         return(
             <div className="py-1" key={`${data.name}-${data.input_type}-input`}>
-                <InputTextArea data={data} />
+                <InputTextArea data={data}/>
             </div>
         )
     }
@@ -107,7 +108,7 @@ const FormInputsSwitch = (props) => {
     if(data.input_type === 'checkbox'){
         return(
             <div className="py-1" key={`${data.name}-${data.input_type}-input`}>
-                <InputCheckbox data={data} />
+                <InputCheckbox data={data}/>
             </div>
         )
     }
@@ -115,7 +116,7 @@ const FormInputsSwitch = (props) => {
     if(data.input_type === 'radio'){
         return(
             <div className="py-1" key={`${data.name}-${data.input_type}-input`}>
-                <InputRadio data={data} />
+                <InputRadio data={data}/>
             </div>
         )
     }

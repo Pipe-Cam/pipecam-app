@@ -1,16 +1,23 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import InspectionContext from '../../context/InspectionContext'
+
 import './InputRadio.css'
 const _ = require('lodash')
 
 function InputRadio(props) {
     const {data} = props
+    const {display} = data
+    
+    const {handleRevealChildren} = useContext(InspectionContext)
+
+
     return (
-        <div className='pb-3'>
+        <div className='pb-3' style={{display}} >
             <div className="h6">{data.placeholder.toString()}</div>
             {data.value_choices.map(item=>{
                 return (
                     <div className="form-check form-check-inline mr-5" key={`${data.id}-${Math.random(50)}${Math.random(49)}${Math.random(48)}_div`}>
-                        <input className="form-check-input radio-button" type={data.input_type} name={data.name} id={`${data.id}__${item}`} value={item}/>
+                        <input className="form-check-input radio-button" onChange={handleRevealChildren} type={data.input_type} name={data.name} id={`${data.id}__${item}`} value={item}/>
                         <label className="form-check-label radio-button-label">{_.capitalize(item)}</label>
                     </div>
 
