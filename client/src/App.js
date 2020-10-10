@@ -4,6 +4,8 @@ import Dashboard from './pages/Dashboard'
 import Header from './layout/Header'
 import Footer from './layout/Footer'
 
+import './components/form_elements/InputRadio.css'
+
 
 import {
   BrowserRouter as Router,
