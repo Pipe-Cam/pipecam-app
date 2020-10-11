@@ -1,6 +1,6 @@
 import React from 'react';
 import Inspection from './pages/Inspection'
-import Dashboard from './pages/Dashboard'
+import Home from './pages/Home'
 import Header from './layout/Header'
 import Footer from './layout/Footer'
 
@@ -25,7 +25,7 @@ function App() {
         <div id="mainBody" className="container">
             <Switch>
               <Route path="/" exact>
-                <Dashboard />
+                <Home />
               </Route>
               <Route path="/inspection/:mode">
                 <Inspection />

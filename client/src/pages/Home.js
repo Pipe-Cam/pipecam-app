@@ -1,7 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-function Dashboard() {
+function Home() {
     return (
         <div className="container py-5">
             <div className="row justify-content-center">
@@ -28,4 +28,4 @@ function Dashboard() {
     )
 }
 
-export default Dashboard
+export default Home

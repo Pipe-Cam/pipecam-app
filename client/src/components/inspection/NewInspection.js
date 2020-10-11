@@ -9,7 +9,7 @@ import {jobOverview, jobLocation, accessLocation, accessDetails, observations} f
 const _ = require('lodash')
 
 function NewInspection() {
-    const [job, setJob] = useState({overview: {}, location: {}, access: {}, progress: 0})
+    const [job, setJob] = useState({overview: {}, location: {}, access: {}, progress: 1})
     const [currentPage, setCurrentPage] = useState()
 
     const handleCreateJob = (e) => {
