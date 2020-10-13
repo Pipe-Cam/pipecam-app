@@ -18,6 +18,24 @@ function JobOverview() {
             setJob(tmpJob)
         }
     }
+    const formatDateValue = () => {
+        var today = new Date();
+        var dd = today.getDate();
+    
+        var mm = today.getMonth()+1; 
+        var yyyy = today.getFullYear();
+        // var yy = yyyy.toString().substring(2);
+    
+        if(dd<10) {
+            dd='0'+dd;
+        } 
+    
+        if(mm<10) {
+            mm='0'+mm;
+        } 
+        
+        return `${yyyy}-${mm}-${dd}`;
+    }
 
     return (
         <div className="mt-3 pt-3 pb-2 px-4 border">

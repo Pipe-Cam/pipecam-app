@@ -2,45 +2,43 @@ import React, {useState, useEffect} from 'react'
 import JobOverview from '../worksheet_sections/JobOverview'
 import JobLocation from '../worksheet_sections/JobLocation'
 import JobHome from '../worksheet_sections/JobHome'
-
 import InspectionContext from '../../context/InspectionContext'
-import {jobOverview, jobLocation, accessLocation, accessDetails, observations} from '../../inputsMetadata'
 
 const _ = require('lodash')
 
 function NewInspection() {
-    const [job, setJob] = useState({overview: {}, location: {}, access: {}, progress: 1})
-    const [currentPage, setCurrentPage] = useState()
+    const [job, setJob] = useState({overview: {}, location: {}, access: {}, progress: 0})
+    // const [appNav, setAppNav] = useState('new_inspection')
+    const [appNav, setAppNav] = useState('new_access')
 
     const handleCreateJob = (e) => {
         console.log("handleCreateJob")
-        console.log('current page: ', currentPage)
         e.preventDefault()
         // create new job in DB
 
         // redirect to job-dashboard
-        handleIncrementProgress()
+        setAppNav('job_home')
     }
 
     const handleIncrementProgress = () => {
         setJob({...job, progress: job.progress + 1})
     }
     
-    if(job.progress === 0){
-        // setCurrentPage('overview')
+    if(appNav === 'new_inspection'){
         return (
             <div className="container">
+                <h1>New Inspection</h1>
                 <form onSubmit={handleCreateJob}>
                     <div className="row">
                         <div className="col col-12">
-                            <InspectionContext.Provider value={{job, setJob}}>
+                            <InspectionContext.Provider value={{job, setJob, appNav, setAppNav}}>
                                 <JobOverview />
                             </InspectionContext.Provider>
                         </div>
                     </div>    
                     <div className="row">
                         <div className="col col-12">
-                            <InspectionContext.Provider value={{job, setJob}}>
+                            <InspectionContext.Provider value={{job, setJob, appNav, setAppNav}}>
                                 <JobLocation />
                             </InspectionContext.Provider>
                         </div>
@@ -53,19 +51,21 @@ function NewInspection() {
                 </form>
             </div>
         )
-    } else if (job.progress === 1) {
-        // setCurrentPage('home')
+    } else if (appNav === 'job_home' || appNav === 'new_access') {
         return(
-            <InspectionContext.Provider value={{job, setJob}}>
+            <InspectionContext.Provider value={{job, setJob, appNav, setAppNav}}>
                 <JobHome />
             </InspectionContext.Provider> 
+        )
+    } else {
+        return(
+            <div>
+                COMPONENT: NewInspection.js<br/>
+                {appNav}
+            </div>
         )
     }
 
 }
 
 export default NewInspection
-
-            // <AccessLocation/>
-            // <AccessDetails/>
-            // <Observations/>

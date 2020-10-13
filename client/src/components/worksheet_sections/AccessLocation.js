@@ -3,6 +3,7 @@ import FormInputs from '../FormInputs'
 import {accessLocation} from '../../inputsMetadata'
 
 function AccessLocation() {
+        // TODO: make sure the location address & access details are at the top of each page
     return (
         <div className="mt-3 pt-3 pb-2 px-4 border">
             <h3>Access Location</h3>
