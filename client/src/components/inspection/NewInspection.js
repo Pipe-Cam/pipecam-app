@@ -7,9 +7,9 @@ import InspectionContext from '../../context/InspectionContext'
 const _ = require('lodash')
 
 function NewInspection() {
-    const [job, setJob] = useState({overview: {}, location: {}, access: {}, progress: 0})
+    const [job, setJob] = useState({overview: {}, location: {}, access: {}})
     // const [appNav, setAppNav] = useState('new_inspection')
-    const [appNav, setAppNav] = useState('new_access')
+    const [appNav, setAppNav] = useState('observations')
 
     const handleCreateJob = (e) => {
         console.log("handleCreateJob")
@@ -18,10 +18,6 @@ function NewInspection() {
 
         // redirect to job-dashboard
         setAppNav('job_home')
-    }
-
-    const handleIncrementProgress = () => {
-        setJob({...job, progress: job.progress + 1})
     }
     
     if(appNav === 'new_inspection'){
@@ -51,7 +47,7 @@ function NewInspection() {
                 </form>
             </div>
         )
-    } else if (appNav === 'job_home' || appNav === 'new_access') {
+    } else if (appNav === 'job_home' || appNav === 'new_access' || appNav === 'observations') {
         return(
             <InspectionContext.Provider value={{job, setJob, appNav, setAppNav}}>
                 <JobHome />

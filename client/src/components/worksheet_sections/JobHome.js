@@ -98,13 +98,9 @@ function JobHome() {
                 </div>
             </div>
         )
-    } else if(appNav === 'new_access'){
+    } else if(appNav === 'new_access' || appNav === 'observations'){
         return(
             <NewAccess />
-        )
-    } else if(appNav === 'record_observations'){
-        return(
-            <Observations />
         )
     }
     
