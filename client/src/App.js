@@ -5,6 +5,7 @@ import Header from './layout/Header'
 import Footer from './layout/Footer'
 
 import './components/form_elements/InputRadio.css'
+import './App.css'
 
 
 import {
@@ -20,7 +21,7 @@ import {
 function App() {
   return (
     <Router>
-      <div>
+      <div className="bg">
         <Header />
         <div id="mainBody" className="container">
             <Switch>

@@ -2,7 +2,6 @@ import React, {useContext, useState} from 'react'
 import {Accordion, Card, Button} from 'react-bootstrap'
 import InspectionContext from '../../context/InspectionContext'
 import NewAccess from '../inspection/NewAccess'
-import Observations from '../inspection/Observations'
 
 function JobHome() {
     const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
@@ -69,15 +68,21 @@ function JobHome() {
 
     if(appNav === 'job_home'){
         return (
-            <div className="container py-5">
-                <div className="row justify-content-center mb-5">
+ 
+            <div className="container pt-4">
+                <div className="row justify-content-center pt-5">
                     <div className="col col-12">
-                        <button className="btn btn-primary float-right" name="new_access" onClick={handleCreateAccess}>New Access</button>
+                        <div style={{display: 'inline-block'}}>
+                            <h1>Job Details</h1>
+                        </div>
+                        <div className="float-right mt-1" style={{display: 'inline-block'}}>
+                            <button className="btn-primary btn-lg float-right" name="new_access" onClick={handleCreateAccess}>New Access</button>
+                        </div>
                     </div>
                 </div>
-                <div className="row justify-content-center my-5">
+
+                <div className="row justify-content-center mb-5">
                     <div className="col col-12">
-                        <h3>Job Details</h3>
                     </div>
                 </div>
                 <div className="row justify-content-center my-5">
@@ -91,14 +96,24 @@ function JobHome() {
                         <h3>Access List</h3>
                         {/* TODO #1: populate access list from state */}
                         <ul className="list-group">
-                            <ListItemDefault />
-                            <ListItemSecondary />
+                            {(job.access && job.access.length) ? (<ListItems />) : <div className="w-100 text-center border py-3">-- No Recorded Observations --</div>}
+
+                            {/* <ListItemDefault />
+                            <ListItemSecondary /> */}
                         </ul>
+                    </div>
+                </div>
+                {/* <div className="float-right mt-5">
+                        <button className="btn btn-primary" name="new_access" onClick={handleCreateAccess}>New Access</button>
+                </div> */}
+                <div className="row justify-content-center py-5">
+                    <div className="col col-12">
+                        <button className="btn-primary btn-lg float-right" name="new_access" onClick={handleCreateAccess}>New Access</button>
                     </div>
                 </div>
             </div>
         )
-    } else if(appNav === 'new_access' || appNav === 'observations'){
+    } else if(appNav === 'new_access' || appNav === 'observations' || appNav === 'new_observation'){
         return(
             <NewAccess />
         )
@@ -113,8 +128,20 @@ const ListItemDefault = (props) => {
 
     return(
         <li className="list-group-item">
-            Access #1 <span className="mr-2 float-right"><a href="#" className="badge badge-danger px-2">Delete</a></span><span className="mx-2 float-right"><a href="#" className="badge badge-info px-3">Edit</a></span>
-        </li>
+            <span>
+                Access #1
+            </span>
+            <span className="ml-3 float-right">
+                <a href="#" className="">
+                    <svg width="1.75em" height="1.75em" viewBox="0 0 16 16" className="bi bi-trash bg-none text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                    </svg>
+                </a>
+            </span>
+            <span className="mx-3 float-right">
+                <a href="#" className="badge badge-info px-3 py-2">Edit</a>
+            </span>        </li>
     )
 }
 const ListItemSecondary = (props) => {
@@ -123,13 +150,18 @@ const ListItemSecondary = (props) => {
     return(
         <li className="list-group-item list-group-item-secondary">
             <span>
-                Access #2 
+                Access #2
             </span>
-            <span className="mr-2 float-right">
-                <a href="#" className="badge badge-danger px-2">Delete</a>
+            <span className="ml-3 float-right">
+                <a href="#" className="">
+                    <svg width="1.75em" height="1.75em" viewBox="0 0 16 16" className="bi bi-trash bg-none text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                        <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                    </svg>
+                </a>
             </span>
-            <span className="mx-2 float-right">
-                <a href="#" className="badge badge-info px-3">Edit</a>
+            <span className="mx-3 float-right">
+                <a href="#" className="badge badge-info px-3 py-2">Edit</a>
             </span>
         </li>
     )
@@ -141,70 +173,85 @@ const OverviewStatic = () => {
     return(
         <>
             {/* TODO #2: display Job Overview & Job Location details here */}
-            <div className="row py-2">
-                <div className="col col-3">Inspection Date:</div>
-                <div className="col col-9">{job.overview.inspection_date}</div>
+            <div className="row">
+                <div className="text-right py-2 col col-md-3 col-sm-5 border-bottom">Inspection Date:</div>
+                <div className="py-2 col col-md-9 col-sm-7 border-bottom border-left">{job.overview.inspection_date}</div>
             </div> 
-            <div className="row py-2">
-                <div className="col col-3">Property Address:</div>
-                <div className="col col-9">{job.overview.property_address}</div>
+            <div className="row">
+                <div className="text-right py-2 col col-md-3 col-sm-5 border-bottom border-top">Property Address:</div>
+                <div className="py-2 col col-md-9 col-sm-7 border-bottom border-top border-left">{job.overview.property_address}</div>
             </div> 
-            <div className="row py-2">
-                <div className="col col-3">Opening Observations:</div>
-                <div className="col col-9">{job.overview.opening_observations}</div>
+            <div className="row">
+                <div className="text-right py-2 col col-md-3 col-sm-5 border-bottom border-top">Prelisting?</div>
+                <div className="py-2 col col-md-9 col-sm-7 border-bottom border-top border-left">{job.overview.prelisting}</div>
             </div> 
-            <div className="row py-2">
-                <div className="col col-3">Prelisting?</div>
-                <div className="col col-9">{job.overview.prelisting}</div>
+            <div className="row">
+                <div className="text-right py-2 col col-md-3 col-sm-5 border-bottom border-top">Online?</div>
+                <div className="py-2 col col-md-9 col-sm-7 border-bottom border-top border-left">{job.overview.online}</div>
             </div> 
-            <div className="row py-2">
-                <div className="col col-3">Online?</div>
-                <div className="col col-9">{job.overview.online}</div>
-            </div> 
-            <div className="row py-2">
-                <div className="col col-3">CC Attached?</div>
-                <div className="col col-9">{job.overview.cc_attached}</div>
+            <div className="row">
+                <div className="text-right py-2 col col-md-3 col-sm-5 border-top">CC Attached?</div>
+                <div className="py-2 col col-md-9 col-sm-7 border-top border-left">{job.overview.cc_attached}</div>
             </div>
+            <div className="row">
+                <div className="text-md-right text-sm-left py-2 col col-md-3 col-sm-5 border-bottom border-top">Opening Observations:</div>
+                <div className="py-2 col col-md-9 col-sm-7 border-bottom border-top border-left">{job.overview.opening_observations}</div>
+            </div> 
         </>
     )
 }
 
 const LocationStatic = ()=>{
     const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
+    const OutbuildingModifiers = () => {
+        return(
+            <>
+                <div className="row">
+                    <div className="text-right py-2 col col-md-3 col-sm-6 border-bottom border-top">Outbuilding Has Plumbing? </div>
+                    <div className="py-2 col col-md-9 col-sm-6 border-bottom border-top border-left">{job.location.outbuilding_has_plumbing}</div>
+                </div> 
+                <div className="row">
+                    <div className="text-right py-2 col col-md-3 col-sm-6 border-bottom border-top">Outbuilding Has Cleanout?</div>
+                    <div className="py-2 col col-md-9 col-sm-6 border-bottom border-top border-left">{job.location.outbuilding_has_cleanout}</div>
+                </div> 
+                <div className="row">
+                    <div className="text-right py-2 col col-md-3 col-sm-6 border-bottom border-top">Outbuilding Pipe Diameter?</div>
+                    <div className="py-2 col col-md-9 col-sm-6 border-bottom border-top border-left">{(job.location.outbuilding_pipe_diameter === 'other') ? (job.location.outbuilding_pipe_diameter_other) : (job.location.outbuilding_pipe_diameter)}</div>
+                </div>
+            </>
+        )
+    }
 
     return(
         <>
             {/* TODO #2: display Job Overview & Job Location details here */}
-            <div className="row py-2">
-                <div className="col col-3">Occupancy: </div>
-                <div className="col col-9">{job.location.occupancy}</div>
+            <div className="row">
+                <div className="text-right py-2 col col-md-3 col-sm-6 border-bottom">Occupancy: </div>
+                <div className="py-2 col col-md-9 col-sm-6 border-bottom  border-left">{job.location.occupancy}</div>
             </div> 
-            <div className="row py-2">
-                <div className="col col-3">Outbuilding? </div>
-                <div className="col col-9">{job.location.outbuilding}</div>
-            </div> 
-            <div className="row py-2">
-                <div className="col col-3">Outbuilding Has Plumbing? </div>
-                <div className="col col-9">{job.location.outbuilding_has_plumbing}</div>
-            </div> 
-            <div className="row py-2">
-                <div className="col col-3">Outbuilding Has Cleanout?</div>
-                <div className="col col-9">{job.location.outbuilding_has_cleanout}</div>
-            </div> 
-            <div className="row py-2">
-                <div className="col col-3">Outbuilding Pipe Diameter?</div>
-                <div className="col col-9">{(job.location.outbuilding_pipe_diameter === 'other') ? (job.location.outbuilding_pipe_diameter_other) : (job.location.outbuilding_pipe_diameter)}</div>
+            <div className="row">
+                <div className="text-right py-2 col col-md-3 col-sm-6 border-bottom border-top">Outbuilding? </div>
+                <div className="py-2 col col-md-9 col-sm-6 border-bottom border-top border-left">{job.location.outbuilding}</div>
             </div>
-            <div className="row py-2">
-                <div className="col col-3">CCUSD?</div>
-                <div className="col col-9">{job.location.ccusd}</div>
+            {(job.location.outbuilding === 'yes') ? (<OutbuildingModifiers />) : <div className="row" style={{display: 'none'}}>&nbsp;</div>} 
+            <div className="row">
+                <div className="text-right py-2 col col-md-3 col-sm-6 border-bottom border-top">CCUSD?</div>
+                <div className="py-2 col col-md-9 col-sm-6 border-bottom border-top border-left">{job.location.cccusd}</div>
             </div> 
-            <div className="row py-2">
-                <div className="col col-3">CCUSD - Unpermitted Work?</div>
-                <div className="col col-9">{job.location.cccusd_unpermitted_work}</div>
-            </div> 
+            {(job.location.cccusd === 'yes') ? (<div className="row">
+                <div className="text-right py-2 col col-md-3 col-sm-6 border-top">CCUSD - Unpermitted Work?</div>
+                <div className="py-2 col col-md-9 col-sm-6 border-top border-left">{job.location.cccusd_unpermitted_work}</div>
+            </div> ) : <div className="row" style={{display: 'none'}}>&nbsp;</div>} 
         </>
     )
 }
 
 
+const ListItems = (props) => {
+    return(
+        <>
+            <ListItemDefault />
+            <ListItemSecondary />
+        </>
+    )
+}

@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react'
-import Observations from './Observations'
+import React, {useContext, useState, useEffect, useRef} from 'react'
+import ObservationHome from './ObservationHome'
 import InspectionContext from '../../context/InspectionContext'
 
 function NewAccess() {
@@ -11,21 +11,40 @@ function NewAccess() {
         console.log('handleNewAccessLocationState')
         let objBranch = 'location'
         let name = e.target.name
+        let id = e.target.id        
         let type = e.target.type
-        let id = e.target.id
-        console.log(name, e.target.value, type, id)
-        
+        let val = e.target.value
+
+        if(type === 'checkbox'){
+            val = e.target.checked
+        }
+
         let tmpAccessLocation = newAccessState
         
         if(name){
-            tmpAccessLocation[objBranch][name] = e.target.value
+            tmpAccessLocation[objBranch][name] = val
         } else {
-            tmpAccessLocation[objBranch][id] = e.target.value
+            tmpAccessLocation[objBranch][id] = val
         }
         
         setNewAccessState({...tmpAccessLocation})
         console.log(newAccessState)
+    }
 
+    const handleNewAccessLocationStateDefault = (elem) => {
+        let objBranch = 'location'
+        let name = elem.name
+        let type = elem.type
+
+        let val = elem.value
+
+        if(type === 'checkbox'){
+            val = elem.checked
+        }
+
+        let tmpAccessLocation = newAccessState
+        tmpAccessLocation[objBranch][name] = val
+        setNewAccessState({...tmpAccessLocation})
     }
     
     const handleNewAccessDetailsState = (e) => {
@@ -33,19 +52,39 @@ function NewAccess() {
         let objBranch = 'details'
         let name = e.target.name
         let type = e.target.type
-        let id = e.target.id
-        console.log(name, e.target.value, type, id)
+        let id = e.target.id     
         
+        let val = e.target.value
+
+        if(type === 'checkbox'){
+            val = e.target.checked
+        }
+
         let tmpAccessDetails = newAccessState
         
         if(name){
-            tmpAccessDetails[objBranch][name] = e.target.value
+            tmpAccessDetails[objBranch][name] = val
         } else {
-            tmpAccessDetails[objBranch][id] = e.target.value
+            tmpAccessDetails[objBranch][id] = val
         }
         
         setNewAccessState({...tmpAccessDetails})
         console.log(newAccessState)
+    }
+
+    const handleNewAccessDetailsStateDefault = (elem) => {
+        let objBranch = 'details'
+        let name = elem.name
+        let type = elem.type
+        let val = elem.value
+
+        if(type === 'checkbox'){
+            val = elem.checked
+        }
+
+        let tmpAccessLocation = newAccessState
+        tmpAccessLocation[objBranch][name] = val
+        setNewAccessState({...tmpAccessLocation})
     }
 
     const disableButton = (btnId) => {
@@ -69,16 +108,16 @@ function NewAccess() {
         return (
             <>
                 <h1>New Access</h1>
-                <div className="border px-4 py-3">
+                <div className="px-4 py-3">
                     <form onSubmit={handleCreateAccess}>
                         <div className="row justify-content-center">
                             <div className="col col-12">
-                                <AccessLocation {...{handleNewAccessLocationState}} />
+                                <AccessLocation {...{handleNewAccessLocationState, handleNewAccessLocationStateDefault}} />
                             </div>
                         </div>
                         <div className="row justify-content-center mt-3">
                             <div className="col col-12">
-                                <AccessDetails {...{handleNewAccessDetailsState}} />
+                                <AccessDetails {...{handleNewAccessDetailsState, handleNewAccessDetailsStateDefault}} />
                             </div>
                         </div>
                         <div className="row justify-content-center mt-3">
@@ -90,9 +129,9 @@ function NewAccess() {
                 </div>
             </>
         )
-    } else if(appNav === 'observations') {
+    } else if(appNav === 'observations' || appNav === 'new_observation') {
         return(
-            <Observations {...{accessNumber}}/>
+            <ObservationHome {...{accessNumber}}/>
         )
     }
 
@@ -102,16 +141,27 @@ export default NewAccess
 
 
 const AccessLocation = (props) => {
-    const {handleNewAccessLocationState} = props
-   
+    const {handleNewAccessLocationState, handleNewAccessLocationStateDefault} = props
+
+    const walkRef = useRef(null)
+    const porchRef = useRef(null)
+    const entryRef = useRef(null)
+    const foundationEdgeRef = useRef(null)
+
+    useEffect(()=>{
+        [walkRef, porchRef, entryRef, foundationEdgeRef].forEach(item => {
+            handleNewAccessLocationStateDefault(item.current)
+        })
+    }, [])
+
     return(
-        <div className="py-3 px-4 border">
+        <div className="py-3 px-4 border bg-foreground">
             <div className="">
                 <h3>Access Location</h3>
                 <div className="my-5">
                     <div className="h6">Location</div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'location', id: 'location_radio_foundation_edge', value: 'foundation_edge'}} onChange={handleNewAccessLocationState}/>
+                        <input ref={foundationEdgeRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'location', id: 'location_radio_foundation_edge', value: 'foundation_edge', defaultChecked: 'checked'}} onChange={handleNewAccessLocationState}/>
                         <label className="form-check-label radio-button-label">Foundation Edge</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
@@ -167,7 +217,7 @@ const AccessLocation = (props) => {
 
                 <div>
                     <label className="h6" htmlFor='location_position_modifier_text_manual'>Location Position Modifier (specify)</label>
-                    <input {...{className: 'form-control mb-3', type: 'text', name: 'location_position_modifier_manual', id: 'location_position_modifier_manual', placeholder: 'optional'}} onChange={handleNewAccessLocationState}/>
+                    <input {...{className: 'form-control mb-3', type: 'text', name: 'location_position_modifier_manual', id: 'location_position_modifier_manual', placeholder: '(Optional)'}} onChange={handleNewAccessLocationState}/>
                 </div>
 
                 <div className="my-5">
@@ -181,11 +231,11 @@ const AccessLocation = (props) => {
                         <label className="form-check-label radio-button-label">Right</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'entry', id: 'entry_checkbox_none', value: 'none'}} onChange={handleNewAccessLocationState}/>
+                        <input ref={entryRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'entry', id: 'entry_checkbox_none', value: 'none', defaultChecked: 'checked'}} onChange={handleNewAccessLocationState}/>
                         <label className="form-check-label radio-button-label">None</label>
                     </div>
                 </div>
-
+                
                 <div className="my-5">
                     <div className="h6">Porch</div>
                     <div className="form-check form-check-inline mr-5">
@@ -197,11 +247,11 @@ const AccessLocation = (props) => {
                         <label className="form-check-label radio-button-label">Right</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'porch', id: 'porch_checkbox_none', value: 'none'}} onChange={handleNewAccessLocationState}/>
+                        <input ref={porchRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'porch', id: 'porch_checkbox_none', value: 'none', defaultChecked: 'checked'}} onChange={handleNewAccessLocationState}/>
                         <label className="form-check-label radio-button-label">None</label>
                     </div>
                 </div>
-
+                
                 <div className="my-5">
                     <div className="h6">Walk</div>
                     <div className="form-check form-check-inline mr-5">
@@ -213,7 +263,7 @@ const AccessLocation = (props) => {
                         <label className="form-check-label radio-button-label">Right</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'walk', id: 'walk_checkbox_none', value: 'none'}} onChange={handleNewAccessLocationState}/>
+                        <input ref={walkRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'walk', id: 'walk_checkbox_none', value: 'none', defaultChecked: 'checked'}} onChange={handleNewAccessLocationState}/>
                         <label className="form-check-label radio-button-label">None</label>
                     </div>
                 </div>
@@ -223,17 +273,34 @@ const AccessLocation = (props) => {
 }
 
 const AccessDetails = (props) => {
-    const {handleNewAccessDetailsState} = props
+    const {handleNewAccessDetailsState, handleNewAccessDetailsStateDefault} = props
+    
+    const pipeDiameterRef = useRef(null)
+    const directionRef = useRef(null)
+    const bopdRef = useRef(null)
+    const accessMaterialRef = useRef(null)
+    const initialPipeMaterialRef = useRef(null)
+
+    useEffect(()=>{
+        [pipeDiameterRef,
+        directionRef,
+        bopdRef,
+        accessMaterialRef,
+        initialPipeMaterialRef].forEach(item => {
+            handleNewAccessDetailsStateDefault(item.current)
+        })
+
+    }, [])
 
     return(
 
-        <div className="py-3 px-4 border">
+        <div className="py-3 px-4 border bg-foreground">
             <div className="">
                 <h3>Access Details</h3>
                 <div className="my-5">
                     <div className="h6">Pipe Diameter</div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'pipe_diameter', id: 'pipe_diameter_3', value: '3'}} onChange={handleNewAccessDetailsState}/>
+                        <input ref={pipeDiameterRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'pipe_diameter', id: 'pipe_diameter_3', value: '3', defaultChecked: 'checked'}} onChange={handleNewAccessDetailsState}/>
                         <label className="form-check-label radio-button-label">3"</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
@@ -248,7 +315,7 @@ const AccessDetails = (props) => {
                 <div className="my-5">
                     <div className="h6">Direction</div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'direction', id: 'direction_one_way', value: 'one_way'}} onChange={handleNewAccessDetailsState}/>
+                        <input ref={directionRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'direction', id: 'direction_one_way', value: 'one_way', defaultChecked: 'checked'}} onChange={handleNewAccessDetailsState}/>
                         <label className="form-check-label radio-button-label">One Way</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
@@ -275,7 +342,7 @@ const AccessDetails = (props) => {
                 <div className="my-5">
                     <div className="h6">BOPD</div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'bopd', id: 'bopd_none', value: 'none'}} onChange={handleNewAccessDetailsState}/>
+                        <input ref={bopdRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'bopd', id: 'bopd_none', value: 'none', defaultChecked: 'checked'}} onChange={handleNewAccessDetailsState}/>
                         <label className="form-check-label radio-button-label">None</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
@@ -324,7 +391,7 @@ const AccessDetails = (props) => {
                 <div className="my-5">
                     <div className="h6">Access Material</div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'access_material', id: 'access_material_ci', value: 'ci'}} onChange={handleNewAccessDetailsState}/>
+                        <input ref={accessMaterialRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'access_material', id: 'access_material_ci', value: 'ci', defaultChecked: 'checked'}} onChange={handleNewAccessDetailsState}/>
                         <label className="form-check-label radio-button-label">CI</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
@@ -347,7 +414,7 @@ const AccessDetails = (props) => {
                 <div className="my-5">
                     <div className="h6">Initial Pipe Material</div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'initial_pipe_material', id: 'initial_pipe_material_ci', value: 'ci'}} onChange={handleNewAccessDetailsState}/>
+                        <input ref={initialPipeMaterialRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'initial_pipe_material', id: 'initial_pipe_material_ci', value: 'ci', defaultChecked: 'checked'}} onChange={handleNewAccessDetailsState}/>
                         <label className="form-check-label radio-button-label">CI</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">

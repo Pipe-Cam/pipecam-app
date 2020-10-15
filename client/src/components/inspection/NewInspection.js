@@ -8,8 +8,9 @@ const _ = require('lodash')
 
 function NewInspection() {
     const [job, setJob] = useState({overview: {}, location: {}, access: {}})
-    // const [appNav, setAppNav] = useState('new_inspection')
-    const [appNav, setAppNav] = useState('observations')
+    const [appNav, setAppNav] = useState('new_inspection')
+    // const [appNav, setAppNav] = useState('job_home')
+    // const [appNav, setAppNav] = useState('new_access')
 
     const handleCreateJob = (e) => {
         console.log("handleCreateJob")
@@ -22,7 +23,7 @@ function NewInspection() {
     
     if(appNav === 'new_inspection'){
         return (
-            <div className="container">
+            <div className="container pt-4">
                 <h1>New Inspection</h1>
                 <form onSubmit={handleCreateJob}>
                     <div className="row">
@@ -47,7 +48,7 @@ function NewInspection() {
                 </form>
             </div>
         )
-    } else if (appNav === 'job_home' || appNav === 'new_access' || appNav === 'observations') {
+    } else if (appNav === 'job_home' || appNav === 'new_access' || appNav === 'observations' || appNav === 'new_observation') {
         return(
             <InspectionContext.Provider value={{job, setJob, appNav, setAppNav}}>
                 <JobHome />
@@ -65,3 +66,5 @@ function NewInspection() {
 }
 
 export default NewInspection
+
+
