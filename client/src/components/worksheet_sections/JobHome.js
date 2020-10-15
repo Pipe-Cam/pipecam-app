@@ -1,10 +1,13 @@
 import React, {useContext, useState} from 'react'
+import { useHistory } from "react-router-dom";
 import {Accordion, Card, Button} from 'react-bootstrap'
 import InspectionContext from '../../context/InspectionContext'
 import NewAccess from '../inspection/NewAccess'
 
 function JobHome() {
     const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
+    const history = useHistory();
+
 
     const handleCreateAccess = (e) => {
         console.log(e.target.name)
@@ -13,6 +16,10 @@ function JobHome() {
         if(e.target.name === 'new_access'){
             setAppNav('new_access')
         }
+    }
+
+    const handleNavToHome = () => {
+        history.push("/")
     }
 
     const JobDetails = () => {
@@ -68,50 +75,48 @@ function JobHome() {
 
     if(appNav === 'job_home'){
         return (
- 
-            <div className="container pt-4">
-                <div className="row justify-content-center pt-5">
-                    <div className="col col-12">
-                        <div style={{display: 'inline-block'}}>
-                            <h1>Job Details</h1>
+            <>
+                <div className="float-left">
+                    <button className="btn btn-secondary mt-3" onClick={handleNavToHome}>Done</button>
+                </div>
+                <div className="container pt-4">
+                    <div className="row justify-content-center pt-5">
+                        <div className="col col-12">
+                            <div style={{display: 'inline-block'}}>
+                                <h1>Job Details</h1>
+                            </div>
+                            <div className="float-right mt-1" style={{display: 'inline-block'}}>
+                                <button className="btn-primary btn-lg float-right" name="new_access" onClick={handleCreateAccess}>New Access</button>
+                            </div>
                         </div>
-                        <div className="float-right mt-1" style={{display: 'inline-block'}}>
+                    </div>
+
+                    <div className="row justify-content-center mb-5">
+                        <div className="col col-12">
+                        </div>
+                    </div>
+                    <div className="row justify-content-center my-5">
+                        <div className="col col-12">
+                            {/* <OverviewStatic />  */}
+                            <JobDetails />
+                        </div>
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col col-12">
+                            <h3>Access List</h3>
+                            {/* TODO #1: populate access list from state */}
+                            <ul className="list-group">
+                                {(JSON.stringify(job.access) === '{}') ? <div className="w-100 text-center border py-3">-- Access List Is Empty --</div> : (<ListItems {...{job, setJob}}/>)}
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="row justify-content-center py-5">
+                        <div className="col col-12">
                             <button className="btn-primary btn-lg float-right" name="new_access" onClick={handleCreateAccess}>New Access</button>
                         </div>
                     </div>
                 </div>
-
-                <div className="row justify-content-center mb-5">
-                    <div className="col col-12">
-                    </div>
-                </div>
-                <div className="row justify-content-center my-5">
-                    <div className="col col-12">
-                        {/* <OverviewStatic />  */}
-                        <JobDetails />
-                    </div>
-                </div>
-                <div className="row justify-content-center">
-                    <div className="col col-12">
-                        <h3>Access List</h3>
-                        {/* TODO #1: populate access list from state */}
-                        <ul className="list-group">
-                            {(job.access && job.access.length) ? (<ListItems />) : <div className="w-100 text-center border py-3">-- No Recorded Observations --</div>}
-
-                            {/* <ListItemDefault />
-                            <ListItemSecondary /> */}
-                        </ul>
-                    </div>
-                </div>
-                {/* <div className="float-right mt-5">
-                        <button className="btn btn-primary" name="new_access" onClick={handleCreateAccess}>New Access</button>
-                </div> */}
-                <div className="row justify-content-center py-5">
-                    <div className="col col-12">
-                        <button className="btn-primary btn-lg float-right" name="new_access" onClick={handleCreateAccess}>New Access</button>
-                    </div>
-                </div>
-            </div>
+            </>
         )
     } else if(appNav === 'new_access' || appNav === 'observations' || appNav === 'new_observation'){
         return(
@@ -141,7 +146,8 @@ const ListItemDefault = (props) => {
             </span>
             <span className="mx-3 float-right">
                 <a href="#" className="badge badge-info px-3 py-2">Edit</a>
-            </span>        </li>
+            </span>        
+        </li>
     )
 }
 const ListItemSecondary = (props) => {
@@ -248,10 +254,18 @@ const LocationStatic = ()=>{
 
 
 const ListItems = (props) => {
+    const {job} = props
+    const accessArr = Object.keys(job.access)
+
     return(
-        <>
-            <ListItemDefault />
-            <ListItemSecondary />
-        </>
+       <>
+            {accessArr.map((item, index) => {
+                if(index % 2 === 0){
+                    return <ListItemDefault value={job.access[item]} key={item + Math.random(400) + Math.random(100)}/>
+                } else {
+                    return <ListItemSecondary value={job.access[item]}  key={item + Math.random(401) + Math.random(101)}/>
+                }
+            })}
+       </>
     )
 }

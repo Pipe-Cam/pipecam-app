@@ -36,11 +36,18 @@ function ObservationHome(props) {
         setCurrentObservation(tmpCurrentObservation)
     }
 
+    const handleNavToJobHome = () => {
+        setAppNav('job_home')
+    }
+
     if(appNav === 'observations'){
         return (
             <div>
+                <div className="float-left">
+                    <button className="btn btn-secondary mt-3" onClick={handleNavToJobHome}>Done</button>
+                </div>
                 <div className="container py-5">
-                    <div className="row justify-content-center pt-5">
+                    <div className="row justify-content-center">
                         <div className="col col-12">
                             <div style={{display: 'inline-block'}}>
                                 <div style={{width: '75%'}}></div>
@@ -65,7 +72,7 @@ function ObservationHome(props) {
                                         {job.overview.property_address}
                                     </span>
                                 </ListGroup.Item>
-                                <div className="h5 pt-3 pb-1">Access Details</div>
+                                <div className="h5 pt-3 pb-1">Access #{accessNumber} Details</div>
                                 <ListGroup.Item>
                                     <div className="row">
                                         <div className="col-md-4 col-sm-6 ">

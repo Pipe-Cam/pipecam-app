@@ -6,6 +6,7 @@ function JobLocation() {
     const jobContext = useContext(InspectionContext)
     const {job, setJob} = jobContext
 
+    // for show/hide sub-menu items
     const pipeDiameterOtherRadioRef = useRef(null)
     const pipeDiameterOtherTextRef = useRef(null)
     const hasPlumbingRadioRef = useRef(null)
@@ -47,6 +48,12 @@ function JobLocation() {
         }
     }
 
+    // for setting default values to state
+    const occupancyRef = useRef(null)
+    const outbuildingRef = useRef(null)
+    const cccusdRef = useRef(null)
+    const cccusdUnpermittedRef = useRef(null)
+
     const handleUpdateJobOverviewState = (e) => {
         let objBranch = 'location'
         let name = e.target.name
@@ -60,6 +67,27 @@ function JobLocation() {
         }
         console.log(job)
     }
+
+    const handleUpdateJobOverviewStateDefault = (elem) => {
+        let objBranch = 'location'
+        let name = elem.name
+
+        let tmpJob = job
+        tmpJob[objBranch][name] = elem.value
+        setJob(tmpJob)
+
+        console.log(job)
+    }
+
+    useEffect(()=>{
+        [occupancyRef,
+        outbuildingRef,
+        cccusdRef,
+        cccusdUnpermittedRef].forEach(item=>{
+            handleUpdateJobOverviewStateDefault(item.current)
+        })
+
+    }, [])
 
 
     return (
@@ -77,7 +105,7 @@ function JobLocation() {
                         <label className="form-check-label radio-button-label">Vacant</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'occupancy', value: 'unknown', defaultChecked: 'checked'}} onChange={handleUpdateJobOverviewState}/>
+                        <input ref={occupancyRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'occupancy', value: 'unknown', defaultChecked: 'checked'}} onChange={handleUpdateJobOverviewState}/>
                         <label className="form-check-label radio-button-label">Unknown</label>
                     </div>
                 </div>                
@@ -88,7 +116,7 @@ function JobLocation() {
                         <label className="form-check-label radio-button-label">Yes</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'outbuilding', value: 'no', defaultChecked: 'checked'}} onClick={handleOutbuilding} onChange={handleUpdateJobOverviewState}/>
+                        <input ref={outbuildingRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'outbuilding', value: 'no', defaultChecked: 'checked'}} onClick={handleOutbuilding} onChange={handleUpdateJobOverviewState}/>
                         <label className="form-check-label radio-button-label">No</label>
                     </div>
                 </div>                
@@ -145,7 +173,7 @@ function JobLocation() {
                     <label className="form-check-label radio-button-label">Yes</label>
                 </div>
                 <div className="form-check form-check-inline mr-5">
-                    <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'cccusd', value: 'no', defaultChecked: 'checked'}} onClick={handleCCUSD} onChange={handleUpdateJobOverviewState}/>
+                    <input ref={cccusdRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'cccusd', value: 'no', defaultChecked: 'checked'}} onClick={handleCCUSD} onChange={handleUpdateJobOverviewState}/>
                     <label className="form-check-label radio-button-label">No</label>
                 </div>
                 <div ref={ccusdDivRef} className="my-5 ml-5 p-4 border" style={{display: 'none', backgroundColor: 'white'}}>
@@ -155,7 +183,7 @@ function JobLocation() {
                         <label className="form-check-label radio-button-label">Yes</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'cccusd_unpermitted_work', value: 'no', defaultChecked: 'checked'}} onChange={handleUpdateJobOverviewState}/>
+                        <input ref={cccusdUnpermittedRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'cccusd_unpermitted_work', value: 'no', defaultChecked: 'checked'}} onChange={handleUpdateJobOverviewState}/>
                         <label className="form-check-label radio-button-label">No</label>
                     </div>
                 </div>                
@@ -166,3 +194,4 @@ function JobLocation() {
 }
 
 export default JobLocation
+
