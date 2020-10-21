@@ -1,8 +1,11 @@
 import React, {useContext, useState} from 'react'
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import {Accordion, Card, Button} from 'react-bootstrap'
 import InspectionContext from '../../context/InspectionContext'
 import NewAccess from '../inspection/NewAccess'
+import IconCaretDown from '../icons/IconCaretDown'
+import IconTrash from '../icons/IconTrash'
+import AlternatingList from '../ui_components/AlternatingList'
 
 function JobHome() {
     const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
@@ -22,9 +25,17 @@ function JobHome() {
         history.push("/")
     }
 
+    const handleEditAccess = () => {
+        console.log('handleEditAccess')
+    }
+
+    const handleDeleteAccess = () => {
+        console.log('handleDeleteAccess')
+    }
+
     const JobDetails = () => {
         const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
-    
+
         return(
             <Accordion defaultActiveKey="">
                 <Card>
@@ -36,9 +47,7 @@ function JobHome() {
                         </Accordion.Toggle>
                         <span className="float-right">
                             <Accordion.Toggle as={Button} variant="link" eventKey="0">
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-caret-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                                </svg>
+                                <IconCaretDown />
                             </Accordion.Toggle>
                         </span>
                     </Card.Header>
@@ -57,9 +66,7 @@ function JobHome() {
                         </Accordion.Toggle>
                         <span className="float-right">
                             <Accordion.Toggle as={Button} variant="link" eventKey="1">
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-caret-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                                </svg>
+                                <IconCaretDown />
                             </Accordion.Toggle>
                         </span>
                     </Card.Header>
@@ -76,9 +83,12 @@ function JobHome() {
     if(appNav === 'job_home'){
         return (
             <>
-                <div className="float-left">
-                    <button className="btn btn-secondary mt-3" onClick={handleNavToHome}>Done</button>
-                </div>
+                <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+                    <li className="breadcrumb-item active" aria-current="page">Job</li>
+                </ol>
+                </nav>
                 <div className="container pt-4">
                     <div className="row justify-content-center pt-5">
                         <div className="col col-12">
@@ -106,7 +116,7 @@ function JobHome() {
                             <h3>Access List</h3>
                             {/* TODO #1: populate access list from state */}
                             <ul className="list-group">
-                                {(JSON.stringify(job.access) === '{}') ? <div className="w-100 text-center border py-3">-- Access List Is Empty --</div> : (<ListItems {...{job, setJob}}/>)}
+                                {(JSON.stringify(job.access) === '{}') ? <div className="w-100 text-center border py-3">-- Access List Is Empty --</div> : (<ListItems {...{job, handleEditAccess, handleDeleteAccess}}/>)}
                             </ul>
                         </div>
                     </div>
@@ -138,10 +148,7 @@ const ListItemDefault = (props) => {
             </span>
             <span className="ml-3 float-right">
                 <a href="#" className="">
-                    <svg width="1.75em" height="1.75em" viewBox="0 0 16 16" className="bi bi-trash bg-none text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                        <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                    </svg>
+                    <IconTrash />
                 </a>
             </span>
             <span className="mx-3 float-right">
@@ -160,10 +167,7 @@ const ListItemSecondary = (props) => {
             </span>
             <span className="ml-3 float-right">
                 <a href="#" className="">
-                    <svg width="1.75em" height="1.75em" viewBox="0 0 16 16" className="bi bi-trash bg-none text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                        <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                    </svg>
+                    <IconTrash />
                 </a>
             </span>
             <span className="mx-3 float-right">
@@ -254,18 +258,20 @@ const LocationStatic = ()=>{
 
 
 const ListItems = (props) => {
-    const {job} = props
-    const accessArr = Object.keys(job.access)
+    const {job, handleEditAccess, handleDeleteAccess} = props
+    // console.log(job)
+    // const accessArr = Object.keys(job.access)
 
     return(
        <>
-            {accessArr.map((item, index) => {
+            <AlternatingList {...{dataObject: job.access, edit: handleEditAccess, _delete: handleDeleteAccess, buttons: {show: true, edit: true, _delete: true}}}/>
+            {/* {accessArr.map((item, index) => {
                 if(index % 2 === 0){
                     return <ListItemDefault value={job.access[item]} key={item + Math.random(400) + Math.random(100)}/>
                 } else {
                     return <ListItemSecondary value={job.access[item]}  key={item + Math.random(401) + Math.random(101)}/>
                 }
-            })}
+            })} */}
        </>
     )
 }

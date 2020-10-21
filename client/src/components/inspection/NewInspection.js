@@ -57,8 +57,16 @@ function NewInspection() {
     } else {
         return(
             <div>
-                COMPONENT: NewInspection.js<br/>
-                {appNav}
+                <div>
+                    <h3>COMPONENT: NewInspection.js</h3>
+
+                </div>
+                <div>
+                    <em>No such view is available</em>
+                </div>
+                <div>
+                    appNav: {appNav}
+                </div>
             </div>
         )
     }

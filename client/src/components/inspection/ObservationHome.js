@@ -1,10 +1,16 @@
 import React, {useEffect, useRef, useContext, useState} from 'react'
+import {Link} from 'react-router-dom'
 import ListGroup from 'react-bootstrap/ListGroup'
 import InspectionContext from '../../context/InspectionContext'
+import IconHouse from '../icons/IconHouse'
+import IconPlus from '../icons/IconPlus'
+import IconTrash from '../icons/IconTrash'
+import AlternatingList from '../ui_components/AlternatingList'
+
 
 function ObservationHome(props) {
     const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
-    const {accessNumber} = props
+    const {accessNumber, setAccessNumber} = props
     const [observationNumber, setObservationNumber] = useState(0)
     const [currentObservation, setCurrentObservation] = useState({})
 
@@ -40,12 +46,25 @@ function ObservationHome(props) {
         setAppNav('job_home')
     }
 
+    const handleEditObservation = () => {
+        console.log('handleObservation')
+    }
+
+    const handleDeleteObservation = () => {
+        console.log('handleObservation')
+    }
+
+
     if(appNav === 'observations'){
         return (
             <div>
-                <div className="float-left">
-                    <button className="btn btn-secondary mt-3" onClick={handleNavToJobHome}>Done</button>
-                </div>
+                <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item"><Link to="/">Home</Link></li>
+                    <li className="breadcrumb-item"><a href="#" onClick={handleNavToJobHome}>Job</a></li>
+                    <li className="breadcrumb-item active" aria-current="page">Access #{accessNumber}</li>
+                </ol>
+                </nav>
                 <div className="container py-5">
                     <div className="row justify-content-center">
                         <div className="col col-12">
@@ -63,10 +82,7 @@ function ObservationHome(props) {
                                 <div className="h5 pb-1">Property Address</div>
                                 <ListGroup.Item>
                                     <span className="pr-3 align-middle py-0 my-0">
-                                        <svg width="2em" height="2em" viewBox="0 0 16 16" className="bi bi-house align-middle py-0 my-0" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
-                                            <path fillRule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
-                                        </svg>
+                                        <IconHouse />
                                     </span>
                                     <span className="align-middle" style={{fontSize: '1.5em'}}>
                                         {job.overview.property_address}
@@ -131,7 +147,7 @@ function ObservationHome(props) {
                             <h3>Observations</h3>
                             {/* TODO #1: populate access list from state */}
                             <ul className="list-group">
-                                {(job.access[accessNumber] && job.access[accessNumber].observations.length) ? (<ListItems {...{job, setJob, accessNumber}}/>) : <div className="w-100 text-center border py-3">-- No Recorded Observations --</div>}
+                                {(job.access[accessNumber] && job.access[accessNumber].observations.length) ? (<ListItems {...{job, setJob, accessNumber, handleEditObservation, handleDeleteObservation}}/>) : <div className="w-100 text-center border py-3">-- No Recorded Observations --</div>}
                             </ul>
                         </div>
                     </div>
@@ -151,71 +167,20 @@ function ObservationHome(props) {
         )
     }
 }
-/*
 
-{
-    "overview": {
-        "inspection_date": "2020-10-14",
-        "property_address": "1234 Main St, Concord, CA 94520",
-        "opening_observations": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus eum harum nihil ipsa laboriosam esse in ab, amet quos asperiores iure adipisci sequi, recusandae distinctio, porro officia rerum vel dignissimos nemo possimus eligendi temporibus. Recusandae facilis dolore culpa nobis accusamus. Itaque quidem consequuntur voluptate repellendus ipsa quia quo, numquam deleniti, saepe laboriosam aperiam dolorum perferendis voluptatem mollitia alias blanditiis soluta impedit! Dolores omnis dicta at laudantium, sed ex! Accusantium deleniti numquam possimus tempore repellendus molestiae provident impedit commodi blanditiis! Debitis quos ab doloribus, ad consequatur itaque. At quos corrupti quia. Vitae consequuntur eius corporis! Animi tempore assumenda asperiores maxime consectetur!",
-        "prelisting": "yes",
-        "online": "yes",
-        "cc_attached": "yes"
-    },
-    "location": {
-        "occupancy": "occupied",
-        "outbuilding": "yes",
-        "outbuilding_has_plumbing": "yes",
-        "outbuilding_has_cleanout": "yes",
-        "outbuilding_pipe_diameter": "other",
-        "outbuilding_pipe_diameter_other": "2",
-        "cccusd": "yes",
-        "cccusd_unpermitted_work": "yes"
-    },
-    "access": {
-        "1": {
-            "location": {
-                "location": "foundation_edge",
-                "location_position_front": "front",
-                "location_position_modifier_corner": "corner",
-                "location_position_modifier_under_deck": "Under Deck",
-                "location_position_modifier_manual": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus eum harum nihil ipsa laboriosam esse in.",
-                "entry": "left",
-                "porch": "right",
-                "walk": "none"
-            },
-            "details": {
-                "pipe_diameter": "3",
-                "direction": "two_way",
-                "opening_break_in": "break_in",
-                "bopd": "check_valve",
-                "bopd_condition_ball": "ball",
-                "access_material": "vcp",
-                "initial_pipe_material": "abs",
-                "clean_out_excess_vegetation": "excess_vegetation",
-                "clean_out_below_grade": "below_grade"
-            },
-            "observations": []
-        }
-    }
-}
-
-*/
 export default ObservationHome
 
 const ListItems = (props) => {
-    const {job, setJob, accessNumber} = props
+    const {job, setJob, accessNumber, handleEditObservation, handleDeleteObservation} = props
     const observations = job.access[accessNumber].observations
-    console.log(Array.isArray(observations))
+
+    const footage = observations.map(item => {
+        return item.footage
+    })
+
     return(
        <>
-            {observations.map((item, index) => {
-                if(index % 2 === 0){
-                    return <ListItemDefault value={item.footage} key={item + Math.random(400) + Math.random(100)}/>
-                } else {
-                    return <ListItemSecondary value={item.footage}  key={item + Math.random(401) + Math.random(101)}/>
-                }
-            })}
+            <AlternatingList {...{dataObject: footage, edit: handleEditObservation, _delete: handleDeleteObservation, buttons: {show: true, edit: true, _delete: true}}}/>
        </>
     )
 }
@@ -230,10 +195,7 @@ const ListItemDefault = (props) => {
             </span>
             <span className="ml-3 float-right">
                 <a href="#" className="">
-                    <svg width="1.75em" height="1.75em" viewBox="0 0 16 16" className="bi bi-trash bg-none text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                        <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                    </svg>
+                    <IconTrash />
                 </a>
             </span>
             <span className="mx-3 float-right">
@@ -252,10 +214,7 @@ const ListItemSecondary = (props) => {
             </span>
             <span className="ml-3 float-right">
                 <a href="#" className="">
-                    <svg width="1.75em" height="1.75em" viewBox="0 0 16 16" className="bi bi-trash bg-none text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                        <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                    </svg>
+                    <IconTrash />
                 </a>
             </span>
             <span className="mx-3 float-right">
@@ -388,9 +347,7 @@ const NewObservation = (props) => {
                 <div className="row justify-content-center mt-5">
                     <div className="col col-12 text-center">
                         <button id="add_access_btn" className="btn-primary btn-lg p-3 m-0" type="submit" name="submit">
-                            <svg width="3em" height="3em" viewBox="0 0 16 16" className="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                            </svg>
+                            <IconPlus />
                         </button>
                     </div>
                 </div>

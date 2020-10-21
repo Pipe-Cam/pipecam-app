@@ -131,7 +131,7 @@ function NewAccess() {
         )
     } else if(appNav === 'observations' || appNav === 'new_observation') {
         return(
-            <ObservationHome {...{accessNumber}}/>
+            <ObservationHome {...{accessNumber, setAccessNumber}}/>
         )
     }
 
