@@ -1,121 +1,17 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React, {useRef, useState, useEffect, useContext} from 'react'
 import AlternatingList from '../components/ui_components/AlternatingList'
 import {newClient as saveNewClientToDB} from '../db/write.js'
-import {getClients as getClientsFromDB} from '../db/read.js'
+import {getClients as getClientsFromDB, searchForClient as searchForClientInDB} from '../db/read.js'
+import ClientContext from '../context/ClientContext'
 
 const _ = require('lodash')
-
-const clientNames = [
-    "Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipisicing", "elit", "Vitae", "ipsa"    
-]
 
 function Clients() {
     const [clientNav, setClientNav] = useState('client_home')
     // const [clientNav, setClientNav] = useState('client_new')
     const [clientsFromDb, setClientsFromDb] = useState(null)
-
-    const handleEditClient = () => {
-        console.log("edited client")
-    }
-    const handleDeleteClient = () => {
-        console.log("deleted client")
-    }
-
-    const getClientsOnLoad = async () => {
-        let clientList = await getClientsFromDB()
-        let sortedList = _.sortBy(JSON.parse(clientList), ['last_modified']).reverse()
-        console.log(sortedList)
-        setClientsFromDb(sortedList)
-    }
-
-    useEffect(()=>{
-        getClientsOnLoad()
-    }, [])
-
-    if(clientNav === 'client_home'){
-        return (
-            <>
-                <nav aria-label="breadcrumb" className="">
-                <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><a href="/">Home</a></li>
-                    <li className="breadcrumb-item active" aria-current="page">Clients</li>
-                </ol>
-                </nav>
-                <div className="container my-4">
-                    <div>
-                        <SearchClients />
-                    </div>
-                    <div className="row pt-4">
-                        <div className="col-12 col-md-6 col-lg-6 my-2">
-                            <button className="btn btn-info border-dark btn-lg btn-block" onClick={()=>{setClientNav('client_new')}}>New Client</button>
-                        </div>
-                        {/* <div className="col-12 col-md-6 col-lg-6 my-2">
-                            <a href="clients" className="btn btn-white border-dark btn-lg btn-block font-weight-bold">Manage Clients</a>
-                        </div> */}
-                    </div>
-                    <div className="pt-4">
-                        <h3>
-                            Recent Clients
-                        </h3>
-                        <div className="py-2">
-                            <AlternatingList {...{dataObject: ((!clientsFromDb)? ([]) : (clientsFromDb.map(item => { return item.business_name}))), edit: handleEditClient, _delete: handleDeleteClient, buttons: {show: true, edit: true, _delete: false}}}/>
-                        </div>
-                    </div>
-                </div>
-            </>
-        )
-    } else if(clientNav === 'client_new') {
-        return (
-            <AddNewClient {...{setClientNav}}/>
-        )
-    }
-}
-
-export default Clients
-
-const SearchClients = () =>{
-    const clientSearchInputRef = useRef(null)
-
-    const handleClientSearch = (e) => {
-        e.preventDefault();
-        let searchValue = clientSearchInputRef.current.value
-        console.log(searchValue)
-    }
-    return(
-        <form onSubmit={handleClientSearch}>
-            <div className="row">
-                <div className="col">
-                    <input ref={clientSearchInputRef} type="text" className="form-control" placeholder="Client Search"/>
-                </div>
-                <div className="col">
-                    <button className="btn btn-outline-success" type="submit">Search</button>
-                </div>
-            </div>
-        </form>
-    )
-}
-
-const AddNewClient = (props) => {
-    const {setClientNav} = props
-    return(
-        <>
-        <nav aria-label="breadcrumb" className="">
-            <ol className="breadcrumb">
-                <li className="breadcrumb-item"><a href="/">Home</a></li>
-                <li className="breadcrumb-item" aria-current="page"><a href="/clients">Clients</a></li>
-                <li className="breadcrumb-item active" aria-current="page">New Client</li>
-            </ol>
-        </nav>
-
-        <div className="container my-4">
-            <NewClientForm {...{setClientNav}}/>
-        </div>
-        </>
-    )
-}
-
-
-const NewClientForm = (props) => {
+    const [clientViewData, setClientViewData] = useState(null)
+    const [searchResult, setSearchResult] = useState(null)
     const [newClientFormData, setNewClientFormData] = useState({
         created: "",
         last_modified: "",
@@ -143,6 +39,168 @@ const NewClientForm = (props) => {
         client_address_zip: "",
         notes: []
     })
+
+    const [forceUpdate, setForceUpdate] = useState(true)
+
+    const handleEditClient = (e) => {
+        console.log("edited client")
+
+        let dataAttributes = {
+            value: e.target.getAttribute("data-value"),
+            id: e.target.getAttribute("data-id"),
+            action: e.target.getAttribute("data-action")
+        }
+
+        let clientData = _.find(clientsFromDb, function(o){ return o._id === dataAttributes.id; })
+        setClientViewData(clientData)
+        setClientNav('client_view')
+    }
+
+    const handleDeleteClient = (e) => {
+        console.log("deleted client")
+        console.log(e.target)
+    }
+
+    const getClientsOnLoad = async () => {
+        let clientList = await getClientsFromDB()
+        // let sortedList = _.sortBy(JSON.parse(clientList), ['last_modified']).reverse()
+        // console.log(sortedList)
+        // setClientsFromDb(sortedList)
+        setClientsFromDb(JSON.parse(clientList))
+    }
+
+    useEffect(()=>{
+        getClientsOnLoad()
+    }, [])
+  
+    // useEffect(()=>{
+    //     setForceUpdate(!forceUpdate)
+    // }, [, clientsFromDb])
+
+    
+    if(clientNav === 'client_home'){
+        return (
+            <>
+            <ClientContext.Provider value={{newClientFormData, setNewClientFormData, clientsFromDb, setClientsFromDb, clientNav, setClientNav, searchForClientInDB, handleEditClient}}>
+                <nav aria-label="breadcrumb" className="">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item"><a href="/">Home</a></li>
+                    <li className="breadcrumb-item active" aria-current="page">Clients</li>
+                </ol>
+                </nav>
+                <div className="container my-4">
+                    <div>
+                        <SearchClients {...{searchResult, setSearchResult}}/>
+                    </div>
+                    <div className="row pt-4">
+                        <div className="col-12 col-md-6 col-lg-6 my-2">
+                            <button className="btn btn-info border-dark btn-lg btn-block" onClick={()=>{setClientNav('client_new')}}>New Client</button>
+                        </div>
+                        {/* <div className="col-12 col-md-6 col-lg-6 my-2">
+                            <a href="clients" className="btn btn-white border-dark btn-lg btn-block font-weight-bold">Manage Clients</a>
+                        </div> */}
+                    </div>
+                    <div className="pt-4">
+                        <h3>
+                            Recent Clients
+                        </h3>
+                        <div className="py-2">
+                            <AlternatingList {...{dataObject: ((!clientsFromDb)? ([]) : (clientsFromDb.map(item => { return {value: (item.business_name || item.contact_name), _id: item._id}}))), edit: handleEditClient, _delete: handleDeleteClient, buttons: {show: true, edit: true, _delete: false}}}/>
+                        </div>
+                    </div>
+                </div>
+            </ClientContext.Provider>
+
+            </>
+        )
+    } else if(clientNav === 'client_new') {
+        return (
+            <ClientContext.Provider value={{newClientFormData, setNewClientFormData, clientsFromDb, setClientsFromDb, clientNav, setClientNav, getClientsOnLoad}}>
+                <AddNewClient />
+            </ClientContext.Provider>
+
+        )
+    } else if(clientNav === 'client_view'){
+        return(
+            <>
+                <nav aria-label="breadcrumb" className="">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item"><a href="/">Home</a></li>
+                    <li className="breadcrumb-item active"><a href="/clients">Clients</a></li>
+                    <li className="breadcrumb-item active" aria-current="page">{(clientViewData) ? ((clientViewData.business_name) ? (clientViewData.business_name) : (clientViewData.contact_name)) : 'Client Details'}</li>
+                </ol>
+                </nav>
+                <ViewClientInfo {...{clientViewData}}/>
+            </>
+        )
+    }
+}
+
+export default Clients
+
+const SearchClients = (props) =>{
+    const {searchResult, setSearchResult} = props
+    const clientSearchInputRef = useRef(null)
+    const {searchForClientInDB, handleEditClient} = useContext(ClientContext)
+
+    const handleClientSearch = async (e) => {
+        e.preventDefault();
+        let searchValue = clientSearchInputRef.current.value
+        console.log(searchValue)
+        if(searchValue){
+            console.log('valid search')
+            let clientSearchResult = await searchForClientInDB(encodeURI(searchValue))
+            setSearchResult(clientSearchResult)
+        } 
+    }
+
+    return(
+        <>
+        <form onSubmit={handleClientSearch}>
+            <div className="row">
+                    <div className="col">
+                        <input ref={clientSearchInputRef} type="text" className="form-control" placeholder="Client Search"/>
+                    </div>
+                    <div className="col">
+                        <button className="btn btn-outline-success" type="submit">Search</button>
+                    </div>
+            </div>
+        </form>
+
+        {(searchResult !== null) ? <SearchResults {...{searchResult, setSearchResult}}/> : <></>}
+        {/* <SearchResults {...{searchResult, setSearchResult}}/> */}
+
+        </>
+    )
+}
+
+const AddNewClient = (props) => {
+    return(
+        <>
+        <nav aria-label="breadcrumb" className="">
+            <ol className="breadcrumb">
+                <li className="breadcrumb-item"><a href="/">Home</a></li>
+                <li className="breadcrumb-item" aria-current="page"><a href="/clients">Clients</a></li>
+                <li className="breadcrumb-item active" aria-current="page">New Client</li>
+            </ol>
+        </nav>
+
+        <div className="container my-4">
+                <NewClientForm/>
+        </div>
+        </>
+    )
+}
+
+
+const NewClientForm = (props) => {
+    const { newClientFormData, 
+            setNewClientFormData, 
+            clientsFromDb, 
+            setClientsFromDb, 
+            clientNav, 
+            setClientNav,
+            getClientsOnLoad} = useContext(ClientContext)
 
     const clientTypeOtherRef = useRef(null)
     const clientSourceOtherRef = useRef(null)
@@ -199,7 +257,8 @@ const NewClientForm = (props) => {
     const handleSaveNewClientToDB = async (e) => {
         e.preventDefault()
         await saveNewClientToDB(newClientFormData)
-        props.setClientNav('client_home')
+        getClientsOnLoad()
+        setClientNav('client_home')
     }
 
     useEffect(()=>{
@@ -463,3 +522,69 @@ const FiftyStatesAbbrev = () => {
 
 
 
+const ViewClientInfo = (props) => {
+    const {clientViewData} = props
+    const clientViewDataKeys = Object.keys(clientViewData)
+    console.log(clientViewDataKeys)
+
+    const exclusionList = ['notes', 'created', 'last_modified', '_id', '__v']
+
+    return (
+        <>
+            {clientViewDataKeys.map(item => {
+                if(!exclusionList.includes(item) && clientViewData[item].toString() !== ''){
+                    return(
+                        <div className="row" key={item + clientViewData._id}>
+                            <div className="col-3" key={item + clientViewData._id + 1}>
+                                {capitalizeEachWord(item.split('_').join(' '))}:
+                            </div>
+                            <div className="col-9" key={item + clientViewData._id + 2}>
+                                {capitalizeEachWord(clientViewData[item].toString())}
+                            </div>
+                        </div>
+                    )
+                }
+            })}
+        </>
+    )
+}
+
+const SearchResults = (props) => {
+    const {handleEditClient} = useContext(ClientContext)
+    let searchResult = JSON.parse(props.searchResult)
+    console.log(searchResult)
+
+    return(
+        <div className="ml-1 row">
+            <div className="col-11">
+                <div className="row my-3 py-3 border border-dark text-dark rounded" style={{backgroundColor: '#F0F0F0'}}>
+                    <div className="col-12 text-dark">
+                        <strong>Results:</strong>
+                    </div>
+                    <div className="col-12">
+                        <ol className="text-dark font-weight-bold">
+                            {searchResult.map(item=>{
+                                if(item.client_type === 'Resident'){
+                                    return(
+                                        <li key={item._id}><a href="#" className="text-primary" data-value={item.contact_name} data-id={item._id} data-action="edit" onClick={handleEditClient}>{item.contact_name}</a></li>
+                                    )
+                                } else {
+                                    return(
+                                        <li key={item._id}><a href="#" className="text-primary" data-value={item.business_name} data-id={item._id} data-action="edit" onClick={handleEditClient}>{item.business_name}</a></li>
+                                    )
+                                }
+                            })}
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    )
+}
+
+function capitalizeEachWord(str) {
+    return str.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+}
