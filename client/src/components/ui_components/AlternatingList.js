@@ -4,7 +4,7 @@ import EditButton from '../buttons/EditButton'
 
 function AlternatingList(props) {
     let {dataObject, edit, _delete, buttons} = props
-    console.log(edit, _delete)
+    // console.log(edit, _delete)
 
     if(Array.isArray(dataObject)) {
         // array
@@ -41,7 +41,7 @@ export default AlternatingList
 
 const ListItemDefault = (props) => {
     const {value, handler, buttons} = props
-    console.log(handler)
+    // console.log(handler)
 
     return(
         <li className="list-group-item">
@@ -54,7 +54,7 @@ const ListItemDefault = (props) => {
 }
 const ListItemSecondary = (props) => {
     const {value, handler, buttons} = props
-    console.log(handler)
+    // console.log(handler)
     return(
         <li className="list-group-item list-group-item-secondary">
             <span>
@@ -67,7 +67,7 @@ const ListItemSecondary = (props) => {
 
 const ListItemButtons = (props) => {
     const {handler, buttons} = props
-    console.log(handler)
+    // console.log(handler)
 
     return(
         <>

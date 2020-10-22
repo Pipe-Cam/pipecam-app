@@ -7,18 +7,23 @@ function Todo() {
             <ol>
                 <li>
                     <s className="text-danger"> 
-                    <strong className="text-success">[CLIENTS]</strong> Add New Client
+                        <strong className="text-success">[CLIENTS]</strong> Add New Client
                     </s>
                 </li>
                 <li>
                     <s className="text-danger">
-                    <strong className="text-success">[CLIENTS]</strong> search box
+                        <strong className="text-success">[CLIENTS]</strong> search box
                     </s>
                 </li>
                 <li>
                     <s className="text-danger"> 
+                        <strong className="text-success">[API / DB]</strong> create db, implement schema, abstraction 
                     </s>
-                    <strong className="text-success">[API / DB]</strong> post new client
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                        <strong className="text-success">[API / DB]</strong> post new client
+                    </s>
                 </li>
                 <li>
                     <s className="text-danger"> 

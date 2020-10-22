@@ -1,5 +1,10 @@
-import React, {useRef, useState} from 'react'
+import React, {useRef, useState, useEffect} from 'react'
 import AlternatingList from '../components/ui_components/AlternatingList'
+import {newClient as saveNewClientToDB} from '../db/write.js'
+import {getClients as getClientsFromDB} from '../db/read.js'
+
+const _ = require('lodash')
+
 const clientNames = [
     "Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipisicing", "elit", "Vitae", "ipsa"    
 ]
@@ -7,12 +12,25 @@ const clientNames = [
 function Clients() {
     const [clientNav, setClientNav] = useState('client_home')
     // const [clientNav, setClientNav] = useState('client_new')
+    const [clientsFromDb, setClientsFromDb] = useState(null)
+
     const handleEditClient = () => {
         console.log("edited client")
     }
     const handleDeleteClient = () => {
         console.log("deleted client")
     }
+
+    const getClientsOnLoad = async () => {
+        let clientList = await getClientsFromDB()
+        let sortedList = _.sortBy(JSON.parse(clientList), ['last_modified']).reverse()
+        console.log(sortedList)
+        setClientsFromDb(sortedList)
+    }
+
+    useEffect(()=>{
+        getClientsOnLoad()
+    }, [])
 
     if(clientNav === 'client_home'){
         return (
@@ -40,7 +58,7 @@ function Clients() {
                             Recent Clients
                         </h3>
                         <div className="py-2">
-                            <AlternatingList {...{dataObject: clientNames, edit: handleEditClient, _delete: handleDeleteClient, buttons: {show: true, edit: true, _delete: false}}}/>
+                            <AlternatingList {...{dataObject: ((!clientsFromDb)? ([]) : (clientsFromDb.map(item => { return item.business_name}))), edit: handleEditClient, _delete: handleDeleteClient, buttons: {show: true, edit: true, _delete: false}}}/>
                         </div>
                     </div>
                 </div>
@@ -48,7 +66,7 @@ function Clients() {
         )
     } else if(clientNav === 'client_new') {
         return (
-            <AddNewClient />
+            <AddNewClient {...{setClientNav}}/>
         )
     }
 }
@@ -77,7 +95,8 @@ const SearchClients = () =>{
     )
 }
 
-const AddNewClient = () => {
+const AddNewClient = (props) => {
+    const {setClientNav} = props
     return(
         <>
         <nav aria-label="breadcrumb" className="">
@@ -89,18 +108,46 @@ const AddNewClient = () => {
         </nav>
 
         <div className="container my-4">
-            <NewClientForm />
+            <NewClientForm {...{setClientNav}}/>
         </div>
         </>
     )
 }
 
 
-const NewClientForm = () => {
+const NewClientForm = (props) => {
+    const [newClientFormData, setNewClientFormData] = useState({
+        created: "",
+        last_modified: "",
+        client_type: "",
+        client_type_other: "",
+        client_status: "",
+        client_source: "",
+        client_source_other: "",
+        preferred_payment_type: "",
+        business_name: "",
+        business_phone: "",
+        business_address_street: "",
+        business_address_unit: "",
+        business_address_city: "",
+        business_address_state: "",
+        business_address_zip: "",
+        contact_name: "",
+        contact_phone: "",
+        contact_email_primary: "",
+        contact_email_secondary: "",
+        client_address_street: "",
+        client_address_unit: "",
+        client_address_city: "",
+        client_address_state: "",
+        client_address_zip: "",
+        notes: []
+    })
+
     const clientTypeOtherRef = useRef(null)
     const clientSourceOtherRef = useRef(null)
     const businessDivRef = useRef(null)
-    // const clientAddressDivRef = useRef(null)
+    const clientStatusDefaultRef = useRef(null)
 
     const handleShowHideOtherInput = (e) => {
         let id = e.target.id
@@ -131,13 +178,41 @@ const NewClientForm = () => {
         }
     }
 
+    const handleNewClientFormData = (e) => {
+        let id = e.target.id
+        let val = e.target.value
+        let tmpNewClientFormData = newClientFormData;
+        tmpNewClientFormData[id] = val
+        setNewClientFormData(tmpNewClientFormData)
+        console.log(newClientFormData)
+    }
+
+    const handleDefaultValue = () => {
+        let id = clientStatusDefaultRef.current.id
+        let val = clientStatusDefaultRef.current.value
+        let tmpNewClientFormData = newClientFormData;
+        tmpNewClientFormData[id] = val
+        setNewClientFormData(tmpNewClientFormData)
+        console.log(newClientFormData)
+    }
+
+    const handleSaveNewClientToDB = async (e) => {
+        e.preventDefault()
+        await saveNewClientToDB(newClientFormData)
+        props.setClientNav('client_home')
+    }
+
+    useEffect(()=>{
+        handleDefaultValue()
+    },[])
+
     let bgStyle = {backgroundColor: '#FAFAFA'}
     return(
-        <form>
+        <form onSubmit={handleSaveNewClientToDB}>
             <div className="shadow-sm px-4 pt-4 mb-3 rounded" style={bgStyle}>
                 <div className="form-row">
                     <div className="form-group col-md-3">
-                        <select id="client_type" className="form-control" defaultValue="Client Type" onChange={handleShowHideOtherInput}>
+                        <select id="client_type" className="form-control" defaultValue="Client Type" onInput={handleNewClientFormData} onChange={handleShowHideOtherInput}>
                             <option disabled>Client Type</option>
                             <option>Realtor</option>
                             <option>Resident</option>
@@ -146,7 +221,7 @@ const NewClientForm = () => {
                         </select>
                     </div>
                     <div className="form-group col-md-3">
-                        <select id="client_status" className="form-control" defaultValue="Client Status">
+                        <select ref={clientStatusDefaultRef} id="client_status" className="form-control" defaultValue="Active" onInput={handleNewClientFormData} >
                                 <option disabled>Client Status</option>
                                 <option>Active</option>
                                 <option>Inactive</option>
@@ -156,7 +231,7 @@ const NewClientForm = () => {
                     </div>
 
                     <div className="form-group col-md-3">
-                        <select id="client_source" className="form-control" defaultValue="Pmt Method" onChange={handleShowHideOtherInput}>
+                        <select id="preferred_payment_type" className="form-control" defaultValue="Pmt Method" onInput={handleNewClientFormData} onChange={handleShowHideOtherInput}>
                                 <option disabled>Pmt Method</option>
                                 <option>Card</option>
                                 <option>Check</option>
@@ -164,7 +239,7 @@ const NewClientForm = () => {
                         </select>
                     </div>
                     <div className="form-group col-md-3">
-                        <select id="client_source" className="form-control" defaultValue="Lead Source" onChange={handleShowHideOtherInput}>
+                        <select id="client_source" className="form-control" defaultValue="Lead Source" onInput={handleNewClientFormData} onChange={handleShowHideOtherInput}>
                                 <option disabled>Lead Source</option>
                                 <option>Referral</option>
                                 <option>Online</option>
@@ -175,10 +250,10 @@ const NewClientForm = () => {
 
                 <div className="form-row">
                     <div className="form-group col-md-6">
-                        <input ref={clientTypeOtherRef} className="form-control d-none" type="text" id="client_type_other" name="client_type_other" placeholder="Client Type - Other" />
+                        <input ref={clientTypeOtherRef} className="form-control d-none" type="text" id="client_type_other" name="client_type_other" placeholder="Client Type - Other" onChange={handleNewClientFormData}/>
                     </div>
                     <div className=" form-group col-md-6 float-right">
-                        <input ref={clientSourceOtherRef} className="form-control d-none" type="text" id="client_source_other" name="client_source_other" placeholder="Client Source - Other" />
+                        <input ref={clientSourceOtherRef} className="form-control d-none" type="text" id="client_source_other" name="client_source_other" placeholder="Client Source - Other"  onChange={handleNewClientFormData}/>
                     </div>
                 </div>
             </div>
@@ -191,39 +266,39 @@ const NewClientForm = () => {
                 <div className="border px-4 pt-3 mb-4">
                     <div className="form-row">
                         <div className="form-group col-md-9">
-                            <label htmlFor="businessName">Business Name</label>
-                            <input type="text" className="form-control" id="businessName" placeholder=""/>
+                            <label htmlFor="business_name">Business Name</label>
+                            <input type="text" className="form-control" id="business_name" placeholder="" onChange={handleNewClientFormData}/>
                         </div>
                         <div className="form-group col-md-3">
-                            <label htmlFor="businessName">Business Phone</label>
-                            <input type="text" className="form-control" id="businessName" placeholder=""/>
+                            <label htmlFor="business_phone">Business Phone</label>
+                            <input type="text" className="form-control" id="business_phone" placeholder="" onChange={handleNewClientFormData}/>
                         </div>
                     </div>
                 </div>
 
                 <div className="border p-4 mb-4">
                     <div className="form-group">
-                        <label htmlFor="inputAddress">Business Address</label>
-                        <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St, San Francisco, CA 94132"/>
+                        <label htmlFor="business_address_street">Business Address</label>
+                        <input type="text" className="form-control" id="business_address_street" placeholder="1234 Main St, San Francisco, CA 94132" onChange={handleNewClientFormData}/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="inputAddress2">Unit (if applicable)</label>
-                        <input type="text" className="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor"/>
+                        <label htmlFor="business_address_unit">Unit (if applicable)</label>
+                        <input type="text" className="form-control" id="business_address_unit" placeholder="Apartment, studio, or floor" onChange={handleNewClientFormData}/>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                        <label htmlFor="inputCity">City</label>
-                        <input type="text" className="form-control" id="inputCity"/>
+                        <label htmlFor="business_address_city">City</label>
+                        <input type="text" className="form-control" id="business_address_city" onChange={handleNewClientFormData}/>
                         </div>
                         <div className="form-group col-md-4">
-                        <label htmlFor="inputState">State</label>
-                        <select id="inputState" className="form-control" defaultValue='CA'>
+                        <label htmlFor="business_address_state">State</label>
+                        <select id="business_address_state" className="form-control" defaultValue='CA' onChange={handleNewClientFormData}>
                             <FiftyStatesAbbrev />
                         </select>
                         </div>
                         <div className="form-group col-md-2">
-                        <label htmlFor="inputZip">Zip</label>
-                        <input type="text" className="form-control" id="inputZip"/>
+                        <label htmlFor="business_address_zip">Zip</label>
+                        <input type="text" className="form-control" id="business_address_zip"/>
                         </div>
                     </div>
                 </div>
@@ -236,48 +311,48 @@ const NewClientForm = () => {
                 <div className="border p-4">
                     <div className="form-row">
                         <div className="form-group col-md-9">
-                            <label htmlFor="businessName">Contact Name</label>
-                            <input type="text" className="form-control" id="businessName" placeholder=""/>
+                            <label htmlFor="contact_name">Contact Name</label>
+                            <input type="text" className="form-control" id="contact_name" placeholder="" onChange={handleNewClientFormData}/>
                         </div>
                         <div className="form-group col-md-3">
-                            <label htmlFor="businessName">Contact Cell</label>
-                            <input type="text" className="form-control" id="businessName" placeholder=""/>
+                            <label htmlFor="contact_phone">Contact Phone</label>
+                            <input type="text" className="form-control" id="contact_phone" placeholder="Cell" onChange={handleNewClientFormData}/>
                         </div>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                            <label htmlFor="businessName">Email #1</label>
-                            <input type="text" className="form-control" id="businessName" placeholder=""/>
+                            <label htmlFor="contact_email_primary">Email #1</label>
+                            <input type="text" className="form-control" id="contact_email_primary" placeholder="" onChange={handleNewClientFormData}/>
                         </div>
                         <div className="form-group col-md-6">
-                            <label htmlFor="businessName">Email #2</label>
-                            <input type="text" className="form-control" id="businessName" placeholder="(Optional)"/>
+                            <label htmlFor="contact_email_secondary">Email #2</label>
+                            <input type="text" className="form-control" id="contact_email_secondary" placeholder="(Optional)" onChange={handleNewClientFormData}/>
                         </div>
                     </div>
                 </div>
                 <div className="border p-4 my-4">
-                    <div className="form-group">
-                        <label htmlFor="inputAddress">Client Address</label>
-                        <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St, San Francisco, CA 94132"/>
+                <div className="form-group">
+                        <label htmlFor="client_address_street">Client Address</label>
+                        <input type="text" className="form-control" id="client_address_street" placeholder="1234 Main St, San Francisco, CA 94132" onChange={handleNewClientFormData}/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="inputAddress2">Unit (if applicable)</label>
-                        <input type="text" className="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor"/>
+                        <label htmlFor="client_address_unit">Unit (if applicable)</label>
+                        <input type="text" className="form-control" id="client_address_unit" placeholder="Apartment, studio, or floor" onChange={handleNewClientFormData}/>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                        <label htmlFor="inputCity">City</label>
-                        <input type="text" className="form-control" id="inputCity"/>
+                        <label htmlFor="client_address_city">City</label>
+                        <input type="text" className="form-control" id="client_address_city" onChange={handleNewClientFormData}/>
                         </div>
                         <div className="form-group col-md-4">
-                        <label htmlFor="inputState">State</label>
-                        <select id="inputState" className="form-control" defaultValue='CA'>
+                        <label htmlFor="client_address_state">State</label>
+                        <select id="client_address_state" className="form-control" defaultValue='CA' onChange={handleNewClientFormData}>
                             <FiftyStatesAbbrev />
                         </select>
                         </div>
                         <div className="form-group col-md-2">
-                        <label htmlFor="inputZip">Zip</label>
-                        <input type="text" className="form-control" id="inputZip"/>
+                        <label htmlFor="client_address_zip">Zip</label>
+                        <input type="text" className="form-control" id="client_address_zip" onChange={handleNewClientFormData}/>
                         </div>
                     </div>
                 </div>
@@ -288,7 +363,7 @@ const NewClientForm = () => {
                     <div className="form-row">
                         <div className="form-group col-md-12">
                             <label htmlFor="client_notes">Client Notes</label>
-                            <textarea className="w-100" name="client_notes" id="client_notes" rows="5"></textarea>
+                            <textarea className="w-100" name="client_notes" id="client_notes" rows="5" onChange={handleNewClientFormData}/>
                         </div>
                     </div>
                 </div>
