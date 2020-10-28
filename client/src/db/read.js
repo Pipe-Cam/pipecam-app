@@ -11,10 +11,17 @@ export const getClients = async () => {
 
 export const searchForClient = async (clientName) => {
     console.log('searchForClient: ', clientName)
-    let response = await fetch(`http://${host}/search-for-client?client_search=${clientName}`)
-    let result = await response.json();
-    console.log(result)
+    var result;
 
-    return result
+    try {
+        let response = await fetch(`http://${host}/search-for-client?client_search=${clientName}`)
+        result = await response.json();
+        console.log(response.status)
+        console.log(result)
+    } catch (err){
+        console.log('ERROR', err)
+    } finally {
+        return result
+    }
 }
 

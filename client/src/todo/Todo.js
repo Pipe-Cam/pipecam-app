@@ -32,13 +32,14 @@ function Todo() {
                 </li>
                 <li>
                     <s className="text-danger">
+                    <strong className="text-success">[CLIENTS]</strong> View Client Info 
                     </s>
-                    <strong className="text-success">[CLIENTS]</strong> View Client Info
+                    <em> (still unformatted)</em>
                 </li>
                 <li>
                     <s className="text-danger">
+                    <strong className="text-warning">[CLIENTS]</strong> Display list of recently modified clients
                     </s>
-                    <strong className="text-warning">[CLIENTS]</strong> Display list of recently accessed clients
                 </li>
                 <li>
                     <s className="text-danger">
@@ -65,12 +66,22 @@ function Todo() {
                 <li>
                     <s className="text-danger">
                     </s>
+                    <strong className="text-success">[JOB HOME]</strong> Fix Alternating List
+                </li>
+                <li>
+                    <s className="text-danger">
+                    </s>
                     <strong className="text-success">[JOB OVERVIEW]</strong> Move Opening Observations from Job Overview to Job Home
                 </li>
                 <li>
                     <s className="text-danger"> 
                     </s>
                     <strong className="text-success">[OBSERVATION HOME]</strong> Enable Edit and Delete Buttons in Alternating List
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                    </s>
+                    <strong className="text-success">[OBSERVATION HOME]</strong> Fix Alternating List
                 </li>
                 <li>
                     <s className="text-danger"> 

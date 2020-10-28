@@ -25,3 +25,20 @@ export const newClient = async (data) => {
     let result = await response.json();
     console.log(result)
 }
+
+export const newInspection = async (data) => {
+    data.created = new Date();
+    data.last_modified = new Date();
+
+    let response = await fetch(`http://${host}/new-inspection`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(data)
+    })
+
+    let result = await response.json();
+    console.log('job saved to db')
+    console.log(result)
+}

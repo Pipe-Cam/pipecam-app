@@ -36,6 +36,9 @@ function JobHome() {
     const JobDetails = () => {
         const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
 
+        const handleAddLocationDetails = () => {}
+
+
         return(
             <Accordion defaultActiveKey="">
                 <Card>
@@ -57,7 +60,8 @@ function JobHome() {
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
-                <Card>
+                <button className="btn btn-warning float-right mt-2" name="new_access" onClick={handleAddLocationDetails}>Add Location Details</button>
+                {/* <Card>
                     <Card.Header>
                     <Accordion.Toggle as={Button} variant="link" eventKey="1">
                             Location
@@ -75,7 +79,7 @@ function JobHome() {
                         <LocationStatic />
                     </Card.Body>
                     </Accordion.Collapse>
-                </Card>
+                </Card> */}
             </Accordion>
         )
     }
@@ -95,9 +99,9 @@ function JobHome() {
                             <div style={{display: 'inline-block'}}>
                                 <h1>Job Details</h1>
                             </div>
-                            <div className="float-right mt-1" style={{display: 'inline-block'}}>
+                            {/* <div className="float-right mt-1" style={{display: 'inline-block'}}>
                                 <button className="btn-primary btn-lg float-right" name="new_access" onClick={handleCreateAccess}>New Access</button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 
@@ -204,8 +208,8 @@ const OverviewStatic = () => {
                 <div className="py-2 col col-md-9 col-sm-7 border-top border-left">{job.overview.cc_attached}</div>
             </div>
             <div className="row">
-                <div className="text-md-right text-sm-left py-2 col col-md-3 col-sm-5 border-bottom border-top">Opening Observations:</div>
-                <div className="py-2 col col-md-9 col-sm-7 border-bottom border-top border-left">{job.overview.opening_observations}</div>
+                <div className="text-md-right text-sm-left py-2 col col-md-3 col-sm-5 border-bottom border-top">Office Notes:</div>
+                <div className="py-2 col col-md-9 col-sm-7 border-bottom border-top border-left">{job.overview.office_notes}</div>
             </div> 
         </>
     )
