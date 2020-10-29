@@ -1,45 +1,63 @@
 var express = require('express');
 var router = express.Router();
 
-const dbWrite = require('../db/dbPostRequests')
-const dbRead = require('../db/dbGetRequests')
-const Client = require('../db/models/clientModel')
+const DB = require('../db/dbAssets')
 
 
+/* GET ROUTES */
 
-
-
-/* GET home page. */
 router.get('/', function(req, res, next) {
-  res.send('hello world!')
+  res.send('Hey! Quit snooping. Go away and mind your own business!')
+});
+
+router.get('/client/:id', function(req, res, next) {
+  DB.client.model.find({_id: req.params.id}, function(err, response){
+    if(err){
+      console.log(err)
+    } else{
+      res.json(JSON.stringify(response))
+    }
+  })
+});
+
+router.get('/inspection/:id', function(req, res, next) {
+  DB.inspection.model.find({_id: req.params.id}, function(err, response){
+    if(err){
+      console.log(err)
+    } else{
+      res.json(JSON.stringify(response))
+    }
+  })
 });
 
 router.get('/recent-clients', function(req, res, next) {
-  Client.model.find()
+  DB.client.model.find({client_status: "active"})
     .sort("-last_modified")
     .limit(10)
     .exec(function(err, response) {
         console.log(response)
         res.json(JSON.stringify(response));
   })
-  
-  // Client.model.find({last_modified: { $lte : Date.now() }}, function(err, response) {
-  //   console.log(response)
-  //   res.json(JSON.stringify(response));
-  // })
+});
 
+router.get('/archived-clients', function(req, res, next) {
+  DB.client.model.find({client_status: "archived"})
+    .exec(function(err, response) {
+        console.log(response)
+        res.json(JSON.stringify(response));
+  })
 });
 
 router.get('/search-for-client', function(req, res, next) { 
   if (req.query.client_search) {
     const regex = new RegExp(escapeRegex(req.query.client_search), 'gi');
 
-    Client.model.find({ "business_name": regex }, function(err, foundclients) {
+    DB.client.model.find({ "business_name": regex }, function(err, foundclients) {
         if(err) {
             console.log(err);
         } else {
           if(!foundclients.length){
-            Client.model.find({ "contact_name": regex }, function(err, foundclients2) {
+            DB.client.model.find({ "contact_name": regex }, function(err, foundclients2) {
               if(err) {
                   console.log(err);
               } else {
@@ -60,20 +78,87 @@ router.get('/search-for-client', function(req, res, next) {
   }
 });
 
+router.get('/scheduled-inspections', function(req, res, next) {
+  DB.inspection.model.find({status: "scheduled_inspection"})
+    .sort("overview.inspection_date")
+    .limit(20)
+    .exec(function(err, response) {
+        console.log(response)
+        res.json(JSON.stringify(response));
+  })
+});
 
+router.get('/recent-inspections', function(req, res, next) {
+  DB.inspection.model.find({status: ["active_inspection", "completed_inspection"]})
+    .sort("-overview.inspection_date")
+    .limit(20)
+    .exec(function(err, response) {
+        console.log(response)
+        res.json(JSON.stringify(response));
+  })
+});
+
+/* POST ROUTES */
 router.post('/new-client', function(req, res, next) {
-  dbWrite.client.new(req.body)
-  res.json('Test Saved')
+  DB.client.new(req.body)
+  res.send('new client added')
 });
 
 router.post('/new-inspection', function(req, res, next) {
-  dbWrite.inspection.new(req.body)
-  res.json('Test Saved')
+  DB.inspection.new(req.body)
+  res.send('new inspection added')
 });
+
+
+/* PUT ROUTES */
+router.put('/inspection/:id', function(req, res, next) {
+  DB.inspection.update(req.params.id, req.body)
+  res.send('inspection updated')
+});
+
+router.put('/client-all', function(req, res, next) {
+  DB.client.model.updateMany({client_status: 'Active'}, {client_status: 'active'}, function(err){
+    if(err){
+      console.log(err)
+      return res.status(500).send("delete inspection: failure");
+    } else {
+      return res.status(200).send("delete inspection: success");
+    }
+  });
+});
+
+router.put('/client/:id', function(req, res, next) {
+  DB.client.update(req.params.id, req.body)
+  res.send('client updated')
+});
+
+/* DELETE ROUTES */
+router.delete('/inspection/:id', function(req, res, next) {
+  DB.inspection.model.findOneAndDelete({_id: req.params.id}, function(err){
+    if(err){
+      console.log(err)
+      return res.status(500).send("delete inspection: failure");
+    } else {
+      return res.status(200).send("delete inspection: success");
+    }
+  });
+});
+
+router.delete('/client/:id', function(req, res, next) {
+  DB.client.model.findOneAndUpdate({_id: req.params.id}, {client_status: 'archived', last_modified: new Date()}, function(err){
+    if(err){
+      console.log(err)
+      return res.status(500).send("delete client: failure");
+    } else {
+      return res.status(200).send("delete client: success");
+    }
+  });
+});
+
 
 module.exports = router;
 
-
+/* HELPER FUNCTIONS */
 function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
