@@ -3,6 +3,7 @@ import InspectionContext from '../../context/InspectionContext'
 import {searchForClient as searchForClientInDB} from '../../db/read'
 const _ = require('lodash')
 
+
 function JobOverview() {
     const jobContext = useContext(InspectionContext)
     const {job, setJob} = jobContext
@@ -46,6 +47,20 @@ function JobOverview() {
             }
 
             tmpJob[objBranch][name] = e.target.value
+            
+            if(type === 'date'){
+                let date = e.target.value.split('-')
+                console.log(date)
+                let year = Number(date[0])
+                let month = Number(date[1]) -1
+                let day = Number(date[2])
+
+                let dateTime = new Date(year, month, day, 12, 0, 0, 0).toLocaleString('en-US', {timeZoneName: 'short', hour12: false})
+
+                tmpJob[objBranch][name] = dateTime
+                console.log(e.target.value)
+                console.log(tmpJob[objBranch][name])
+            }
             setJob(tmpJob)
         }
     }

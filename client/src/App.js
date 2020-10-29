@@ -2,7 +2,6 @@ import React from 'react';
 import Inspection from './pages/Inspection'
 import Home from './pages/Home'
 import Clients from './pages/Clients'
-import InspectionHome from './components/inspection/InspectionHome'
 import Header from './layout/Header'
 import Footer from './layout/Footer'
 
@@ -20,6 +19,7 @@ import {
   useHistory,
   useLocation
 } from 'react-router-dom'
+import Settings from './components/settings/SettingsHome'
 
 function App() {
   return (
@@ -39,6 +39,9 @@ function App() {
               </Route>
               <Route path="/todo">
                 <Todo />
+              </Route>
+              <Route path="/settings">
+                <Settings />
               </Route>
             </Switch>
         </div>

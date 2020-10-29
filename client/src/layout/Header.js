@@ -1,5 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react'
 import {Link, useLocation} from 'react-router-dom'
+import IconGear from '../components/icons/IconGear'
 const _ = require('lodash')
 
 function Header() {
@@ -44,6 +45,9 @@ function Header() {
                     <a className="navbar-brand" href="/" style={{fontSize: "1.75em"}}>Sewer Inspection Report Generator</a>
                 </div>
                 <div className="col-12 justify-content-center">            
+                <div className="float-right">
+                    <a href="/settings"><IconGear /></a>
+                </div>
                     <ul className="nav nav-tabs justify-content-center">
                         <li className="nav-item">
                             <a ref={navDict.home.ref} id={navDict.home.id} className="nav-link" href="/">Home</a>
@@ -57,7 +61,6 @@ function Header() {
                     </ul>
                 </div>
             </div>
-
         </nav>
     )
 }

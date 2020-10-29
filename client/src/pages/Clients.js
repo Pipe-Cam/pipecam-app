@@ -1,7 +1,7 @@
 import React, {useRef, useState, useEffect, useContext} from 'react'
 import AlternatingList from '../components/ui_components/AlternatingList'
 import {newClient as saveNewClientToDB} from '../db/write.js'
-import {getClients as getClientsFromDB, searchForClient as searchForClientInDB} from '../db/read.js'
+import {getClients as getClientsFromDB, searchForClient as searchForClientInDB, getArchivedClients as getArchivedClientsFromDB} from '../db/read.js'
 import ClientContext from '../context/ClientContext'
 
 const _ = require('lodash')
@@ -10,6 +10,7 @@ function Clients() {
     const [clientNav, setClientNav] = useState('client_home')
     // const [clientNav, setClientNav] = useState('client_new')
     const [clientsFromDb, setClientsFromDb] = useState(null)
+    const [archivedClientsFromDb, setArchivedClientsFromDb] = useState(null)
     const [clientViewData, setClientViewData] = useState(null)
     const [searchResult, setSearchResult] = useState(null)
     const [newClientFormData, setNewClientFormData] = useState({
@@ -63,20 +64,17 @@ function Clients() {
 
     const getClientsOnLoad = async () => {
         let clientList = await getClientsFromDB()
-        // let sortedList = _.sortBy(JSON.parse(clientList), ['last_modified']).reverse()
-        // console.log(sortedList)
-        // setClientsFromDb(sortedList)
         setClientsFromDb(JSON.parse(clientList))
     }
-
+    const getClientArchiveOnLoad = async () => {
+        let clientList = await getArchivedClientsFromDB()
+        setArchivedClientsFromDb(JSON.parse(clientList))
+    }
+    
     useEffect(()=>{
         getClientsOnLoad()
+        getClientArchiveOnLoad()
     }, [])
-  
-    // useEffect(()=>{
-    //     setForceUpdate(!forceUpdate)
-    // }, [, clientsFromDb])
-
     
     if(clientNav === 'client_home'){
         return (
@@ -96,16 +94,26 @@ function Clients() {
                         <div className="col-12 col-md-6 col-lg-6 my-2">
                             <button className="btn btn-info border-dark btn-lg btn-block" onClick={()=>{setClientNav('client_new')}}>New Client</button>
                         </div>
-                        {/* <div className="col-12 col-md-6 col-lg-6 my-2">
-                            <a href="clients" className="btn btn-white border-dark btn-lg btn-block font-weight-bold">Manage Clients</a>
-                        </div> */}
                     </div>
                     <div className="pt-4">
                         <h3>
                             Recent Clients
                         </h3>
                         <div className="py-2">
-                            <AlternatingList {...{dataObject: ((!clientsFromDb)? ([]) : (clientsFromDb.map(item => { return {value: (item.business_name || item.contact_name), _id: item._id}}))), edit: handleEditClient, _delete: handleDeleteClient, buttons: {show: true, edit: true, _delete: false}}}/>
+                            <AlternatingList {...{
+                                dataObject: ((!clientsFromDb)? ([]) : (clientsFromDb.map(item => { 
+                                        if(item.client_status !== 'archived'){
+                                            return ({value: (item.business_name || item.contact_name), _id: item._id})
+                                        }
+                                    }))), 
+                                edit: handleEditClient, 
+                                _delete: handleDeleteClient, 
+                                buttons: {show: true, edit: true, _delete: false}}}/>
+                        </div>
+                    </div>
+                    <div className="row pt-4">
+                        <div className="col-12 col-md-6 col-lg-6 my-2">
+                            <button className="btn btn-warning" onClick={()=>{setClientNav('client_archive')}}>Archive</button>
                         </div>
                     </div>
                 </div>
@@ -131,6 +139,22 @@ function Clients() {
                 </ol>
                 </nav>
                 <ViewClientInfo {...{clientViewData}}/>
+            </>
+        )
+    } else if(clientNav === 'client_archive'){
+        return(
+            <>
+                <nav aria-label="breadcrumb" className="">
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item"><a href="/">Home</a></li>
+                        <li className="breadcrumb-item"><a href="/clients">Clients</a></li>
+                        <li className="breadcrumb-item active" aria-current="page">Archive</li>
+                    </ol>
+                </nav>
+                <h3>
+                    Client Archive
+                </h3>
+                <ClientArchive {...{archivedClientsFromDb}}/>
             </>
         )
     }
@@ -240,7 +264,13 @@ const NewClientForm = (props) => {
         let id = e.target.id
         let val = e.target.value
         let tmpNewClientFormData = newClientFormData;
-        tmpNewClientFormData[id] = val
+
+        if(id === 'contact_name' || id === 'business_name'){
+            tmpNewClientFormData[id] = val
+        } else {
+            tmpNewClientFormData[id] = _.lowerCase(val)
+        }
+
         setNewClientFormData(tmpNewClientFormData)
         console.log(newClientFormData)
     }
@@ -249,7 +279,13 @@ const NewClientForm = (props) => {
         let id = clientStatusDefaultRef.current.id
         let val = clientStatusDefaultRef.current.value
         let tmpNewClientFormData = newClientFormData;
-        tmpNewClientFormData[id] = val
+
+        if(id === 'contact_name' || id === 'business_name'){
+            tmpNewClientFormData[id] = val
+        } else {
+            tmpNewClientFormData[id] = _.lowerCase(val)
+        }
+
         setNewClientFormData(tmpNewClientFormData)
         console.log(newClientFormData)
     }
@@ -587,4 +623,25 @@ function capitalizeEachWord(str) {
     return str.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
+}
+
+const ClientArchive = (props) => {
+    const {archivedClientsFromDb} = props
+    const filteredList = archivedClientsFromDb.filter(item => {
+        return item.client_status === 'archived'
+    })
+
+    return(
+        <>
+            <div className="py-2">
+                <AlternatingList {...{
+                    dataObject: ((!filteredList)? ([]) : (filteredList.map(item => { 
+                                return ({value: (item.business_name || item.contact_name), _id: item._id})
+                        }))), 
+                    edit: null, 
+                    _delete: null, 
+                    buttons: {show: false, edit: false, _delete: false}}}/>
+            </div>
+        </>
+    )
 }

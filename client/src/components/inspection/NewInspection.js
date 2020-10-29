@@ -49,7 +49,7 @@ function NewInspection() {
     const handleCreateJob = () => {
         console.log("handleCreateJob")
         let tmpJob = job
-        tmpJob.status = 'active'
+        tmpJob.status = 'active_inspection'
         setJob(tmpJob)
         // create new job in DB
         saveNewInspectionToDB(job)
@@ -60,7 +60,7 @@ function NewInspection() {
     const handleSaveJob = () => {
         console.log("handleSaveJob")
         let tmpJob = job
-        tmpJob.status = 'scheduled'
+        tmpJob.status = 'scheduled_inspection'
         setJob(tmpJob)
         // create new job in DB
         saveNewInspectionToDB(job)
