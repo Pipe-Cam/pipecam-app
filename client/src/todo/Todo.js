@@ -5,52 +5,18 @@ function Todo() {
         <div>
             <h1 style={{textDecoration: 'underline'}}>TODO LIST</h1>
             <ol>
+
                 <li>
                     <s className="text-danger"> 
-                        <strong className="text-success">[CLIENTS]</strong> Add New Client
                     </s>
-                </li>
-                <li>
-                    <s className="text-danger">
-                        <strong className="text-success">[CLIENTS]</strong> search box
-                    </s>
-                </li>
-                <li>
-                    <s className="text-danger"> 
-                        <strong className="text-success">[API / DB]</strong> create db, implement schema, abstraction 
-                    </s>
-                </li>
-                <li>
-                    <s className="text-danger"> 
-                        <strong className="text-success">[API / DB]</strong> post new client
-                    </s>
+                        <strong className="text-success">[REACT]</strong> update new Job from SCHEDULED -> ACTIVE
                 </li>
                 <li>
                     <s className="text-danger"> 
                     </s>
-                    <strong className="text-success">[API / DB]</strong> post new Job
+                        <strong className="text-success">[REACT]</strong> update new Job from ACTIVE -> COMPLETED
                 </li>
-                <li>
-                    <s className="text-danger">
-                    <strong className="text-success">[CLIENTS]</strong> View Client Info 
-                    </s>
-                    <em> (still unformatted)</em>
-                </li>
-                <li>
-                    <s className="text-danger">
-                    <strong className="text-warning">[CLIENTS]</strong> Display list of recently modified clients
-                    </s>
-                </li>
-                <li>
-                    <s className="text-danger">
-                    </s>
-                    <strong className="text-warning">[HOME]</strong> Display list of scheduled inspections
-                </li>
-                <li>
-                    <s className="text-danger"> 
-                    </s>
-                    <strong className="text-warning">[HOME]</strong> Display list of recent inspections
-                </li>
+
                 <li>
                     <s className="text-danger">
                     </s>
@@ -83,51 +49,50 @@ function Todo() {
                     </s>
                     <strong className="text-success">[OBSERVATION HOME]</strong> Fix Alternating List
                 </li>
-                <li>
-                    <s className="text-danger"> 
-                    </s>
-                    decide whether to call an inspection a Job or an Inspection
-                </li>
-                <li>
-                    <s className="text-danger"> 
-                    </s>
-                    <strong className="text-success">[API / DB]</strong> get clients by name
-                </li>
-                <li>
-                    <s className="text-danger"> 
-                    </s>
-                    <strong className="text-success">[API / DB]</strong> get scheduled / active jobs
-                </li>
+
+
+
                 <li>
                     <s className="text-danger"> 
                     </s>
                     <strong className="text-success">[API / DB]</strong> get client info
                 </li>
+
                 <li>
                     <s className="text-danger"> 
                     </s>
-                    <strong className="text-success">[API / DB]</strong> get recent completed jobs
+                    <strong className="text-success">[API / DB]</strong> put update Job Overview
                 </li>
                 <li>
                     <s className="text-danger"> 
                     </s>
-                    <strong className="text-success">[API / DB]</strong> post update Job Overview
+                    <strong className="text-success">[API / DB]</strong> put update Job Location
                 </li>
                 <li>
                     <s className="text-danger"> 
                     </s>
-                    <strong className="text-success">[API / DB]</strong> post update Job Location
+                    <strong className="text-success">[API / DB]</strong> put update Access Details
                 </li>
                 <li>
                     <s className="text-danger"> 
                     </s>
-                    <strong className="text-success">[API / DB]</strong> post update Access Details
+                    <strong className="text-success">[API / DB]</strong> put update Observation Details
+                </li>
+                
+                {/* <li>
+                    <s className="text-danger"> 
+                    </s>
+                    <strong className="text-success">[...]</strong> ...
                 </li>
                 <li>
                     <s className="text-danger"> 
                     </s>
-                    <strong className="text-success">[API / DB]</strong> post update Observation Details
-                </li>
+                    <strong className="text-success">[...]</strong> ...
+                </li> */}
+            </ol> 
+
+            <h2 style={{textDecoration: 'underline'}}>BACKLOG</h2>
+            <ol>
                 <li>
                     <s className="text-danger"> 
                     </s>
@@ -148,24 +113,81 @@ function Todo() {
                     </s>
                     <strong className="text-warning">[REACT]</strong> registration form (copy from business listing)
                 </li>
-                {/* <li>
-                    <s className="text-danger"> 
-                    </s>
-                    <strong className="text-success">[...]</strong> ...
-                </li>
-                <li>
-                    <s className="text-danger"> 
-                    </s>
-                    <strong className="text-success">[...]</strong> ...
-                </li> */}
-            </ol> 
-
-            <h2 style={{textDecoration: 'underline'}}>WISHLIST</h2>
-            <ol>
                 <li>
                     attach images to job
                 </li>
             </ol>
+
+            <h2 style={{textDecoration: 'underline'}}>DONE</h2>
+            <ul>
+                <li>
+                    <s className="text-danger"> 
+                        <strong className="text-success">[CLIENTS]</strong> Add New Client
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger">
+                        <strong className="text-success">[CLIENTS]</strong> search box
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                        <strong className="text-success">[API / DB]</strong> create db, implement schema, abstraction 
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                        <strong className="text-success">[API / DB]</strong> post new client
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                        <strong className="text-success">[API / DB]</strong> post new Job SCHEDULED
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger">
+                    <strong className="text-success">[CLIENTS]</strong> View Client Info 
+                    </s>
+                    <em> (still unformatted)</em>
+                </li>
+                <li>
+                    <s className="text-danger">
+                    <strong className="text-warning">[CLIENTS]</strong> Display list of recently modified clients
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                        decide whether to call an inspection a Job or an Inspection
+                    </s> <em>it'll be called an INSPECTION</em>
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                    <strong className="text-success">[API / DB]</strong> get recent completed jobs
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                    <strong className="text-success">[API / DB]</strong> get scheduled / active jobs
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger">
+                    <strong className="text-warning">[HOME]</strong> Display list of scheduled inspections
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                    <strong className="text-warning">[HOME]</strong> Display list of recent inspections
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                    <strong className="text-success">[API / DB]</strong> get clients by name
+                    </s>
+                </li>
+            </ul>
+
         </div>
     )
 }
