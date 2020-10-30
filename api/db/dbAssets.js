@@ -45,10 +45,7 @@ const createNewInspection = async (data) => {
     })
 }
 
-const updateInspectionById = async (id, body) => {
-    // update
-    return "done"
-}
+
 
 const deleteInspectionById = async (id) => {
     // delete
@@ -64,7 +61,6 @@ module.exports = {
     },
     inspection: {
         new: createNewInspection,
-        update: updateInspectionById,
         model: Inspection.model,
         schema: Inspection.schema
     }

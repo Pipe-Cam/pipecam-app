@@ -24,8 +24,9 @@ router.get('/inspection/:id', function(req, res, next) {
   DB.inspection.model.find({_id: req.params.id}, function(err, response){
     if(err){
       console.log(err)
+      res.status(500).send()
     } else{
-      res.json(JSON.stringify(response))
+      res.status(200).json(JSON.stringify(response))
     }
   })
 });
@@ -35,16 +36,16 @@ router.get('/recent-clients', function(req, res, next) {
     .sort("-last_modified")
     .limit(10)
     .exec(function(err, response) {
-        console.log(response)
-        res.json(JSON.stringify(response));
+        // console.log(response)
+        res.status(200).json(JSON.stringify(response));
   })
 });
 
 router.get('/archived-clients', function(req, res, next) {
   DB.client.model.find({client_status: "archived"})
     .exec(function(err, response) {
-        console.log(response)
-        res.json(JSON.stringify(response));
+        // console.log(response)
+        res.status(200).json(JSON.stringify(response));
   })
 });
 
@@ -83,8 +84,8 @@ router.get('/scheduled-inspections', function(req, res, next) {
     .sort("overview.inspection_date")
     .limit(20)
     .exec(function(err, response) {
-        console.log(response)
-        res.json(JSON.stringify(response));
+        // console.log(response)
+        res.status(200).json(JSON.stringify(response));
   })
 });
 
@@ -93,8 +94,8 @@ router.get('/recent-inspections', function(req, res, next) {
     .sort("-overview.inspection_date")
     .limit(20)
     .exec(function(err, response) {
-        console.log(response)
-        res.json(JSON.stringify(response));
+        // console.log(response)
+        res.status(200).json(JSON.stringify(response));
   })
 });
 
@@ -112,9 +113,23 @@ router.post('/new-inspection', function(req, res, next) {
 
 /* PUT ROUTES */
 router.put('/inspection/:id', function(req, res, next) {
-  DB.inspection.update(req.params.id, req.body)
-  res.send('inspection updated')
-});
+    let id = req.params.id
+    console.log(id)
+    let bodyData = req.body
+    console.log("body", req.body)
+
+    DB.inspection.model.findOneAndUpdate({_id: id}, {$set: bodyData}, function(err, updateData){
+      if(err){
+        console.log(err)
+        res.status(500).send('update failed')
+      } else {
+        console.log(Object.keys(updateData))
+        res.status(200).json(updateData)
+      }
+    })
+  })
+//     DB.inspection.model.findById(id, function(err, data){
+// });
 
 router.put('/client-all', function(req, res, next) {
   DB.client.model.updateMany({client_status: 'Active'}, {client_status: 'active'}, function(err){
