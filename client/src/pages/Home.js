@@ -46,7 +46,6 @@ function Home() {
 
     const handleAssignActiveClient = (clientId) => {
         setActiveClientId(clientId)
-        history.push('/inspection/scheduled')
     }
 
     return (
