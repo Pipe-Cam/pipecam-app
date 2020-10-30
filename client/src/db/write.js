@@ -4,6 +4,7 @@ console.log(host)
 export const newClient = async (data) => {
     data.created = new Date();
     data.last_modified = new Date();
+    data['notes'] = []
 
     if(data.client_notes !== ''){
         data.notes.push({
@@ -39,8 +40,7 @@ export const newInspection = async (data) => {
     })
 
     let result = await response.json();
-    console.log('job saved to db')
-    console.log(result)
+    return result
 }
 
 

@@ -1,12 +1,14 @@
 import React, {useContext, useState, useEffect, useRef} from 'react'
+import {useHistory} from 'react-router-dom'
 import InspectionContext from '../../context/InspectionContext'
 import {searchForClient as searchForClientInDB} from '../../db/read'
+import IconPlus from '../icons/IconPlus'
 const _ = require('lodash')
 
 
 function JobOverview() {
-    const jobContext = useContext(InspectionContext)
-    const {job, setJob} = jobContext
+    const {job, setJob} = useContext(InspectionContext)
+    const history = useHistory()
     const [dropdownClients, setDropdownClients] = useState(null)
 
     const dateRef = useRef(null)
@@ -32,6 +34,11 @@ function JobOverview() {
             handleUpdateJobOverviewStateDefault(item.current)
         })
     },[])
+
+    const handleRedirectToNewClient = () => {
+        history.push('/clients/new')
+        window.location.reload()
+    }
 
     const handleUpdateJobOverviewState = (e) => {
         let objBranch = 'overview'
@@ -129,15 +136,10 @@ function JobOverview() {
         }
     }
 
+    const mouseover = {cursor: 'pointer'}
+
     return (
         <div className="mt-3 py-3 px-5 border bg-foreground">
-
-            <div className="row">
-                <div className="col-12">
-                    <h3>Job Overview</h3>
-                </div>
-            </div>
-
             <div className="row">
                 <div className="col-sm-12 col-md-12 col-lg-6">
                     <div>
@@ -151,8 +153,12 @@ function JobOverview() {
                     <div>
                         <label className="h6" htmlFor='client'>Client </label>
                     </div>
-                    <div className="dropdown">
+                    <label className="sr-only" htmlFor="client_input">Client</label>
+                    <div className="dropdown input-group">
                         <input ref={clientTextRef} {...{className: 'form-control mb-3', type: 'text', name: 'client', id: 'client_input', required: true}} data-toggle="dropdown" onKeyUp={handleClientDropDown} onChange={handleUpdateJobOverviewState}/>
+                        <div className="input-group-append mb-3">
+                            <div className="input-group-text rounded-right" style={mouseover} onClick={handleRedirectToNewClient}><IconPlus size={{width: "1.5em", height: "1.5em"}}/></div>
+                        </div>
                         <div ref={clientDropdownRef} className="dropdown-menu" aria-labelledby="dropdownMenuOffset">
                             <DropdownItems {...{dropdownClients}}/>
                         </div>
@@ -226,48 +232,6 @@ function JobOverview() {
 }
 
 export default JobOverview
-
-const TodaysDate = (props) => {
-    const {handleUpdateJobOverviewState, job} = props
-    const [changeDate, setChangeDate] = useState(false)
-
-    console.log('changeDate', changeDate)
-
-    let today = new Date()
-    let day = today.getDate()
-    let month = today.getMonth() + 1
-    let year = today.getFullYear()
-    let fullDate = `${month}/${day}/${year}`
-
-    const handleToggleChangeDate = (e) => {
-        e.preventDefault()
-        setChangeDate(true)
-        console.log(changeDate)
-    }
-
-    useEffect(()=>{
-        console.log(job)
-    }, [, changeDate]) // forces re-render of component on state change
-
-    if(changeDate){
-        return(
-            <>
-                <input {...{className: 'form-control mb-3', type: 'date', name: 'inspection_date', id: 'inspection_date_date_input', required: true}} onChange={handleUpdateJobOverviewState}/>
-            </>
-        )
-    } else {
-        return(
-            <>
-            <div style={{display: 'inline-block'}} className="mx-3">
-                <input ref={props.dateRef} {...{className: 'form-control mb-3', type: 'text', name: 'inspection_date', id: 'inspection_date_date_input', disabled: true, defaultValue: fullDate}}/>
-            </div>
-            <div style={{display: 'inline-block'}} className="align-middle pb-1">
-                <button className="btn btn-primary float-right" onClick={handleToggleChangeDate}>Change</button>
-            </div>
-            </>
-        )
-    }
-}
 
 
 

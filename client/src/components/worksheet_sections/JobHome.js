@@ -7,7 +7,7 @@ import IconCaretDown from '../icons/IconCaretDown'
 import IconTrash from '../icons/IconTrash'
 import AlternatingList from '../ui_components/AlternatingList'
 
-function JobHome() {
+function JobHome(props) {
     const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
     const history = useHistory();
 

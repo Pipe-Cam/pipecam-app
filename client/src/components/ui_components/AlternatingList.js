@@ -16,6 +16,7 @@ function AlternatingList(props) {
         // array
         return(<>
             {dataObject.map((item, index)=>{
+
                 if(index % 2 === 0){
                     return <ListItemDefault value={item} buttons={buttons} handler={{edit, _delete, invocation}} key={item + Math.random(400) + Math.random(100)}/>
                 } else {
@@ -38,7 +39,7 @@ const ListItemDefault = (props) => {
         <li className="list-group-item">
             <div className="row">
                 <div className="col-9">
-                    <a href="#" onClick={handler.invocation}>{value.value}</a>
+                    <a href={`${value.pathname}/${value.invocationValue}`} onClick={()=>{handler.invocation(value.invocationValue)}}>{value.value}</a>
                 </div>
                 <div className="col-3">
                     {(buttons) ? <ListItemButtons buttons={buttons} value={value} handler={handler}/> : <></>}
@@ -55,10 +56,10 @@ const ListItemSecondary = (props) => {
         <li className="list-group-item list-group-item-secondary">
             <div className="row">
                 <div className="col-9">
-                    <a href="#" onClick={handler.invocation}>{value.value}</a>
+                    <a href={`${value.pathname}/${value.invocationValue}`} onClick={()=>{handler.invocation(value.invocationValue)}}>{value.value}</a>
                 </div>
                 <div className="col-3">
-                    {(buttons) ? <ListItemButtons buttons={buttons} value={value} handler={handler}/> : <></>}
+                    {(buttons) ? <ListItemButtons buttons={buttons} value={value} handler={handler} invocationValue={value}/> : <></>}
                 </div>
             </div>
         </li>
