@@ -1,5 +1,5 @@
 import {host} from './host'
-console.log(host)
+// console.log(host)
 
 // CLIENTS
 
