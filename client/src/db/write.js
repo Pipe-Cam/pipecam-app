@@ -39,7 +39,7 @@ export const newInspection = async (data) => {
         body: JSON.stringify(data)
     })
 
-    let result = await response.json();
+    let result = await response.text();
     return result
 }
 

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import Inspection from './pages/Inspection'
+import InspectionAccess from './components/worksheet_sections/InspectionAccess'
 import Home from './pages/Home'
 import Clients from './pages/Clients'
 import Header from './layout/Header'
@@ -43,6 +44,9 @@ function App() {
                 <Route path="/inspection">
                   <Inspection />
                 </Route>
+                <Route path="/access/:id">
+                  <InspectionAccess />
+                </Route>
                 <Route path="/todo">
                   <Todo />
                 </Route>
@@ -59,7 +63,6 @@ function App() {
 }
 
 export default App;
-
 
 
 /*

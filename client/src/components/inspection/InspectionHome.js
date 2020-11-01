@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import {useParams, useHistory} from 'react-router-dom'
 import Spinner from '../ui_components/Spinner'
+import InspectionLocation from '../worksheet_sections/InspectionLocation'
 import {getInspectionById as getInspectionByIdFromDB} from '../../db/read'
 import {updateInspectionById} from '../../db/write'
 
@@ -11,19 +12,34 @@ function InspectionHome() {
     let history = useHistory()
 
     const [inspectionData, setInspectionData] = useState(null)
+    // const [locationState, setLocationState] = useState({})
+    const [locationData, setLocationData] = useState({
+        "occupancy": "",
+        "outbuilding": "",
+        "outbuilding_has_plumbing": "",
+        "outbuilding_has_cleanout": "",
+        "outbuilding_pipe_diameter": "",
+        "cccusd": "",
+        "cccusd_unpermitted_work": "",
+        "opening_observations": ""
+    })
+
+    const [preloadCount, setPreloadCount] = useState(0)
+    
+    const locationFormRef = useRef(null)
 
     useEffect(()=>{
-        getInspectionDataOnLoad(id)
+        getInspectionData(id)
     },[])
 
-    const getInspectionDataOnLoad = async () => {
+    const getInspectionData = async () => {
         let inspectionDataJSON = await getInspectionByIdFromDB(id)
-        setInspectionData(JSON.parse(inspectionDataJSON))
+        setInspectionData(JSON.parse(inspectionDataJSON)[0])
     }
 
     const handleUpdateOverview = async (e)=>{
+        e.preventDefault()
         let overviewObj = {}
-        let diffObj = {}
 
         let elements = e.target.elements
         let elementsKeys = Object.keys(elements)
@@ -33,22 +49,14 @@ function InspectionHome() {
                     .map(item => {return {name: item, value: document.getElementById(item).value}})
                     .forEach(item => {overviewObj[item.name] = item.value})
 
-        // let newOverview = overviewObj
-        // let oldOverview = inspectionData[0].overview
-        // let objKeys = Object.keys(oldOverview)
-
-        // console.log(JSON.stringify(objKeys))
-        // objKeys.forEach(item => {
-        //     if(newOverview[item] !== oldOverview[item]){
-        //         diffObj[item] = newOverview[item]
-        //     }
-        // })
-        
-        // console.log(JSON.stringify(diffObj))
-
         await updateInspectionById(id, {overview: overviewObj, last_modified: new Date()})
-        // console.log('return_value: ', return_value)
-        // setInspectionData(tmpInspectionData)
+    }
+    
+    const handleUpdateLocation = async (e)=>{
+        e.preventDefault()
+        await updateInspectionById(id, {location: locationData, last_modified: new Date(), status: 'active_inspection'})
+        history.push(`/access/${id}`)
+        window.location.reload()
     }
 
     if(!inspectionData){
@@ -60,31 +68,47 @@ function InspectionHome() {
     } else {
         return (
             <>
-                <div className="mb-5">
-                    Inspection ID: {id}
-                    {JSON.stringify(inspectionData[0])}
-                </div>
-                <div>
-                    <h3>Overview</h3>
-                    <div className="pt-3 container">
-                        <form onSubmit={handleUpdateOverview}>
-                            {Object.keys(inspectionData[0].overview).map(item => {
-                                return(
-                                    <div className="row" key={item}>
-                                        <div className="col-sm-12 col-md-3 col-lg-3 pt-sm-0 pt-md-2 pt-lg-2 text-sm-left text-md-right">{capitalizeEachWord(item.split('_').join(' '))}</div>
-                                        <div className="col-sm-12 col-md-9 col-lg-9 form-group">
-                                            <input className="form-control" type="text" id={item} defaultValue={inspectionData[0].overview[item]}/>
+                <div className="mt-3 py-3 px-5 border bg-foreground">
+                    {/* <div className="mb-5">
+                        Inspection ID: {id}
+                        {JSON.stringify(inspectionData[0])}
+                    </div> */}
+                    <div>
+                        <h3>Overview</h3>
+                        <div className="pt-3 container">
+                            <form onSubmit={handleUpdateOverview}>
+                                {Object.keys(inspectionData.overview).map(item => {
+                                    return(
+                                        <div className="row" key={item}>
+                                            <div className="col-sm-12 col-md-3 col-lg-3 pt-sm-0 pt-md-2 pt-lg-2 text-sm-left text-md-right">{capitalizeEachWord(item.split('_').join(' '))}</div>
+                                            <div className="col-sm-12 col-md-9 col-lg-9 form-group">
+                                                <input className="form-control" type="text" id={item} defaultValue={inspectionData.overview[item]}/>
+                                            </div>
                                         </div>
+                                    )
+                                })}
+                                <div className="row">
+                                    <div className="col-12">
+                                        <button className="btn btn-info float-right">Update</button>
                                     </div>
-                                )
-                            })}
-                            <div className="row">
-                                <div className="col-12">
-                                    <button className="btn btn-primary float-right">Update</button>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
+                </div>
+                <div className="mt-3 py-3 px-5 border bg-foreground">
+                    <form ref={locationFormRef} onSubmit={handleUpdateLocation}>
+                        <div className="row">
+                            <div className="col-12">
+                                <InspectionLocation {...{inspectionData, locationData, setLocationData}}/>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12">
+                                <button className="btn btn-primary float-right" type="submit" id="submitButton">Next</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </>
         )

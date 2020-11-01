@@ -16,8 +16,6 @@ function JobOverview() {
     const prelistingRef = useRef(null)
     const onlineRef = useRef(null)
     const ccAttachedRef = useRef(null)
-    const checkRef = useRef(null)
-    const usbRef = useRef(null)
 
     const clientTextRef = useRef(null)
     const clientDropdownRef = useRef(null)
@@ -28,9 +26,7 @@ function JobOverview() {
         officeNotesRef,
         prelistingRef,
         onlineRef,
-        ccAttachedRef,
-        checkRef,
-        usbRef].forEach(item =>{
+        ccAttachedRef].forEach(item =>{
             handleUpdateJobOverviewStateDefault(item.current)
         })
     },[])
@@ -210,23 +206,12 @@ function JobOverview() {
                         <label className="form-check-label radio-button-label">No</label>
                     </div>
                 </div>
-            </div>
-
-
-            <div className="pt-2">
-                <div>
-                    <label className="h6" htmlFor='check_num'>Check#</label>
-                    <input ref={checkRef} {...{className: 'form-control mb-3', type: 'number', name: 'check_num', id: 'check_num_number_input', min: 0, placeholder: '(Optional)'}} onChange={handleUpdateJobOverviewState}/>
-                </div>
-                <div>
-                    <label className="h6" htmlFor='usb_num'>USB#</label>
-                    <input ref={usbRef} {...{className: 'form-control mb-3', type: 'number', name: 'usb_num', id: 'usb_num_number_input', min: 0, placeholder: '(Optional)'}} onChange={handleUpdateJobOverviewState}/>
-                </div>
-                <div>
+                <div className="col-12">
                     <label className="h6" htmlFor='opening_observations'>Office Notes</label>
                     <textarea ref={officeNotesRef} {...{className: 'form-control mb-3', name: 'office_notes', id: 'office_notes_textarea_input', rows: 4, placeholder: ''}} onChange={handleUpdateJobOverviewState}/>
                 </div>
             </div>
+
         </div>
     )
 }

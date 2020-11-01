@@ -1,0 +1,138 @@
+import React, {useState, useEffect} from 'react'
+
+import {Link, useParams, useHistory} from 'react-router-dom'
+import {Accordion, Card, Button} from 'react-bootstrap'
+
+import Spinner from '../ui_components/Spinner'
+import IconCaretDown from '../icons/IconCaretDown'
+
+import {getInspectionById} from '../../db/read'
+import capitalizeEachWord from '../../utility/capitalizeEachWord'
+
+
+function InspectionAccess() {
+    const history = useHistory()
+    const {id} = useParams()
+    const [inspectionData, setInspectionData] = useState(null)
+
+    const getInspectionDataOnLoad = async (id) => {
+        let inspectionDataJSON = await getInspectionById(id)
+        let inspectionDataObj = JSON.parse(inspectionDataJSON)
+        setInspectionData(inspectionDataObj[0])
+    }
+
+    useEffect(()=>{
+        getInspectionDataOnLoad(id)
+    }, [])
+
+    if(!inspectionData){
+        return(
+            <div className="w-100 text-center pt-5">
+                <Spinner />
+            </div>
+            )
+    } else {
+        return (
+            <div>
+                <div className="border py-3 mb-5 px-sm-3 px-md-0">
+                    <div className="row mb-sm-3 mb-md-0">
+                        <div className="col-md-4 text-sm-left text-md-right">
+                            <strong>Inspection ID: </strong>
+                        </div>
+                        <div className="col-md-8">
+                            <span className="text-info">{id}</span>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-4 text-sm-left text-md-right">
+                            <strong>
+                                Status: 
+                            </strong>
+                        </div>
+                        <div className="col-md-8">
+                            <span className="text-danger">{capitalizeEachWord(inspectionData.status.split('_').join(' '))}</span>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-4 text-sm-left text-md-right">
+                            <strong>
+                                Property Address: 
+                            </strong>
+                        </div>
+                        <div className="col-md-8">
+                            <span className="lead">{capitalizeEachWord(inspectionData.overview.property_address.split('_').join(' '))}</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="row mb-2">
+                    <div className="col-12">
+                        <Link to={`/inspection/${id}`} className="btn btn-info btn-sm float-right mt-2" name="update_inspection_details">Edit Inspection Details</Link>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12">
+                        <Accordion defaultActiveKey="">
+                            <Card>
+                                <Card.Header>
+                                    <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                        Overview
+                                        <div className="w-100">
+                                        </div>
+                                    </Accordion.Toggle>
+                                    <span className="float-right">
+                                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                            <IconCaretDown />
+                                        </Accordion.Toggle>
+                                    </span>
+                                </Card.Header>
+                                <Accordion.Collapse eventKey="0">
+                                    <Card.Body>
+                                        {/* <AccordionList dataObj={inspectionData.overview}/> */}
+                                    </Card.Body>
+                                </Accordion.Collapse>
+                            </Card>
+                            <Card>
+                                <Card.Header>
+                                <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                                        Location
+                                        <div className="w-100">
+                                        </div>
+                                    </Accordion.Toggle>
+                                    <span className="float-right">
+                                        <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                                            <IconCaretDown />
+                                        </Accordion.Toggle>
+                                    </span>
+                                </Card.Header>
+                                <Accordion.Collapse eventKey="1">
+                                <Card.Body>
+                                    {/* <AccordionList dataObj={inspectionData.location}/> */}
+                                </Card.Body>
+                                </Accordion.Collapse>
+                            </Card>
+                        </Accordion>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
+export default InspectionAccess
+
+
+const AccordionList = (props) => {
+    const {dataObj} = props
+
+    return(
+        <ul className="list-group">
+            {Object.keys(dataObj).map(item => {
+                return(
+                    <li className="list-group-item row" key={item}>
+                        <strong>{capitalizeEachWord(item.split('_').join(' '))}</strong>: {dataObj[item]}
+                    </li>
+                )
+            })}
+        </ul>
+    )
+}

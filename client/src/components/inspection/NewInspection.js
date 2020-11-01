@@ -1,7 +1,7 @@
 import React, {useState, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 import InspectionOverview from '../worksheet_sections/InspectionOverview'
-import JobLocation from '../worksheet_sections/JobLocation'
+import InspectionLocation from '../worksheet_sections/InspectionLocation'
 import JobHome from '../worksheet_sections/JobHome'
 import InspectionContext from '../../context/InspectionContext'
 import {newInspection as saveNewInspectionToDB} from '../../db/write'
@@ -68,6 +68,7 @@ function NewInspection() {
         console.log('savedInspection: ', savedInspection)
         // redirect to job-dashboard
         history.push('/')
+        window.location.reload();
     }
 
     const handleChangeFormMode = (e) => {

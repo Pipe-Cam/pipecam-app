@@ -55,14 +55,53 @@ function Home() {
             </div>
             <div className="row my-5">
                 <div className="col col-sm-12 col-md-6 col-lg-6 py-3">
-                    <h3>Scheduled Inspections</h3>
-                    <AlternatingList {...{dataObject: ((!scheduledInspectionsFromDB)? ([]) : (scheduledInspectionsFromDB.map(item => { return {value: `${item.overview.client} [${new Date(item.overview.inspection_date).getMonth() + 1}/${new Date(item.overview.inspection_date).getDate()}/${new Date(item.overview.inspection_date).getFullYear()}]`, _id: item._id, invocationValue: item._id, pathname: `/inspection`}}))), edit: handleEditInspection, _delete: null, invocation: handleAssignActiveClient, buttons: {show: true, edit: true, _delete: false}}}/>
+                    <h3 className="text-center">Scheduled Inspections</h3>
+                    {(!scheduledInspectionsFromDB || (JSON.stringify(scheduledInspectionsFromDB) === '[]')) ? (<div className="text-center">no scheduled inspections</div>): (                    < AlternatingList {
+                        ...{
+                            dataObject: (scheduledInspectionsFromDB.map(item => {
+                                return {
+                                    value: `${item.overview.client} [${new Date(item.overview.inspection_date).getMonth() + 1}/${new Date(item.overview.inspection_date).getDate()}/${new Date(item.overview.inspection_date).getFullYear()}]`,
+                                    _id: item._id,
+                                    invocationValue: item._id,
+                                    pathname: `/inspection`
+                                }
+                            })),
+                            edit: handleEditInspection,
+                            _delete: null,
+                            invocation: handleAssignActiveClient,
+                            buttons: {
+                                show: true,
+                                edit: true,
+                                _delete: false
+                            }
+                        }
+                    }
+                    />)}
+
 
                 </div>
                 <div className="col col-sm-12 col-md-6 col-lg-6 py-3">
-                    <h3>Recent Inspections</h3>
-                    <AlternatingList {...{dataObject: ((!recentInspectionsFromDB)? ([]) : (recentInspectionsFromDB.map(item => { return {value: `${item.overview.client} [${(item.status === 'active_inspection') ? ('active') : ('completed')}]`, _id: item._id, invocationValue: item.client_id}}))), edit: handleEditInspection, _delete: null, invocation: ()=>{}, buttons: {show: true, edit: true, _delete: false}}}/>
-
+                    <h3 className="text-center">Recent Inspections</h3>
+                    {(!recentInspectionsFromDB || (JSON.stringify(recentInspectionsFromDB) === '[]')) ? (<div className="text-center">no recent inspections</div>) : (< AlternatingList {
+                        ...{
+                            dataObject: (recentInspectionsFromDB.map(item => {
+                                return {
+                                    value: `${item.overview.client} [${(item.status === 'active_inspection') ? ('active') : ('completed')}]`,
+                                    _id: item._id,
+                                    invocationValue: item.client_id
+                                }
+                            })),
+                            edit: handleEditInspection,
+                            _delete: null,
+                            invocation: () => {},
+                            buttons: {
+                                show: true,
+                                edit: true,
+                                _delete: false
+                            }
+                        }
+                    }
+                    />)}
                 </div>
             </div>
         </div>
