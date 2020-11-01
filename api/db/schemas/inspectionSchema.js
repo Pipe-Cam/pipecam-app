@@ -15,7 +15,17 @@ module.exports = {
           client: String,
           property_address: String
         },
-        location: {},
+        location: {
+          occupancy: String,
+          outbuilding: String,
+          outbuilding_has_plumbing: String,
+          outbuilding_has_cleanout: String,
+          outbuilding_pipe_diameter: String,
+          outbuilding_pipe_diameter_other: String,
+          cccusd: String,
+          cccusd_unpermitted_work: String,
+          opening_observations: String
+        },
         access: {},
         created: Date,
         last_modified: Date
