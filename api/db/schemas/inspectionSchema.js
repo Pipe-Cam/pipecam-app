@@ -10,8 +10,6 @@ module.exports = {
           prelisting: String,
           online: String,
           cc_attached: String,
-          check_num: String,
-          usb_num: String,
           client: String,
           property_address: String
         },
@@ -24,7 +22,9 @@ module.exports = {
           outbuilding_pipe_diameter_other: String,
           cccusd: String,
           cccusd_unpermitted_work: String,
-          opening_observations: String
+          opening_observations: String,
+          check_num: String,
+          usb_num: String,
         },
         access: {},
         created: Date,
