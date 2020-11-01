@@ -12,7 +12,7 @@ function InspectionHome() {
     let history = useHistory()
 
     const [inspectionData, setInspectionData] = useState(null)
-    // const [locationState, setLocationState] = useState({})
+    const [reloadSpinner, setReloadSpinner] = useState(0)
     const [locationData, setLocationData] = useState({
         "occupancy": "",
         "outbuilding": "",
@@ -21,20 +21,21 @@ function InspectionHome() {
         "outbuilding_pipe_diameter": "",
         "cccusd": "",
         "cccusd_unpermitted_work": "",
-        "opening_observations": ""
+        "opening_observations": "",
+        "check_num": "",
+        "usb_num": ""
     })
-
-    const [preloadCount, setPreloadCount] = useState(0)
-    
     const locationFormRef = useRef(null)
 
     useEffect(()=>{
         getInspectionData(id)
     },[])
 
-    const getInspectionData = async () => {
+    const getInspectionData = async (id) => {
         let inspectionDataJSON = await getInspectionByIdFromDB(id)
-        setInspectionData(JSON.parse(inspectionDataJSON)[0])
+        if(inspectionDataJSON){
+            setInspectionData(JSON.parse(inspectionDataJSON)[0])
+        }
     }
 
     const handleUpdateOverview = async (e)=>{
@@ -54,15 +55,17 @@ function InspectionHome() {
     
     const handleUpdateLocation = async (e)=>{
         e.preventDefault()
+        console.log('handleUpdateLocation: ', JSON.stringify(locationData))
         await updateInspectionById(id, {location: locationData, last_modified: new Date(), status: 'active_inspection'})
         history.push(`/access/${id}`)
         window.location.reload()
     }
 
+
     if(!inspectionData){
         return(
             <div className="w-100 text-center pt-5">
-                <Spinner />
+                <Spinner/>
             </div>
             )
     } else {

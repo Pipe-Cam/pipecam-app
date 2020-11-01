@@ -47,8 +47,13 @@ export const searchForClient = async (clientName) => {
 
 // INSPECTIONS
 export const getInspectionById = async (id) => {
-    let response = await fetch(`http://${host}/inspection/${id}`)
-    let result = await response.json();
+    let result;
+    try{
+        let response = await fetch(`http://${host}/inspection/${id}`)
+        result = await response.json();
+    } catch(err){
+        console.log(err)
+    }
 
     return result
 }

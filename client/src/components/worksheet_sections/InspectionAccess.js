@@ -17,8 +17,10 @@ function InspectionAccess() {
 
     const getInspectionDataOnLoad = async (id) => {
         let inspectionDataJSON = await getInspectionById(id)
-        let inspectionDataObj = JSON.parse(inspectionDataJSON)
-        setInspectionData(inspectionDataObj[0])
+        if(inspectionDataJSON){
+            let inspectionDataObj = JSON.parse(inspectionDataJSON)
+            setInspectionData(inspectionDataObj[0])
+        }
     }
 
     useEffect(()=>{
@@ -87,7 +89,7 @@ function InspectionAccess() {
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
-                                        {/* <AccordionList dataObj={inspectionData.overview}/> */}
+                                        <AccordionList dataObj={inspectionData.overview}/>
                                     </Card.Body>
                                 </Accordion.Collapse>
                             </Card>
@@ -106,7 +108,7 @@ function InspectionAccess() {
                                 </Card.Header>
                                 <Accordion.Collapse eventKey="1">
                                 <Card.Body>
-                                    {/* <AccordionList dataObj={inspectionData.location}/> */}
+                                    <AccordionList dataObj={inspectionData.location}/>
                                 </Card.Body>
                                 </Accordion.Collapse>
                             </Card>

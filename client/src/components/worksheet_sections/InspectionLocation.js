@@ -83,7 +83,7 @@ function InspectionLocation(props) {
     },[locationData])
 
     const handleUpdateLocationStateOnChange = (e)=>{
-        // console.log({name: e.target.id, value: e.target.value})
+        console.log({name: e.target.id, value: e.target.value})
         let name = e.target.id
         let value = e.target.value
 
@@ -109,6 +109,8 @@ function InspectionLocation(props) {
             document.getElementById('outbuilding_pipe_diameter_other').value = ''
         }
 
+        console.log(JSON.stringify(tmpLocationData))
+
         setLocationData(tmpLocationData)
     }
     
@@ -124,7 +126,7 @@ function InspectionLocation(props) {
                     </div>
                     <div>
                         <label className="h6" htmlFor='usb_num'>USB#</label>
-                        <input ref={usbNumRef} {...{className: 'form-control mb-3', type: 'number', name: 'usb_num', id: 'usb_num_number', min: 0, placeholder: '(Optional)'}} onChange={handleUpdateLocationStateOnChange}/>
+                        <input ref={usbNumRef} {...{className: 'form-control mb-3', type: 'number', name: 'usb_num', id: 'usb_num', min: 0, placeholder: '(Optional)'}} onChange={handleUpdateLocationStateOnChange}/>
                     </div>
                 </div>
                 <div className="my-5">
