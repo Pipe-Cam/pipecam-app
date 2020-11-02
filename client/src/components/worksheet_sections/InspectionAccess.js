@@ -13,19 +13,36 @@ import capitalizeEachWord from '../../utility/capitalizeEachWord'
 function InspectionAccess() {
     const history = useHistory()
     const {id} = useParams()
+
     const [inspectionData, setInspectionData] = useState(null)
+    const [nextAccessNumber, setNextAccessNumber] = useState("0")
 
     const getInspectionDataOnLoad = async (id) => {
         let inspectionDataJSON = await getInspectionById(id)
+        let inspectionDataObj;
         if(inspectionDataJSON){
-            let inspectionDataObj = JSON.parse(inspectionDataJSON)
+            inspectionDataObj = JSON.parse(inspectionDataJSON)
             setInspectionData(inspectionDataObj[0])
+        }
+        
+        if(inspectionDataObj[0] && inspectionDataObj[0].access){
+            let accessData = inspectionDataObj[0].access
+            let accessDataKeys = Object.keys(accessData)
+            setNextAccessNumber((accessDataKeys.length + 1).toString())
+        } else {
+            setNextAccessNumber((nextAccessNumber + 1).toString())
+
         }
     }
 
     useEffect(()=>{
         getInspectionDataOnLoad(id)
     }, [])
+
+    const handleRedirectToNewAccess = (e) => {
+        e.target.setAttribute('disabled', true)
+        history.push(`/new-access/${id}?access=${nextAccessNumber}`)
+    }
 
     if(!inspectionData){
         return(
@@ -115,6 +132,19 @@ function InspectionAccess() {
                         </Accordion>
                     </div>
                 </div>
+                <div className="row mt-5 mb-2">
+                    <div className="col-6">
+                        <h3>Access List</h3>
+                    </div>
+                    <div className="col-6 text-right">
+                        <button className="btn btn-primary" onClick={handleRedirectToNewAccess}>New Access</button>
+                    </div>
+                </div>
+                <div className="row my-5">
+                    <div className="col-12">
+                        <AccessList {...{inspectionData, id, setNextAccessNumber}}/>
+                    </div>
+                </div>
             </div>
         )
     }
@@ -137,4 +167,25 @@ const AccordionList = (props) => {
             })}
         </ul>
     )
+}
+
+const AccessList = (props)=>{
+    const {inspectionData, id, setNextAccessNumber} = props
+    if(inspectionData && inspectionData.access){
+        let accessData = inspectionData.access
+        let accessDataKeys = Object.keys(accessData)
+        return(
+            <div>
+                <div>{accessDataKeys.map(item => {
+                    return(<div key={JSON.stringify(accessData[item])} className="py-2"><Link to={`/observations/${id}?access=${item}`}>Access #{item}</Link>&nbsp;&nbsp;&nbsp;<Link to={`/new-access/${id}?access=${item}`} className="btn btn-info btn-sm">EDIT</Link></div>)
+                })}</div>
+            </div>
+        )
+    } else{
+        return(
+            <div>
+                <div>create an access...</div>
+            </div>
+        )
+    }
 }

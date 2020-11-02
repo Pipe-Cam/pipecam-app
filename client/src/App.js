@@ -6,6 +6,8 @@ import Clients from './pages/Clients'
 import Header from './layout/Header'
 import Footer from './layout/Footer'
 
+import NewAccess from './components/inspection/NewAccess'
+
 import './components/form_elements/InputRadio.css'
 import './App.css'
 
@@ -46,6 +48,12 @@ function App() {
                 </Route>
                 <Route path="/access/:id">
                   <InspectionAccess />
+                </Route>
+                <Route path="/new-access/:id">
+                  <NewAccess />
+                </Route>
+                <Route path="/observations/:id">
+                  {'observations'}
                 </Route>
                 <Route path="/todo">
                   <Todo />
