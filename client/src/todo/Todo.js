@@ -6,11 +6,7 @@ function Todo() {
             <h1 style={{textDecoration: 'underline'}}>TODO LIST</h1>
             <ol>
 
-                <li>
-                    <s className="text-danger"> 
-                    </s>
-                        <strong className="text-success">[REACT]</strong> update new Job from SCHEDULED -> ACTIVE
-                </li>
+
                 <li>
                     <s className="text-danger"> 
                     </s>
@@ -21,8 +17,8 @@ function Todo() {
                     <s className="text-danger">
                     </s>
                     <strong className="text-success">[JOB HOME]</strong> <br/><span className="pl-3"><strong>(A)</strong> Job Details (overview & location) should be editable.</span>
-                                                                         <br/><span className="pl-3"><strong>(B)</strong> Scheduled Jobs should only have Overview prefilled.</span>
-                                                                         <br/><span className="pl-3"><strong>(C)</strong> Job Location component should be accessed from Job Home.</span>
+                                                                         <br/><span className="pl-3 text-danger"><s><strong>(B)</strong> Scheduled Jobs should only have Overview prefilled.</s></span>
+                                                                         <br/><span className="pl-3 text-danger"><s><strong>(C)</strong> Job Location component should be accessed from Job Home.</s></span>
                 </li>
                 <li>
                     <s className="text-danger">
@@ -34,11 +30,7 @@ function Todo() {
                     </s>
                     <strong className="text-success">[JOB HOME]</strong> Fix Alternating List
                 </li>
-                <li>
-                    <s className="text-danger">
-                    </s>
-                    <strong className="text-success">[JOB OVERVIEW]</strong> Move Opening Observations from Job Overview to Job Home
-                </li>
+
                 <li>
                     <s className="text-danger"> 
                     </s>
@@ -50,24 +42,7 @@ function Todo() {
                     <strong className="text-success">[OBSERVATION HOME]</strong> Fix Alternating List
                 </li>
 
-
-
-                <li>
-                    <s className="text-danger"> 
-                    </s>
-                    <strong className="text-success">[API / DB]</strong> get client info
-                </li>
-
-                <li>
-                    <s className="text-danger"> 
-                    </s>
-                    <strong className="text-success">[API / DB]</strong> put update Job Overview
-                </li>
-                <li>
-                    <s className="text-danger"> 
-                    </s>
-                    <strong className="text-success">[API / DB]</strong> put update Job Location
-                </li>
+                
                 <li>
                     <s className="text-danger"> 
                     </s>
@@ -77,6 +52,17 @@ function Todo() {
                     <s className="text-danger"> 
                     </s>
                     <strong className="text-success">[API / DB]</strong> put update Observation Details
+                </li>
+
+                <li>
+                    <s className="text-danger">
+                    </s>
+                    <strong className="text-success">[CLIENTS]</strong> Format Client Info 
+                </li>
+                <li>
+                    <s className="text-danger">
+                    </s>
+                    <strong className="text-success">[JOB HOME]</strong> Inputs for image and video URLs
                 </li>
                 
                 {/* <li>
@@ -120,6 +106,34 @@ function Todo() {
 
             <h2 style={{textDecoration: 'underline'}}>DONE</h2>
             <ul>
+
+                 <li>
+                    <s className="text-danger">
+                    <strong className="text-success">[JOB OVERVIEW]</strong> Move Opening Observations from Job Overview to Job Home
+                    </s>
+                </li>
+
+                <li>
+                    <s className="text-danger"> 
+                    <strong className="text-success">[API / DB]</strong> get client info
+                    </s>
+                </li>
+
+                <li>
+                    <s className="text-danger"> 
+                    <strong className="text-success">[API / DB]</strong> put update Job Overview
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                    <strong className="text-success">[API / DB]</strong> put update Job Location
+                    </s>
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                        <strong className="text-success">[REACT]</strong> update new Job from SCHEDULED -> ACTIVE
+                    </s>
+                </li>
                 <li>
                     <s className="text-danger"> 
                         <strong className="text-success">[CLIENTS]</strong> Add New Client
