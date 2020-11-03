@@ -10,6 +10,21 @@ function Todo() {
                 <li>
                     <s className="text-danger"> 
                     </s>
+                        <strong className="text-success">[OBSERVATION HOME]</strong> add done button
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                    </s>
+                        <strong className="text-success">[JOB HOME]</strong> add done button
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                    </s>
+                        <strong className="text-success">[INSPECTION HOME]</strong> add done button
+                </li>
+                <li>
+                    <s className="text-danger"> 
+                    </s>
                         <strong className="text-success">[REACT]</strong> update new Job from ACTIVE -> COMPLETED
                 </li>
 
