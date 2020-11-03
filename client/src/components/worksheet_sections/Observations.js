@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react'
-import {BrowserRouter as Router, Switch, Route, useParams, useHistory} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route, Link, useParams, useHistory} from 'react-router-dom'
 import {getInspectionById} from '../../db/read'
 import {updateInspectionById} from '../../db/write'
 import capitalizeEachWord from '../../utility/capitalizeEachWord'
@@ -18,6 +18,7 @@ function Observations() {
     const [observationQty, setObservationQty] = useState(0)
 
     const [inspectionData, setInspectionData] = useState(null)
+    const [observationState, setObservationState] = useState({})
 
     useEffect(()=>{
         console.log('inspectionId', inspectionId)
@@ -29,6 +30,7 @@ function Observations() {
         try{
             if(inspectionData){
                 let obsQty = getObservationQty(inspectionData)
+                console.log('obsQty(useEffect) = ', obsQty)
                 setObservationQty(obsQty)
             } else {
                 throw(`inspectionData has not yet loaded`)
@@ -50,6 +52,7 @@ function Observations() {
         if(id){
             let inspectionObj = await getInspectionData(id)
             setInspectionData(inspectionObj)
+            console.log(inspectionObj)
         }
     }
 
@@ -64,7 +67,7 @@ function Observations() {
             }
         } catch(err){
             console.log(err)
-            return null
+            return 1
         }
     }
 
@@ -78,18 +81,32 @@ function Observations() {
             }
             if(action === 'set'){
                 setObservationQty(num)
+                return(num)
             }
-            if(action === 'increment'){
+            if(action === 'add'){
                 setObservationQty(observationQty + num)
+                return observationQty + num
             }
             if(action === 'subtract'){
-                setObservationQty()
+                setObservationQty(observationQty - num)
+                return(observationQty - num)
             }
         } catch(err){
             console.log(err)
         }
+    }
 
-
+    const handleUpdateInspectionDataState = (observation_data) => {
+        let tmpInspectionData = inspectionData
+        try {
+            tmpInspectionData.access[accessNumber].observations.push(observation_data)
+            setInspectionData(tmpInspectionData)
+            updateObservationQty('add', 1)
+        } catch(err){
+            console.log(err)
+        }
+        updateInspectionById(inspectionId, tmpInspectionData)
+        setObservationState({})
     }
 
     return (
@@ -97,13 +114,16 @@ function Observations() {
             <Router>
                 <Switch>
                     <Route path='/observations/home' exact>
-                        <ObservationHome {...{inspectionId, accessNumber, inspectionData, history, observationQty}}/>
+                        <ObservationHome {...{inspectionId, accessNumber, inspectionData, history, observationQty, getObservationQty}}/>
                     </Route>
                     <Route path='/observations/new' exact>
-                        <ObservationNew {...{inspectionId, accessNumber}}/>
+                        <ObservationNew {...{inspectionId, accessNumber, history, handleUpdateInspectionDataState, updateObservationQty, observationState, setObservationState, observationQty}}/>
                     </Route>
                     <Route path='/observations/edit' exact>
-                        <ObservationEdit {...{inspectionId, accessNumber}}/>
+                        <ObservationEdit {...{handleUpdateInspectionDataState}}/>
+                    </Route>
+                    <Route path='/observations/view' exact>
+                        <ObservationView/>
                     </Route>
                 </Switch>
             </Router>
@@ -117,7 +137,21 @@ export default Observations
 const ObservationHome = (props) => {
     // objects //
     const {inspectionId, accessNumber, inspectionData, history, observationQty} = props
+    const {getObservationQty} = props
     // console.log(JSON.stringify(inspectionData, null, 2))
+
+    const handleNavToNewObservation = ()=>{
+        console.log('observationQty', observationQty)
+        // if(!observationQty){
+        //     let obsQty = getObservationQty(inspectionData)
+        //     // if(obsQty)
+        //     console.log('obsQty', obsQty)
+        // }
+
+        history.push(`/observations/new?inspection_id=${inspectionId}&access_num=${accessNumber}&observation_num=${observationQty}`)
+        window.location.reload()
+    }
+
     if(!inspectionData){
         return(
             <div className="w-100 text-center pt-5">
@@ -153,6 +187,16 @@ const ObservationHome = (props) => {
                         <div className="row">
                             <div className="col-md-4 text-sm-left text-md-right">
                                 <strong>
+                                    Client: 
+                                </strong>
+                            </div>
+                            <div className="col-md-8">
+                                <span className="text-dark">{capitalizeEachWord(inspectionData.overview.client.split('_').join(' '))}</span>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-4 text-sm-left text-md-right">
+                                <strong>
                                     Property Address: 
                                 </strong>
                             </div>
@@ -167,45 +211,52 @@ const ObservationHome = (props) => {
                             <h3>Observation List</h3>
                         </div>
                         <div className="col-6 text-right">
-                            <button className="btn btn-primary" onClick={()=>{history.push(`/observations/new?inspection_id=${inspectionId}&access_num=1&observation_num=${observationQty}`)}}>New Observation</button>
+                            <button className="btn btn-primary" onClick={handleNavToNewObservation}>New Observation</button>
                         </div>
                     </div>
                     <div className="row my-5">
                         <div className="col-12">
-                            <ObservationList {...{inspectionData, accessNumber}}/>
+                            <ObservationList {...{inspectionData, accessNumber, inspectionId}}/>
                         </div>
                     </div>
 
-                    <div className="row bg-dark text-white">
+                    {/* <div className="row bg-dark text-white">
                         <div className="col-3">
                             Inspection Data:
                         </div>
                         <div className="col-9">
                             {(JSON.stringify(inspectionData) === 'null') ? <Spinner /> : (Object.keys(inspectionData).map(item=>{return(<div className="mb-4" key={JSON.stringify(inspectionData[item])}>{item}:<br/>{JSON.stringify(inspectionData[item])}</div>)}))}
                         </div>
-                    </div>
+                    </div> */}
                 </>
             )
     }
 }
 
 const ObservationList = (props) => {
-    const {inspectionData, accessNumber} = props
+    const {inspectionData, accessNumber, inspectionId} = props
+
     if(accessNumber && inspectionData && inspectionData.access && 
         inspectionData.access[accessNumber] && inspectionData.access[accessNumber].observations && 
         JSON.stringify(inspectionData.access[accessNumber].observations) !== '[]'){
             return(
-                <div>{inspectionData.access.[accessNumber].observations.map(item=>{
-                    return(<div key={item}>{JSON.stringify(item)}</div>)
+                <div>{inspectionData.access.[accessNumber].observations.map((item, index)=>{
+                    {/* return(<div key={item}>{JSON.stringify(item)}</div>) */}
+                    return(<div key={item}><Link to={`/observations/view?inspection_id=${inspectionId}&access_num=${accessNumber}&observation_num=${index+1}`}>{item.footage.toString()} Ft</Link></div>)
                 })}</div>
             )
         } else {
-            return(<div className="text-center">no recorded observations</div>)
+            return(
+                <>
+                    <div className="text-center">no recorded observations</div>
+                    {/* {JSON.stringify(inspectionData)} */}
+                </>
+            )
     }
 }
 const ObservationNew = (props) => {
-    const {inspectionId, accessNumber} = props
-    const {handleNewObservationSubmit, handleNewObservationOnChange} = props
+    const {inspectionId, accessNumber, history, observationState, setObservationState, observationQty} = props
+    const {handleUpdateInspectionDataState, updateObservationQty,} = props
 
     const standingWaterRef = useRef(null)
     const standingWaterStartRef = useRef(null)
@@ -213,6 +264,10 @@ const ObservationNew = (props) => {
     const underWaterRef = useRef(null)
     const underWaterStartRef = useRef(null)
     const underWaterEndRef = useRef(null)
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString)
+    const observationNumber = Number(urlParams.get('observation_num'))
 
     const handleStandingWater = (e) => {
         if(standingWaterRef.current.checked){
@@ -234,10 +289,86 @@ const ObservationNew = (props) => {
         }
     }
 
+    const handleNewObservationOnChange = (e) => {
+        let form_id = e.target.id
+        let form_value = e.target.value
+        let tmpObservationState = observationState
+
+        if(form_id && form_value){
+            tmpObservationState[form_id] = form_value
+        }
+
+        if(!form_value){
+            tmpObservationState[form_id] = ''
+        }
+
+        setObservationState(tmpObservationState)
+    }
+
+
+    const handleNewObservationFormSubmit = async (e) => {
+        e.preventDefault()
+        console.log('formSubmit')
+        
+        let btnAction = e.target.getAttribute('data-btnclicked')
+        let historyRedirect = `/observations/home?inspection_id=${inspectionId}&access_num=${accessNumber}`
+        // console.log(document.getElementById(e.target.id).getAttribute('data-btnclicked'), btnAction)
+
+        console.log(btnAction)
+        if(btnAction === 'done'){
+            updateObservationQty('add', 1)
+        } else if(btnAction === 'next') {
+            historyRedirect = `/observations/new?inspection_id=${inspectionId}&access_num=${accessNumber}&observation_num=${observationNumber + 1}`
+            updateObservationQty('add', 1)
+            window.location.reload()
+        } else {
+            // do nothing
+            throw(`Invalid observation submit action. 'next' and 'done' are the only two options.`)
+        }
+
+        await handleUpdateInspectionDataState(observationState)
+
+        history.push(historyRedirect)
+        window.location.reload()
+
+        // let btnAction = 'done' || 'next'
+
+        // if(observationState && observationState.footage.length > 0 && Object.keys(observationState).length > 1){
+        //     // submit form data to  parent
+        //     handleUpdateInspectionDataState(btnAction, observationState)
+        // } else {
+        //     console.log("invalid observation")
+        // }
+    }
+
+    const handleNewObservationFormSubmitClick = (e) => {
+        console.log(e.target)
+
+        let btnAction = null
+        let btnElem = e
+
+        if(e.target.nodeName === 'path'){
+            btnAction = e.target.parentElement.parentElement.getAttribute('data-action')
+            btnElem = e.target.parentElement.parentElement
+        } else if(e.target.nodeName === 'svg') {
+            btnAction = e.target.parentElement.getAttribute('data-action')
+            btnElem = e.target.parentElement
+        } else {
+            btnAction = e.target.getAttribute('data-action')
+        }
+
+        console.log('btnAction', btnAction)
+
+        if(btnAction) {
+            document.getElementById('observationForm').setAttribute('data-btnclicked', btnAction)
+        }
+    }
+
     return(
         <>
-        <form onSubmit={handleNewObservationSubmit}>
+        <form id="observationForm" onSubmit={handleNewObservationFormSubmit} data-btnclicked=''>
             <div className="p-3">
+                <h2>Observation #{observationNumber.toString()}</h2>
                 <div className="row border p-2 m-2 bg-foreground">
                     <div className="col col-6 pt-3">
                         <label className="h6" htmlFor='footage'>Footage (in Feet) <span className="text-danger">*</span></label>
@@ -270,7 +401,7 @@ const ObservationNew = (props) => {
                     </div>
                     <div className="col col-6 mt-4">
                         <label className="h6 float-left" htmlFor='footage'>% Loss of Crosssection</label>
-                        <input {...{className: 'form-control mb-3 float-right', type: 'number', name: 'loss_of_crosssection', id: 'loss_of_crosssection', step: '1', min: '0', max: '100', placeholder: '%'}} onChange={handleNewObservationOnChange}/>
+                        <input {...{className: 'form-control mb-3 float-right', type: 'number', name: 'loss_of_crosssection', id: 'loss_of_crosssection', step: '10', min: '0', max: '100', placeholder: '%'}} onChange={handleNewObservationOnChange}/>
                     </div>
                 </div>
                 <div className="row border p-2 m-2 pb-3 bg-foreground">
@@ -344,9 +475,15 @@ const ObservationNew = (props) => {
                         <textarea name="observation_notes" id="observation_notes" placeholder="Notes" rows="3" className="w-100 p-3" onChange={handleNewObservationOnChange}/>
                     </div>
                 </div>
-                <div className="row justify-content-center mt-5">
-                    <div className="col col-12 text-center">
-                        <button id="add_access_btn" className="btn-primary btn-lg p-3 m-0" type="submit" name="submit">
+                <div className="row mt-5">
+                    <div className="col col-5">
+                        <button id="done_observation_btn" className="btn btn-secondary btn-lg m-0 mt-3" data-toggle="tooltip" data-placement="top" title="Save & Done" data-action="done" onMouseOver={handleNewObservationFormSubmitClick}>
+                            Done
+                        </button>
+
+                    </div>
+                    <div className="col col-7 text-right">
+                        <button id="add_observation_btn" className="btn btn-primary btn-lg p-3 m-0" data-toggle="tooltip" data-placement="left" title="Save & Next" data-action="next" onMouseOver={handleNewObservationFormSubmitClick}>
                             <IconPlus />
                         </button>
                     </div>
@@ -359,4 +496,27 @@ const ObservationNew = (props) => {
 const ObservationEdit = (props) => {
     const {inspectionId, accessNumber} = props
     return(<><div>Edit Observation</div></>)
+}
+
+const ObservationView = (props) => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString)
+    
+    const inspection_id = urlParams.get('inspection_id')
+    const access_num = urlParams.get('access_num')
+    const observation_num = urlParams.get('observation_num')
+
+    return(
+        <>
+            <div>
+                Inspection ID: {inspection_id}
+            </div>
+            <div>
+                Access Number: {access_num}
+            </div>
+            <div>
+                Observation Number: {observation_num}
+            </div>
+        </>
+    )
 }

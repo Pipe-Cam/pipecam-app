@@ -15,7 +15,7 @@ function InspectionAccess() {
     const {id} = useParams()
 
     const [inspectionData, setInspectionData] = useState(null)
-    const [nextAccessNumber, setNextAccessNumber] = useState("0")
+    const [nextAccessNumber, setNextAccessNumber] = useState(0)
 
     const getInspectionDataOnLoad = async (id) => {
         let inspectionDataJSON = await getInspectionById(id)
@@ -72,6 +72,17 @@ function InspectionAccess() {
                             <span className="text-danger">{capitalizeEachWord(inspectionData.status.split('_').join(' '))}</span>
                         </div>
                     </div>
+                    <div className="row">
+                        <div className="col-md-4 text-sm-left text-md-right">
+                            <strong>
+                                Client: 
+                            </strong>
+                        </div>
+                        <div className="col-md-8">
+                            <span className="text-dark">{capitalizeEachWord(inspectionData.overview.client.split('_').join(' '))}</span>
+                        </div>
+                    </div>
+
                     <div className="row">
                         <div className="col-md-4 text-sm-left text-md-right">
                             <strong>

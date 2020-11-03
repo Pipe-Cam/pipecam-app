@@ -81,11 +81,15 @@ function InspectionHome() {
                         <div className="pt-3 container">
                             <form onSubmit={handleUpdateOverview}>
                                 {Object.keys(inspectionData.overview).map(item => {
+                                    let disabledAttribute = ''
+                                    if(item === 'client'){
+                                        disabledAttribute = 'disabled'
+                                    }
                                     return(
                                         <div className="row" key={item}>
                                             <div className="col-sm-12 col-md-3 col-lg-3 pt-sm-0 pt-md-2 pt-lg-2 text-sm-left text-md-right">{capitalizeEachWord(item.split('_').join(' '))}</div>
                                             <div className="col-sm-12 col-md-9 col-lg-9 form-group">
-                                                <input className="form-control" type="text" id={item} defaultValue={inspectionData.overview[item]}/>
+                                                <input className="form-control" type="text" id={item} defaultValue={inspectionData.overview[item]} disabled={(item === 'client') ? ('disabled') : ('')}/>
                                             </div>
                                         </div>
                                     )
