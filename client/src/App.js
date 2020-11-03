@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Inspection from './pages/Inspection'
 import InspectionAccess from './components/worksheet_sections/InspectionAccess'
+import Observations from './components/worksheet_sections/Observations'
 import Home from './pages/Home'
 import Clients from './pages/Clients'
 import Header from './layout/Header'
@@ -52,8 +53,8 @@ function App() {
                 <Route path="/new-access/:id">
                   <NewAccess />
                 </Route>
-                <Route path="/observations/:id">
-                  {'observations'}
+                <Route path="/observations">
+                  <Observations />
                 </Route>
                 <Route path="/todo">
                   <Todo />

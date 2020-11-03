@@ -177,7 +177,7 @@ const AccessList = (props)=>{
         return(
             <div>
                 <div>{accessDataKeys.map(item => {
-                    return(<div key={JSON.stringify(accessData[item])} className="py-2"><Link to={`/observations/${id}?access=${item}`}>Access #{item}</Link>&nbsp;&nbsp;&nbsp;<Link to={`/new-access/${id}?access=${item}`} className="btn btn-info btn-sm">EDIT</Link></div>)
+                    return(<div key={Math.random(9999) + item} className="py-2"><Link to={`/observations/home?inspection_id=${id}&access_num=${item}`}>Access #{item}</Link>&nbsp;&nbsp;&nbsp;<Link to={`/new-access/${id}?access=${item}`} className="btn btn-info btn-sm">EDIT</Link></div>)
                 })}</div>
             </div>
         )

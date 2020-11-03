@@ -9,7 +9,7 @@ import AlternatingList from '../ui_components/AlternatingList'
 
 
 function ObservationHome(props) {
-    const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
+    // const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
     const {accessNumber, setAccessNumber} = props
     const [observationNumber, setObservationNumber] = useState(0)
     const [currentObservation, setCurrentObservation] = useState({})
