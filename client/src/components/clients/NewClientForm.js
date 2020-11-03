@@ -177,6 +177,7 @@ const NewClientForm = (props) => {
                         <select ref={clientSourceRef} id="client_source" className="form-control" defaultValue="Lead Source" onInput={handleNewClientFormData} onChange={handleShowHideOtherInput}>
                                 <option disabled>Lead Source</option>
                                 <option>Referral</option>
+                                <option>Existing</option>
                                 <option>Online</option>
                                 <option>Other</option>
                         </select>
