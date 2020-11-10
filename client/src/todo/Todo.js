@@ -3,10 +3,10 @@ import React from 'react'
 function Todo() {
     return (
         <div>
-            <h1 style={{textDecoration: 'underline'}}>TODO LIST</h1>
+
+            <h1 style={{textDecoration: 'underline'}}>TODO LIST - INPUT</h1>
+
             <ol>
-
-
                 <li>
                     <s className="text-danger"> 
                     </s>
@@ -229,3 +229,59 @@ export default Todo
 </s>
 <strong className="text-success">[...]</strong> ...
 </li> */}
+
+
+/*
+    REPORT LAYOUT NOTES:
+    1. Pipecam Logo
+    2. METADATA:
+        - Date of Inspection
+        - Inspection Ordered By
+        - Property Address
+        - Inspected by
+    3. Links to video files
+    4. Certificate of Completion / Root Cut Warranty
+        - boilerplate
+        - calculate 1-yr warrant date
+    5. Opening Notes
+        - The City of .... boilerplate
+        - General notes of the inspection and its purpose
+        - Specific notes about this property having 1-way or 2-way cleanouts
+        - Specific notes about 2-way sewer access
+        - if no BOPD, boilerplate recommending one
+        - etc...
+    6. Guidelines for proper use of the line
+        - boilerplate
+    7. Conclusions of Serviceability
+        - boilerplate for all potential outcomes
+        - general info about break-ins, cleanouts, 1-way configuration
+        - Defects as an area of concern
+    8. Recommendations
+        - Maintenance (boilerplate)
+        - Immediate Corrective Action w/ price (boilerplate)
+    9. Recommendations for Repair (Estimate will be sent under separate cover)
+        - Maintenance w/ price (boilerplate)
+        - Immediate Corrective Action w/ price (boilerplate)
+    10. Areas of Concern Downstream Toward the Municipal Sewer Main
+    11. Areas of Concern Upstream Toward the Residence
+    12. Description of Sewer Line
+    13. Summary of Scope and Limitations of this Inspection (notes)
+    14. Definitions & Explanation of Conclusions (boilerplate)
+
+
+
+    TRIGGERS:
+
+    Certificate of Completion/ Root Cut Warranty
+    - only for stage-the-sewer-inspections
+
+    Opening Notes:
+    - City
+    - Central San
+    - 1-Way vs 2-way vs Break-in Access vs Stub-out
+    - BOPD
+
+
+*/
+
+

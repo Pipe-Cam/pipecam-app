@@ -39,7 +39,7 @@ const ListItemDefault = (props) => {
         <li className="list-group-item">
             <div className="row">
                 <div className="col-9">
-                    <a href={`${value.pathname}/${value.invocationValue}`} onClick={()=>{handler.invocation(value.invocationValue)}}>{value.value}</a>
+                    {(value.method_value === 'query_string') ? (<a href={`${value.pathname}?${value.method_key}=${value.invocationValue}`} onClick={()=>{handler.invocation(value.invocationValue)}}>{value.value}</a>) : (<a href={`${value.pathname}/${value.invocationValue}`} onClick={()=>{handler.invocation(value.invocationValue)}}>{value.value}</a>) }
                 </div>
                 <div className="col-3">
                     {(buttons) ? <ListItemButtons buttons={buttons} value={value} handler={handler}/> : <></>}
@@ -56,7 +56,7 @@ const ListItemSecondary = (props) => {
         <li className="list-group-item list-group-item-secondary">
             <div className="row">
                 <div className="col-9">
-                    <a href={`${value.pathname}/${value.invocationValue}`} onClick={()=>{handler.invocation(value.invocationValue)}}>{value.value}</a>
+                {(value.method_value === 'query_string') ? (<a href={`${value.pathname}?${value.method_key}=${value.invocationValue}`} onClick={()=>{handler.invocation(value.invocationValue)}}>{value.value}</a>) : (<a href={`${value.pathname}/${value.invocationValue}`} onClick={()=>{handler.invocation(value.invocationValue)}}>{value.value}</a>) }
                 </div>
                 <div className="col-3">
                     {(buttons) ? <ListItemButtons buttons={buttons} value={value} handler={handler} invocationValue={value}/> : <></>}

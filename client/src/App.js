@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import Inspection from './pages/Inspection'
+import Home from './pages/Home'
+import Report from './pages/Report'
 import InspectionAccess from './components/worksheet_sections/InspectionAccess'
 import Observations from './components/worksheet_sections/Observations'
-import Home from './pages/Home'
 import Clients from './pages/Clients'
 import Header from './layout/Header'
 import Footer from './layout/Footer'
+
 
 import NewAccess from './components/inspection/NewAccess'
 
@@ -55,6 +57,9 @@ function App() {
                 </Route>
                 <Route path="/observations">
                   <Observations />
+                </Route>
+                <Route path="/report">
+                  <Report />
                 </Route>
                 <Route path="/todo">
                   <Todo />

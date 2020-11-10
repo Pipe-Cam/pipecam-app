@@ -60,7 +60,7 @@ function Home() {
                         ...{
                             dataObject: (scheduledInspectionsFromDB.map(item => {
                                 return {
-                                    value: `${item.overview.client} [${new Date(item.overview.inspection_date).getMonth() + 1}/${new Date(item.overview.inspection_date).getDate()}/${new Date(item.overview.inspection_date).getFullYear()}]`,
+                                    value: `${item.overview.property_address} [${new Date(item.overview.inspection_date).getMonth() + 1}/${new Date(item.overview.inspection_date).getDate()}/${new Date(item.overview.inspection_date).getFullYear()}]`,
                                     _id: item._id,
                                     invocationValue: item._id,
                                     pathname: `/inspection`
@@ -86,9 +86,12 @@ function Home() {
                         ...{
                             dataObject: (recentInspectionsFromDB.map(item => {
                                 return {
-                                    value: `${item.overview.client} [${(item.status === 'active_inspection') ? ('active') : ('completed')}]`,
+                                    value: `${item.overview.property_address} [${(item.status === 'active_inspection') ? ('active') : ('completed')}]`,
                                     _id: item._id,
-                                    invocationValue: item.client_id
+                                    invocationValue: item.client_id,
+                                    pathname: 'report',
+                                    method_key: 'inspection_id',
+                                    method_value: 'query_string'
                                 }
                             })),
                             edit: handleEditInspection,
