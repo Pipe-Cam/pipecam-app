@@ -1,13 +1,38 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import IconDefectAlert from '../icons/IconDefectAlert'
 import Bold from '../ui_components/Bold'
 import RedItalic from '../ui_components/RedItalic'
 import PipeCamLogo from '../ui_components/PipeCamLogo'
+import Spinner from '../ui_components/Spinner'
+import {getInspectionById} from '../../db/read'
 
 function ReportOverview() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString)
     const [inspectionId, setInspectionId] = useState(urlParams.get('inspection_id'))
+    const [inspectionData, setInspectionData] = useState(null)
+
+    const getInspectionByIdOnLoad = async(id) => {
+        let inspectionDataJSON = await getInspectionById(id)
+        let inspectionObj = JSON.parse(inspectionDataJSON)
+        console.log(inspectionObj)
+        setInspectionData(inspectionObj[0])
+        console.log(inspectionData)
+    }
+
+    useEffect(()=>{
+        // console.log(urlParams.get('inspection_id'))
+        // if(urlParams.get('inspection_id')){
+        //     getInspectionByIdOnLoad(urlParams.get('inspection_id'))
+        // }
+        getInspectionByIdOnLoad(inspectionId)
+    },[inspectionId])
+
+    useEffect(()=>{
+        console.log(inspectionData)
+    },[inspectionData])
+
+    
 
     return (
         <> 
@@ -17,20 +42,27 @@ function ReportOverview() {
         <div>
             Inspection Id: {inspectionId}
         </div>
+        {/* <div>
+            {inspectionData ? JSON.stringify(inspectionData) : <Spinner />}
+        </div> */}
         <div>
             <ol>
                 <li><PipeCamLogo {...{width: '200px'}}/></li>
                 <li>
                     <h5>Date Of Inspection</h5>
+                    {inspectionData ? inspectionData.overview.inspection_date : <Spinner />}
                 </li>
                 <li>
                     <h5>Inspection Ordered by</h5>
+                    {inspectionData ? inspectionData.overview.client : <Spinner />}
                 </li>
                 <li>
                     <h5>Property address</h5>
+                    {inspectionData ? inspectionData.overview.property_address : <Spinner />}
                 </li>
                 <li>
                     <h5>Inspected by</h5>
+                    Jim Brooks
                 </li>
                 <li>
                     <h5>Video Files</h5>

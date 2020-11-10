@@ -48,14 +48,16 @@ export const searchForClient = async (clientName) => {
 // INSPECTIONS
 export const getInspectionById = async (id) => {
     let result;
+
     try{
         let response = await fetch(`http://${host}/inspection/${id}`)
         result = await response.json();
     } catch(err){
         console.log(err)
+    } finally{
+        return result
     }
 
-    return result
 }
 
 export const getScheduledInspections = async () => {

@@ -88,7 +88,7 @@ function Home() {
                                 return {
                                     value: `${item.overview.property_address} [${(item.status === 'active_inspection') ? ('active') : ('completed')}]`,
                                     _id: item._id,
-                                    invocationValue: item.client_id,
+                                    invocationValue: item._id,
                                     pathname: 'report',
                                     method_key: 'inspection_id',
                                     method_value: 'query_string'
