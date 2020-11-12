@@ -4,6 +4,10 @@ import Bold from '../ui_components/Bold'
 import RedItalic from '../ui_components/RedItalic'
 import PipeCamLogo from '../ui_components/PipeCamLogo'
 import Spinner from '../ui_components/Spinner'
+import InsertVideos from '../ui_components/InsertVideos'
+import InsertPhotos from '../ui_components/InsertPhotos'
+
+
 import {getInspectionById} from '../../db/read'
 
 function ReportOverview() {
@@ -14,10 +18,16 @@ function ReportOverview() {
 
     const getInspectionByIdOnLoad = async(id) => {
         let inspectionDataJSON = await getInspectionById(id)
-        let inspectionObj = JSON.parse(inspectionDataJSON)
-        console.log(inspectionObj)
-        setInspectionData(inspectionObj[0])
-        console.log(inspectionData)
+        let inspectionObj;
+
+        try{
+            inspectionObj = JSON.parse(inspectionDataJSON)
+            console.log(inspectionObj)
+            setInspectionData(inspectionObj[0])
+            console.log(inspectionData)
+        } catch(err){
+            console.log(err)
+        }
     }
 
     useEffect(()=>{
@@ -66,6 +76,7 @@ function ReportOverview() {
                 </li>
                 <li>
                     <h5>Video Files</h5>
+                    <InsertVideos />
                 </li>
                 <li>
                     <h5>Certificate of Completion/ Root Cut Warranty</h5>
@@ -84,11 +95,12 @@ function ReportOverview() {
                 </li>
                 <li>
                     <h5>Areas of Concern Downstream Toward the Municipal Sewer Main</h5>
-                    <pre>insert images here</pre>
+                    <InsertPhotos />
                 </li>
                 <li>
                     <h5>Areas of Concern Upstream Toward the Residence</h5>
-                    <pre>insert images here</pre>
+                    <InsertPhotos />
+
                 </li>
                 <li>
                     <h5>Description of Sewer Line</h5>

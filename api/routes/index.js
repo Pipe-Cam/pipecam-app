@@ -26,6 +26,7 @@ router.get('/inspection/:id', function(req, res, next) {
       console.log(err)
       res.status(500).send()
     } else{
+      console.log(response)
       res.status(200).json(JSON.stringify(response))
     }
   })
