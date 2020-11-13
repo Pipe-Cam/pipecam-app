@@ -3,7 +3,8 @@ import React from 'react'
 function Todo() {
     return (
         <div>
-
+            - add "inspected by" to input
+            
             <h1 style={{textDecoration: 'underline'}}>TODO LIST - INPUT</h1>
 
             <ol>

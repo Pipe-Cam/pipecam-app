@@ -489,6 +489,7 @@ const AccessDetails = (props) => {
                     <select ref={accessMaterialRef} className="custom-select" id="access_material" onChange={handleNewAccessDetailsState}>
                         <option>Select...</option>
                         <option value="ci">CI</option>
+                        <option value="ac">AC</option>
                         <option value="abs">ABS</option>
                         <option value="vcp">VCP</option>
                         <option value="pvc">PVC</option>
@@ -520,6 +521,7 @@ const AccessDetails = (props) => {
                     <select ref={initialPipeMaterialRef} className="custom-select" id="initial_pipe_material" onChange={handleNewAccessDetailsState}>
                         <option>Select...</option>
                         <option value="ci">CI</option>
+                        <option value="ac">AC</option>
                         <option value="abs">ABS</option>
                         <option value="vcp">VCP</option>
                         <option value="pvc">PVC</option>

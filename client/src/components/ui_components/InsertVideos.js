@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import {Link} from 'react-router-dom'
 
 function InsertVideos() {
     const [videoLinks, setVideoLinks] = useState([])
@@ -27,7 +28,7 @@ function InsertVideos() {
                     {videoLinks.map(item=>{
                         return(
                             <div className="row" key={`${item}${Math.random(99999)}`}>
-                                <div className="col-12">{item}</div>
+                                <div className="col-12"><a href={item} target="_blank">{item}</a></div>
                             </div>
                         )
                     })}
