@@ -3,8 +3,12 @@ import React from 'react'
 function Todo() {
     return (
         <div>
+            - add "root cut"
             - add "inspected by" to input
-            
+            - add "distance from cleanout to sewer main"
+            - add "estimated length of uninspected lateral"
+            - add "street, unit, city, state, zip for property address"
+
             <h1 style={{textDecoration: 'underline'}}>TODO LIST - INPUT</h1>
 
             <ol>
