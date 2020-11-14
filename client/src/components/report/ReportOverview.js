@@ -238,22 +238,8 @@ function ReportOverview() {
             <SectionTitle>Description of Sewer Line</SectionTitle>
             <div className="row mb-4 pl-3">
                 <div className="col-12">
-                    <div className="row">
-                        <div className="col-4 border py-3">
-                            <Bold>Sewer Access 1</Bold>
-                        </div>
-                        <div className="col-8 border py-3">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil, iste?
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-4 border py-3">
-                            <Bold>Sewer Access 2</Bold>
-                        </div>
-                        <div className="col-8 border py-3">
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Officiis, labore!
-                        </div>
-                    </div>
+                    {inspectionData ? (<SewerAccess accessData={inspectionData.access}/>) : <Spinner />}
+                    
                     <div className="row">
                         <div className="col-4 border py-3">
                             <Bold>Backwater Overflow Device</Bold>
@@ -268,7 +254,9 @@ function ReportOverview() {
                             <Bold>Length of lateral Inspected</Bold>
                         </div>
                         <div className="col-8 border py-3">
-                            (in feet)
+                            {inspectionData ? (<InspectedLateralLength data={inspectionData} />) : <Spinner />}
+                            
+                            
                         </div>
                     </div>
                     <div className="row">
@@ -276,7 +264,8 @@ function ReportOverview() {
                             <Bold>Distance from cleanout to sewer main</Bold>
                         </div>
                         <div className="col-8 border py-3">
-                            (in feet)
+                            TODO: (in feet)
+                            {/* {inspectionData ? () : <Spinner />} */}
                         </div>
                     </div>
                     <div className="row">
@@ -284,7 +273,8 @@ function ReportOverview() {
                             <Bold>Estimated length of uninspected lateral</Bold>
                         </div>
                         <div className="col-8 border py-3">
-                            Any pipe upstream of 1-way cleanout, length and condition unknown
+                            
+                            {inspectionData ? (<UninspectedLateral data={inspectionData}/>) : <Spinner />}
                         </div>
                     </div>
                     <div className="row">
@@ -293,7 +283,8 @@ function ReportOverview() {
                         </div>
                         <div className="col-8 border py-3">
                             {/* Vitrified clay / Cast iron / ABS, PVC / Asbestos cement  / Orangeburg / Ductile iron / HDPE */}
-                            <PipeMaterials material={['ci', 'vcp', 'abs']}/>
+                            
+                            {inspectionData ? (<PipeMaterials material={['ci', 'vcp', 'abs']}/>) : <Spinner />}
                         </div>
                     </div>
                     <div className="row">
@@ -465,4 +456,209 @@ const ReportPageFooter = () => {
         </div>
         </>
     )
+}
+
+const SewerAccess = (props) => {
+    const data = props.accessData
+    try{
+        const dataKeys = Object.keys(data)
+    
+        return(
+            <>
+    
+                {dataKeys.map(item => {
+                    return(
+                            <div className="row">
+                                <div className="col-4 border py-3">
+                                    <Bold>Sewer Access #{item}</Bold>
+                                </div>
+                                <div className="col-8 border py-3">
+                                    {data[item] ? (<SewerAccessBlurb details={data[item].details} location={data[item].location}/>) : <Spinner />}
+                                </div>
+                            </div>
+                    )
+                })}
+            </>
+        )
+    } catch(err){
+        return(<>data unavailable</>)
+    }
+}
+
+const SewerAccessBlurb = (props) => {
+    const {location, details} = props
+    console.log(location, details)
+    return(
+        <>  
+            {/* {JSON.stringify(data.details)} */}
+            <div>{details.pipe_diameter.toString()}" {<Rosetta>{details.direction}</Rosetta>} {<Rosetta>{details.access_material}</Rosetta>} cleanout</div>
+            <br/>
+            <div>
+                Located:
+                <ul>
+                    {
+                        (location.location_position_front ||
+                        location.location_position_back ||
+                        location.location_position_left ||
+                        location.location_position_right ||
+                        location.location_position_modifier_of_residence ||
+                        location.location_position_modifier_corner ||
+                        location.location_position_modifier_under_window ||
+                        location.location_position_modifier_in ||
+                        location.location_position_modifier_under_deck ||
+                        location.location_position_modifier_manual) ? (<li><AccessLocationPosition location={location}/></li>) : ''
+                    }
+
+                    {location.location ? <li><Rosetta pre="at the" post="">{location.location}</Rosetta></li> : ''}
+                    {location.entry ? <li><Rosetta pre="to the" post="of the front entry">{location.entry}</Rosetta></li> : ''}
+                    {location.porch ? <li><Rosetta pre="to the" post="of the porch">{location.porch}</Rosetta></li> : ''}
+                    {location.walk ? <li><Rosetta pre="to the" post="of the walk">{location.walk}</Rosetta></li> : ''}
+                </ul>
+            </div>
+
+
+
+
+
+
+
+            {/* to the right of the front entry porch 
+            at the rear of the residence 
+            at the foundation edge 
+            beneath a bathroom bedroom office window living room kitchen window 
+            at the edge of the porch 
+            in the landscape area 
+            near the water supply 
+            beneath the deck behind 
+            the fence 
+            air conditioning unit. */}
+        </>
+    )
+}
+
+const Rosetta = (props) => {
+    var pre = props.pre;
+    var post = props.post;
+
+    if(pre === undefined){
+        pre = ''
+    }
+    if(post === undefined){
+        post = ''
+    }
+
+    switch(props.children){
+        case 'one_way':
+            return ` ${pre} One-Way ${post}`
+        case 'two_way':
+            return` ${pre} Two-Way ${post}`
+        case 'ci':
+            return ` ${pre} Cast Iron ${post}`
+        case 'ac':
+            return ` ${pre} Asbestos Cement ${post}`
+        case 'abs':
+            return ` ${pre} ABS ${post}`
+        case 'pvc':
+            return ` ${pre} PVC ${post}`
+        case 'vcp':
+            return ` ${pre} VCP (Vitrified Clay Pipe) ${post}`
+        case 'orbg':
+            return ` ${pre} Orangeburg ${post}`
+        case 'hdpe':
+            return ` ${pre} HDPE (High-Density Polyethylene) ${post}`
+        case 'stub':
+            return ` ${pre} Stub ${post}`
+        case 'break_in':
+            return ` ${pre} Break-In ${post}`
+        case 'roof':
+            return ` ${pre} Roof ${post}`
+        case 'below_grade':
+            return ` ${pre} Below Grade ${post}`
+        case 'excess_vegetation':
+            return ` ${pre} Excess Vegetation ${post}`
+        case 'broken':
+            return ` ${pre} Broken ${post}`
+        case 'missing':
+            return ` ${pre} Missing ${post}`
+        case 'ball':
+            return ` ${pre} Ball ${post}`
+        case 'too_low':
+            return ` ${pre} Too Low ${post}`
+        case 'too_high':
+            return ` ${pre} Too High ${post}`
+        case 'check_valve':
+            return ` ${pre} Check Valve ${post}`
+        case 'mushroom':
+            return ` ${pre} Mushroom Cap ${post}`
+        case 'popper':
+            return ` ${pre} Sewer Popper ${post}`
+        case 'relief':
+            return ` ${pre} Relief Valve ${post}`
+        case 'of_residence':
+            return ` ${pre} of residence ${post}`
+        case 'corner':
+            return ` ${pre} corner ${post}`
+        case 'under_window':
+            return ` ${pre} under window ${post}`
+        case 'under_deck':
+            return ` ${pre} under deck ${post}`
+        case 'foundation_edge':
+            return ` ${pre} foundation edge ${post}`
+        case 'property_line':
+            return ` ${pre} property line ${post}`
+        case 'none':
+            return (<></>)
+        default:
+            return ` ${pre} ${props.children} ${post}`
+    }
+}
+
+const AccessLocationPosition = (props) => {
+    const {location} = props
+    return(
+        <>
+            {location.location_position_front ? <Rosetta pre="at the" post="">front</Rosetta> : ''}
+            {location.location_position_back ? <Rosetta pre="at the" post="">back</Rosetta> : ''}
+            {location.location_position_left ? <Rosetta pre="to the" post="">left</Rosetta> : ''}
+            {location.location_position_right ? <Rosetta pre="to the" post="">right</Rosetta> : ''}
+            {location.location_position_modifier_of_residence ? <Rosetta pre="" post="">of_residence</Rosetta> : ''}
+            {location.location_position_modifier_corner ? <Rosetta pre="" post="">corner</Rosetta> : ''}
+            {location.location_position_modifier_under_window ? <Rosetta pre="" post="">under_window</Rosetta> : ''}
+            {location.location_position_modifier_in ? <Rosetta pre="" post="">in</Rosetta> : ''}
+            {location.location_position_modifier_under_deck ? <Rosetta pre="" post="">under_deck</Rosetta> : ''}
+            {location.location_position_modifier_manual ? location.location_position_modifier_manual : ''}
+        </>
+    )
+}
+
+const InspectedLateralLength = (props) => {
+    const {access} = props.data
+    try{
+        const accessKeys = Object.keys(access)
+        const inspectedLength = _.sum(accessKeys.map(item => {
+            return _.last((access[item].observations.map(obs => Number(obs.footage))).sort())
+        }))
+        return(
+            <>
+                {inspectedLength}'
+            </>
+        )
+    } catch(err){
+        return(<>unable to calculate</>)
+    }
+}
+
+const UninspectedLateral = (props) => {
+    const {access} = props.data
+    try{
+        const accessKeys = Object.keys(access)
+        const accessDirections = accessKeys.map(item =>{
+            return(access[item].details.direction)
+        })
+        return(<>{(accessDirections.includes('one_way')) ? ('Any pipe upstream of 1-way cleanout, length and condition unknown'): ('N/A') }</>)
+    } catch(err){
+        return(<>data unavailable</>)
+    }
+
+    // Any pipe upstream of 1-way cleanout, length and condition unknown
 }

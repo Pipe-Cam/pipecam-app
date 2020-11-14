@@ -15,7 +15,7 @@ function AdditionalScenarios(props) {
             {scenario.map(item => {
                 return(
                     <div className="row mb-4" key={item}>
-                        <div className="col-12 lead">
+                        <div className="col-12">
                             {scenarioText[item]}
                         </div>
                     </div>

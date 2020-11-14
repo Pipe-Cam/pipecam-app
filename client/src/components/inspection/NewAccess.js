@@ -269,7 +269,7 @@ const AccessLocation = (props) => {
                         <label className="form-check-label radio-button-label" htmlFor="location_position_modifier_in">In</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="location_position_modifier_under_deck" value="Under Deck" onChange={handleNewAccessLocationState}/>
+                        <input className="form-check-input radio-button" type="checkbox" id="location_position_modifier_under_deck" value="under_deck" onChange={handleNewAccessLocationState}/>
                         <label className="form-check-label radio-button-label" htmlFor="location_position_modifier_under_deck">Under Deck</label>
                     </div>
                 </div>
