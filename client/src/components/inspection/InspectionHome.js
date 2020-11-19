@@ -22,7 +22,6 @@ function InspectionHome() {
         "cccusd": "",
         "cccusd_unpermitted_work": "",
         "opening_observations": "",
-        "check_num": "",
         "usb_num": ""
     })
     const locationFormRef = useRef(null)

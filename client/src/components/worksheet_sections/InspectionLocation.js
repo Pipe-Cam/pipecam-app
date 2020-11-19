@@ -6,7 +6,7 @@ function InspectionLocation(props) {
     // const {handleUpdateLocationStateOnChange, inspectionData} = props
     const {inspectionData, locationData, setLocationData} = props
 
-    const checkNumRef = useRef(null)
+    // const checkNumRef = useRef(null)
     const usbNumRef = useRef(null)
     const occupancyRef = useRef(null)
     const outbuildingRef = useRef(null)
@@ -120,10 +120,10 @@ function InspectionLocation(props) {
             <h3>Location</h3>
             <div className="pt-2">
                 <div className="mb-5 mt-3">
-                    <div>
+                    {/* <div>
                         <label className="h6" htmlFor='check_num'>Check#</label>
                         <input ref={checkNumRef} {...{className: 'form-control mb-3', type: 'number', name: 'check_num', id: 'check_num', min: 0, placeholder: '(Optional)'}} onChange={handleUpdateLocationStateOnChange}/>
-                    </div>
+                    </div> */}
                     <div>
                         <label className="h6" htmlFor='usb_num'>USB#</label>
                         <input ref={usbNumRef} {...{className: 'form-control mb-3', type: 'number', name: 'usb_num', id: 'usb_num', min: 0, placeholder: '(Optional)'}} onChange={handleUpdateLocationStateOnChange}/>

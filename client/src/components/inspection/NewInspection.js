@@ -100,12 +100,12 @@ function NewInspection() {
                 </div> */}
 
                 <div className="row justify-content-center py-5">
-                    <div className="col col-5 text-right">
+                    <div className="col col-5 text-center">
                         <button className="btn-primary btn-lg" data-name="save" onClick={handleChangeFormMode}>&nbsp; Save &nbsp;</button>
                     </div>
-                    <div className="col col-7 text-left">
+                    {/* <div className="col col-7 text-left">
                         <button className="btn-warning btn-lg" data-name="create" onClick={handleChangeFormMode}>&nbsp; Create & Continue &nbsp;</button>
-                    </div>
+                    </div> */}
                 </div>
             </form>
         </div>

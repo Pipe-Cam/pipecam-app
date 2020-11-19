@@ -90,7 +90,12 @@ function InspectionAccess() {
                             </strong>
                         </div>
                         <div className="col-md-8">
-                            <span className="lead">{capitalizeEachWord(inspectionData.overview.property_address.split('_').join(' '))}</span>
+                            {/* <span className="lead">{capitalizeEachWord(inspectionData.overview.property_address.split('_').join(' '))}</span> */}
+                            <span className="lead">{
+                                `${inspectionData.overview.property_address_street}${!inspectionData.overview.property_address_unit === '' ? (", " + inspectionData.overview.property_address_unit) : ''},
+                                ${inspectionData.overview.property_address_city},
+                                ${inspectionData.overview.property_address_state}
+                                ${inspectionData.overview.property_address_zip}`}</span>
                         </div>
                     </div>
                 </div>
@@ -172,7 +177,7 @@ const AccordionList = (props) => {
             {Object.keys(dataObj).map(item => {
                 return(
                     <li className="list-group-item row" key={item}>
-                        <strong>{capitalizeEachWord(item.split('_').join(' '))}</strong>: {dataObj[item]}
+                        <strong>{capitalizeEachWord(item.split('_').join(' '))}</strong>: {(dataObj[item] === '') ? 'N/A' : ((typeof dataObj[item] !== 'boolean') ? dataObj[item] : ((dataObj[item].toString() === 'true') ? <span className="text-success">YES</span> : <span className="text-danger">NO</span>))}
                     </li>
                 )
             })}
