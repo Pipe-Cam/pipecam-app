@@ -200,18 +200,107 @@ const AccessLocation = (props) => {
     const entryRef = useRef(null)
     const walkRef = useRef(null)
     const porchRef = useRef(null)
+    const accessLocationRef = useRef(null)
 
 
-    // useEffect(()=>{
-    //     [walkRef, porchRef, entryRef, foundationEdgeRef].forEach(item => {
-    //         handleNewAccessLocationStateDefault(item.current)
-    //     })
-    // }, [])
+    const handleAddToAccessLocation = (e) => {
+        e.preventDefault()
+        let currentValue = accessLocationRef.current.value
+        let updatedValue = `${currentValue} ${e.target.innerText}`
+        accessLocationRef.current.value = updatedValue
+    }
+
+    const handleClearAccessLocation = (e) => {
+        e.preventDefault()
+        let currentValue = accessLocationRef.current.value
+        let updatedValue = ''
+        accessLocationRef.current.value = updatedValue
+    }
+
+    const color = {
+        'purple': '#ba68c8',
+        'orange': '#ff7043',
+        'blue': '#90caf9',
+        'red': '#ef5350'
+    }
+
+    const bg = (colorVar) => {
+        return {'backgroundColor': colorVar}
+    }
 
     return(
         <div className="py-3 px-4 border bg-foreground">
             <div className="">
                 <h3>Access Location</h3>
+                <div className="row">
+                    <div className="col-12">
+                        <button className="btn btn-danger float-right my-2" onClick={handleClearAccessLocation}>Clear</button>
+                    </div>
+                </div>
+                <div className="row my-2">
+                    <div className="col-12">
+                        <input ref={accessLocationRef} className="form-control" type="text" id="access_location" name="access_location"/>
+                    </div>
+                </div>
+
+                <div className="row justify-content-center">
+                    <div className="col btn-group btn-group-lg">
+
+                            <button className="btn btn-success" onClick={handleAddToAccessLocation}>Left</button>
+                            <button className="btn btn-success border-left" onClick={handleAddToAccessLocation}>Right</button>
+                            <button className="btn btn-success border-left" onClick={handleAddToAccessLocation}>Front</button>
+                            <button className="btn btn-success border-left" onClick={handleAddToAccessLocation}>Back</button>
+
+                    </div>
+                </div>
+                <div className="row justify-content-center my-2">
+
+                    <div className="col btn-group btn-group-lg">
+
+                        <button className="btn btn-warning" onClick={handleAddToAccessLocation}>of</button>
+                        <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>@</button>
+                        <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>in</button>
+                        <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>under</button>
+                        <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>covered</button>
+
+                    </div>
+                </div>
+                <div className="row justify-content-center my-2">
+                    <div className="col btn-group btn-group-lg">
+
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.purple)}>Foundation Edge</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.purple)}>Property Line</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.purple)}>Residence</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.purple)}>Corner</button>
+
+                    </div>
+                </div>
+                <div className="row justify-content-center my-2">
+                    <div className="col btn-group btn-group-lg">
+
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.red)}>Walk</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.red)}>Porch</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.red)}>Entry</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.red)}>Window</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.red)}>Deck</button>
+
+                    </div>
+                </div>
+                <div className="row justify-content-center">
+                    <div className="col btn-group btn-group-lg">
+
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Garage</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Driveway</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Kitchen</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Bathroom</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Living Room</button>
+                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Bedroom</button>
+
+                    </div>
+
+                </div>
+
+                
                 <div className="my-5">
                     <div className="h6">Location</div>
                     <select ref={locationRef} className="custom-select" id="location" onChange={handleNewAccessLocationState}>
@@ -219,14 +308,6 @@ const AccessLocation = (props) => {
                         <option value="foundation_edge">Foundation Edge</option>
                         <option value="property_line">Property Line</option>
                     </select>        
-                    {/* <div className="form-check form-check-inline mr-5">
-                        <input ref={foundationEdgeRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'location', id: 'location_radio_foundation_edge', value: 'foundation_edge', defaultChecked: 'checked'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">Foundation Edge</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'location', id: 'location_radio_property_line', value: 'property_line'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">Property Line</label>
-                    </div> */}
                 </div>
 
                 <div className="my-5">
@@ -287,18 +368,6 @@ const AccessLocation = (props) => {
                         <option value="right">Right</option>
                         <option value="none">None</option>
                     </select> 
-                    {/* <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'entry', id: 'entry_checkbox_left', value: 'left'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">Left</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'entry', id: 'entry_checkbox_right', value: 'right'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">Right</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input ref={entryRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'entry', id: 'entry_checkbox_none', value: 'none', defaultChecked: 'checked'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">None</label>
-                    </div> */}
                 </div>
                 
                 <div className="my-5">
@@ -309,18 +378,6 @@ const AccessLocation = (props) => {
                         <option value="right">Right</option>
                         <option value="none">None</option>
                     </select> 
-                    {/* <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'porch', id: 'porch_checkbox_left', value: 'left'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">Left</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'porch', id: 'porch_checkbox_right', value: 'right'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">Right</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input ref={porchRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'porch', id: 'porch_checkbox_none', value: 'none', defaultChecked: 'checked'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">None</label>
-                    </div> */}
                 </div>
                 
                 <div className="my-5">
@@ -331,18 +388,6 @@ const AccessLocation = (props) => {
                         <option value="right">Right</option>
                         <option value="none">None</option>
                     </select> 
-                    {/* <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'walk', id: 'walk_checkbox_left', value: 'left'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">Left</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'walk', id: 'walk_checkbox_right', value: 'right'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">Right</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input ref={walkRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'walk', id: 'walk_checkbox_none', value: 'none', defaultChecked: 'checked'}} onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label">None</label>
-                    </div> */}
                 </div>
             </div>
         </div>
