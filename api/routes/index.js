@@ -107,6 +107,7 @@ router.post('/new-client', function(req, res, next) {
 });
 
 router.post('/new-inspection', function(req, res, next) {
+  console.log(req.body)
   DB.inspection.new(req.body)
   res.send('new inspection added')
 });
