@@ -44,6 +44,10 @@ function InspectionAccess() {
         history.push(`/new-access/${id}?access=${nextAccessNumber}`)
     }
 
+    const handleGoHome = (e) => {
+        history.push('/')
+    }
+
     if(!inspectionData){
         return(
             <div className="w-100 text-center pt-5">
@@ -159,6 +163,11 @@ function InspectionAccess() {
                 <div className="row my-5">
                     <div className="col-12">
                         <AccessList {...{inspectionData, id, setNextAccessNumber}}/>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12 text-right">
+                        <button className="btn btn-success btn-lg shadow-lg" onClick={handleGoHome}>Complete Inspection</button>
                     </div>
                 </div>
             </div>
