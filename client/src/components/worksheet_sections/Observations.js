@@ -6,6 +6,9 @@ import capitalizeEachWord from '../../utility/capitalizeEachWord'
 import Spinner from '../ui_components/Spinner'
 import IconPlus from '../icons/IconPlus'
 
+import {todaysDate} from '../../utility/date'
+const _ = require('lodash')
+
 function Observations() {
     const history = useHistory()
     const {id} = useParams()
@@ -165,7 +168,7 @@ const ObservationHome = (props) => {
                     {/* <div>Inspection Id: {inspectionId}</div>
                     <div>Access Number: {accessNumber}</div> */}
 
-                    <div className="border py-3 mb-5 px-sm-3 px-md-0">
+                    <div className="py-3 mb-2 px-sm-3 px-md-0 bg-light">
                         <div className="row mb-sm-3 mb-md-0">
                             <div className="col-md-4 text-sm-left text-md-right">
                                 <strong>Inspection ID: </strong>
@@ -194,6 +197,20 @@ const ObservationHome = (props) => {
                                 <span className="text-dark">{capitalizeEachWord(inspectionData.overview.client.split('_').join(' '))}</span>
                             </div>
                         </div>
+
+                    </div>
+
+                    <div className="border border-primary py-3 mb-5 px-sm-3 px-md-0 shadow">
+                        <div className="row">
+                            <div className="col-md-4 text-sm-left text-md-right">
+                                <strong>
+                                    Today's Date: 
+                                </strong>
+                            </div>
+                            <div className="col-md-8">
+                                <span className="lead">{todaysDate()}</span>
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="col-md-4 text-sm-left text-md-right">
                                 <strong>
@@ -201,7 +218,21 @@ const ObservationHome = (props) => {
                                 </strong>
                             </div>
                             <div className="col-md-8">
-                                <span className="lead">{capitalizeEachWord(inspectionData.overview.property_address.split('_').join(' '))}</span>
+                                <span className="lead">{
+                                `${inspectionData.overview.property_address_street}${!inspectionData.overview.property_address_unit === '' ? (", " + inspectionData.overview.property_address_unit) : ''},
+                                ${inspectionData.overview.property_address_city},
+                                ${inspectionData.overview.property_address_state}
+                                ${inspectionData.overview.property_address_zip}`}</span>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-4 text-sm-left text-md-right">
+                                <strong>
+                                    Access Location: 
+                                </strong>
+                            </div>
+                            <div className="col-md-8">
+                                <span className="lead">{inspectionData.access[accessNumber].location}</span>
                             </div>
                         </div>
                     </div>
@@ -219,15 +250,11 @@ const ObservationHome = (props) => {
                             <ObservationList {...{inspectionData, accessNumber, inspectionId}}/>
                         </div>
                     </div>
-
-                    {/* <div className="row bg-dark text-white">
-                        <div className="col-3">
-                            Inspection Data:
+                    <div className="row my-5">
+                        <div className="col-12 text-right">
+                            <button className="btn btn-secondary btn-lg shadow">Complete Access #{accessNumber}</button>
                         </div>
-                        <div className="col-9">
-                            {(JSON.stringify(inspectionData) === 'null') ? <Spinner /> : (Object.keys(inspectionData).map(item=>{return(<div className="mb-4" key={JSON.stringify(inspectionData[item])}>{item}:<br/>{JSON.stringify(inspectionData[item])}</div>)}))}
-                        </div>
-                    </div> */}
+                    </div>
                 </>
             )
     }
@@ -257,6 +284,10 @@ const ObservationList = (props) => {
 const ObservationNew = (props) => {
     const {inspectionId, accessNumber, history, observationState, setObservationState, observationQty} = props
     const {handleUpdateInspectionDataState, updateObservationQty,} = props
+
+    const [footageVal, setFootageVal] = useState([])
+    const [lossOfCrossection, setLossOfCrossection] = useState(0)
+    const footageRef = useRef(null)
 
     const standingWaterRef = useRef(null)
     const standingWaterStartRef = useRef(null)
@@ -364,18 +395,207 @@ const ObservationNew = (props) => {
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    const handleAddToFootage = (e)=>{
+        // footageRef
+        e.preventDefault()
+        e.target.disabled = true
+        let tmpFootageVal = footageVal
+        let btnValue = e.target.innerText
+
+        if(tmpFootageVal.includes('.')){
+            // do nothing
+            if(btnValue === '.'){
+                e.target.disabled = false
+                return
+            }
+
+            let decimalIndex = _.indexOf(tmpFootageVal, '.')
+            let footageIndexLast = tmpFootageVal.length - 1
+
+            // console.log(`${footageIndexLast - decimalIndex} after decimal`)
+            if((footageIndexLast - decimalIndex) >= 2){
+                e.target.disabled = false
+                return
+            }
+        } else {
+            if(tmpFootageVal.length >= 4 && btnValue !== '.'){
+                e.target.disabled = false
+                return
+            }
+        }
+
+        tmpFootageVal.push(btnValue)
+        setFootageVal(tmpFootageVal)
+
+        footageRef.current.value = tmpFootageVal.join('')
+        console.log(btnValue)
+
+        e.target.disabled = false
+    }
+
+    const handleClearFootage = (e) => {
+        e.preventDefault()
+        footageRef.current.value = ''
+        setFootageVal([])
+    }
+
+    const handleRangeSlider = (e) => {
+        // const sliderValue = e.target.value
+        setLossOfCrossection(e.target.value)
+    }
+
+    const btnClasses = 'btn btn-secondary border btn-lg px-3 align-middle'
+
     return(
         <>
         <form id="observationForm" onSubmit={handleNewObservationFormSubmit} data-btnclicked=''>
             <div className="p-3">
                 <h2>Observation #{observationNumber.toString()}</h2>
-                <div className="row border p-2 m-2 bg-foreground">
-                    <div className="col col-6 pt-3">
-                        <label className="h6" htmlFor='footage'>Footage (in Feet) <span className="text-danger">*</span></label>
-                        <input {...{className: 'form-control mb-3', type: 'number', name: 'footage', id: 'footage', placeholder: 'ft.in', step: '0.1', min: '0', required: true}} onChange={handleNewObservationOnChange}/>
-                    </div>
+
+                <div className="border p-2 m-2 bg-foreground" style={{minWidth: '300px'}}>
+                    <div className="row">
+                        <div className="col-sm-12 col-md-6 col-lg-4 p-4">
+                            <div className="row justify-content-left">
+                                <div className="col-12">
+                                    <label className="h6 pt-2" htmlFor='footage'>Footage (in Feet) <span className="text-danger">*</span></label>
+                                    <button className="btn btn-danger float-right mb-2" onClick={handleClearFootage}>Clear</button>
+                                    <input ref={footageRef} {...{className: 'form-control form-control-lg mb-3 ml-1 text-right', type: 'text', name: 'footage', id: 'footage', placeholder: '0.00', required: true, disabled: true}} style={{minWidth: '268px'}}/>
+                                </div>
+                            </div>
+                            <div className="row justify-content-left">
+                                <div className="col-12 text-center" style={{minWidth: '308px'}}>
+                                    <div>
+                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>7</button>
+                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>8</button>
+                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>9</button>
+                                    </div>
+                                    <div>
+                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>4</button>
+                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>5</button>
+                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>6</button>
+                                    </div>
+                                    <div>
+                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>1</button>
+                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>2</button>
+                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>3</button>
+                                    </div>
+                                    <div>
+                                        <button className={btnClasses} style={{width: '180px', height: '90px'}} onClick={handleAddToFootage}>0</button>
+                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>.</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row justify-content-left mt-5">
+                                <div className="col-12 text-center" style={{minWidth: '308px'}}>
+                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Tie-In</button>
+                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Line Turns Left</button>
+                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Line Turns Right</button>
+                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Line Turns Up</button>
+                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Line Turns Down</button>
+                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Line Turns Flat</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-sm-12 col-md-6 col-lg-8">
+                            <div className="row py-3 px-5">
+                                <div className="col-12">
+                                    <div className="form-group">
+                                        <label htmlFor="formControlRange"><span className="font-weight-bold lead">{lossOfCrossection.toString()}%</span> Loss of Cross Section</label>
+                                        <input type="range" className="form-control-range" id="formControlRange" min="0" max="100" step="10" defaultValue="0" onChange={handleRangeSlider}/>
+                                        <div className="mt-3">
+                                            <button className="btn btn-secondary">-</button><button className="btn btn-secondary float-right">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row py-3 px-5">
+                                <div className="col-sm-12 mt-sm-0 col-md-12 mt-md-0 col-lg-6 mt-lg-3">
+                                    <button className="btn btn-primary btn-lg w-100 my-1">Roots</button>
+                                    <button className="btn btn-outline-info w-100 my-1">In Flow Line</button>
+                                    <button className="btn btn-outline-info w-100 my-1">Continuous</button>
+                                    <button className="btn btn-outline-info w-100 my-1">Fine</button>
+                                </div>
+                                <div className="col-sm-12 mt-sm-3 col-md-12 mt-md-3 col-lg-6">
+                                    <button className="btn btn-primary btn-lg w-100 my-1">Offset Joint</button>
+                                    <button className="btn btn-outline-warning w-100 my-1">Minor</button>
+                                    <button className="btn btn-outline-danger w-100 my-1">Severe</button>
+                                </div>
+                            </div>
+                            <div className="row py-3 px-5">
+                                <div className="col-sm-12 mt-sm-3 col-md-12 mt-md-3 col-lg-6">
+                                    <button className="btn btn-primary btn-lg w-100 my-1">Debris</button>
+                                    <button className="btn btn-outline-info w-100 my-1">Attached To Roots</button>
+                                    <button className="btn btn-outline-info w-100 my-1">Loose</button>
+                                    <button className="btn btn-outline-info w-100 my-1">On Wall</button>
+                                    <button className="btn btn-outline-info w-100 my-1">In Flow Line</button>
+                                </div>
+                                <div className="col-sm-12 mt-sm-3 col-md-12 mt-md-3 col-lg-6">
+                                    <button className="btn btn-primary btn-lg w-100 my-1">Standing Water</button>
+                                    <button className="btn btn-outline-success w-100 my-1">Start</button>
+                                    <button className="btn btn-outline-danger w-100 my-1">End</button>
+                                    <button className="btn btn-outline-info w-100 my-1">By Offset Joint</button>
+                                </div>
+                            </div>
+                            <div className="row py-3 px-5">
+                                <div className="col-12">
+                                    <button className="btn btn-primary btn-lg w-100 my-1">Under Water</button>
+                                    <button className="btn btn-outline-success w-100 my-1">Start</button>
+                                    <button className="btn btn-outline-danger w-100 my-1">End</button>
+                                </div>
+                            </div>
+                            <div className="row py-3 px-5">
+                                <div className="col-12">
+                                    <button className="btn btn-info btn-lg w-100 my-1">Break</button>
+                                    <button className="btn btn-info btn-lg w-100 my-1">Crack</button>
+                                    <button className="btn btn-info btn-lg w-100 my-1">Hole</button>
+                                    <button className="btn btn-info btn-lg w-100 my-1">Separated Joint</button>
+                                    <button className="btn btn-outline-danger w-100 my-1">Multiple</button>
+                                </div>
+                            </div>
+                        </div>
+                        {/* <div className="col-sm-12 col-md-4 col-lg-6 text-left border">
+
+                            <div className="row justify-content-center p-4">
+                                <div className="col-12">
+                                    <div className="form-group">
+                                        <label htmlFor="formControlRange"><span className="font-weight-bold lead">{lossOfCrossection.toString()}%</span> Loss of Cross Section</label>
+                                        <input type="range" className="form-control-range" id="formControlRange" min="0" max="100" step="10" defaultValue="0" onChange={handleRangeSlider}/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="row justify-content-left mt-3">
+                                <div className="col-sm-12 col-md-4 col-lg-4 text-center">
+                                    <span className="h6 pt-2">Blockage</span>
+                                    <div className="btn-group-vertical">
+                                        <button className="btn btn-secondary">Roots</button>
+                                        <button className="btn btn-secondary">Roots Fine</button>
+                                        <button className="btn btn-secondary">RFL</button>
+                                    </div>
+                                    <div className="btn-group-vertical">
+                                        <button className="btn btn-secondary">Debris</button>
+                                        <button className="btn btn-secondary">DAR</button>
+                                    </div>
+
+                                </div>
+                                <div className="col-sm-12 col-md-4 col-lg-4 text-center">
+                                    <span className="h6 pt-2">Pipe</span>
+                                </div>
+                                <div className="col-sm-12 col-md-4 col-lg-4 text-center">
+                                    <span className="h6 pt-2">Notation</span>
+
+                                </div>
+                            </div>
+                        </div> */}
+                    </div>                    
                 </div>
-                <div className="row border p-2 m-2 bg-foreground">
+
+
+
+
+                {/* <div className="row border p-2 m-2 bg-foreground">
                     <div className="col col-12 pt-3">
                         <div className="h6">Blockage</div>
                         <div className="form-check form-check-inline mr-5">
@@ -474,7 +694,7 @@ const ObservationNew = (props) => {
                     <div className="col col-12 pt-3">
                         <textarea name="observation_notes" id="observation_notes" placeholder="Notes" rows="3" className="w-100 p-3" onChange={handleNewObservationOnChange}/>
                     </div>
-                </div>
+                </div> */}
                 <div className="row mt-5">
                     <div className="col col-5">
                         <button id="done_observation_btn" className="btn btn-secondary btn-lg m-0 mt-3" data-toggle="tooltip" data-placement="top" title="Save & Done" data-action="done" onMouseOver={handleNewObservationFormSubmitClick}>
