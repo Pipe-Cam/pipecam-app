@@ -3,6 +3,8 @@ import {useHistory, useParams} from 'react-router-dom'
 
 import {getInspectionById} from '../../db/read'
 import {updateInspectionById} from '../../db/write'
+
+import Spinner from '../ui_components/Spinner'
 // import ObservationHome from './ObservationHome'
 // import InspectionContext from '../../context/InspectionContext'
 
@@ -19,7 +21,7 @@ import {updateInspectionById} from '../../db/write'
 function NewAccess() {
     // const {job, setJob, appNav, setAppNav} = useContext(InspectionContext)
     const [inspectionData, setInspectionData] = useState(null)
-    const newAccessPlaceholder = {location: {}, details: {}, observations: []}
+    const newAccessPlaceholder = {location: "", details: {}, observations: []}
     const [newAccessState, setNewAccessState] = useState(newAccessPlaceholder)
     const [accessNumber, setAccessNumber] = useState(null)
     
@@ -41,10 +43,9 @@ function NewAccess() {
 
     useEffect(() => {
         if(inspectionData){
-            console.log(inspectionData)
-
+            // console.log(inspectionData)
             let accessDataExists = doesAccessObjExist(inspectionData)
-            console.log('access data exists: ', accessDataExists)
+            // console.log('access data exists: ', accessDataExists)
             let accessNumberExists = false;
 
             if(accessDataExists){
@@ -95,38 +96,22 @@ function NewAccess() {
         }
     }
 
-    const handleUpdateAccessStateOnChange = (e, objBranch) => {
-        let name = e.target.id    
-        let type = e.target.type
-        let val = e.target.value
-
-        if(type === 'checkbox'){
-            val = e.target.checked
-        }
-
+    const handleUpdateAccessStateOnChange = (locationString, objBranch) => {
         let tmpAccessState = newAccessState
         
-        tmpAccessState[objBranch][name] = val
+        tmpAccessState[objBranch] = locationString
         setNewAccessState({...tmpAccessState})
-        console.log(newAccessState)
+        console.log(tmpAccessState)
     }
 
-    const handleNewAccessLocationState = (e) => {
-        console.log({name: e.target.id, value: e.target.value})
-
-        if(e.target.value !== 'Select...'){
-            let objBranch = 'location'
-            handleUpdateAccessStateOnChange(e, objBranch)
-        }
+    const handleNewAccessLocationState = (locationString) => {
+        let objBranch = 'location'
+        handleUpdateAccessStateOnChange(locationString, objBranch)
     }
     
-    const handleNewAccessDetailsState = (e) => {
-        console.log({name: e.target.id, value: e.target.value})
-
-        if(e.target.value !== 'Select...'){
-            let objBranch = 'details'
-            handleUpdateAccessStateOnChange(e, objBranch)
-        }
+    const handleNewAccessDetailsState = (stateObj) => {
+        let objBranch = 'details'
+        handleUpdateAccessStateOnChange(stateObj, objBranch)
     }
 
     const disableButton = (btnId) => {
@@ -152,12 +137,16 @@ function NewAccess() {
         }
 
         tmpAccessObj[useNumber] = newAccessState
+
+        console.log(tmpAccessObj[useNumber])
         await updateInspectionById(id, {access: tmpAccessObj, last_modified: new Date()})
         history.push(`/access/${id}`)
         window.location.reload()
     }
 
-    // if(appNav === 'new_access'){
+    if(!inspectionData) {
+        return(<Spinner />)
+    } else {
         return (
             <>
                 <h1>New Access</h1>
@@ -182,11 +171,7 @@ function NewAccess() {
                 </div>
             </>
         )
-    // } else if(appNav === 'observations' || appNav === 'new_observation') {
-    //     return(
-    //         <ObservationHome {...{accessNumber, setAccessNumber}}/>
-    //     )
-    // }
+    }
 
 }
 
@@ -195,38 +180,46 @@ export default NewAccess
 
 const AccessLocation = (props) => {
     const {handleNewAccessLocationState} = props
+    const [accessLocationState, setAccessLocationState] = useState('')
 
-    const locationRef = useRef(null)
-    const entryRef = useRef(null)
-    const walkRef = useRef(null)
-    const porchRef = useRef(null)
     const accessLocationRef = useRef(null)
 
+    useEffect(()=>{
+        console.log(accessLocationState)
+        handleNewAccessLocationState(accessLocationState)
+    },[accessLocationState])
 
     const handleAddToAccessLocation = (e) => {
         e.preventDefault()
         let currentValue = accessLocationRef.current.value
         let updatedValue = `${currentValue} ${e.target.innerText}`
-        accessLocationRef.current.value = updatedValue
+        accessLocationRef.current.value = updatedValue.trim()
+        setAccessLocationState(updatedValue.trim())
     }
 
     const handleClearAccessLocation = (e) => {
         e.preventDefault()
-        let currentValue = accessLocationRef.current.value
+        // let currentValue = accessLocationRef.current.value
         let updatedValue = ''
         accessLocationRef.current.value = updatedValue
+        setAccessLocationState(updatedValue)
     }
 
-    const color = {
-        'purple': '#ba68c8',
-        'orange': '#ff7043',
-        'blue': '#90caf9',
-        'red': '#ef5350'
+    const handleAccessLocation = (e) => {
+        console.log(e.target.value)
+        setAccessLocationState(e.target.value.trim())
     }
 
-    const bg = (colorVar) => {
-        return {'backgroundColor': colorVar}
-    }
+    // const color = {
+    //     'purple': '#ba68c8',
+    //     'orange': '#ff7043',
+    //     'blue': '#90caf9',
+    //     'red': '#ef5350'
+    // }
+
+    // const bg = (colorVar) => {
+    //     return {'backgroundColor': colorVar}
+    // }
 
     return(
         <div className="py-3 px-4 border bg-foreground">
@@ -237,157 +230,75 @@ const AccessLocation = (props) => {
                         <button className="btn btn-danger float-right my-2" onClick={handleClearAccessLocation}>Clear</button>
                     </div>
                 </div>
-                <div className="row my-2">
+                <div className="row mb-5">
                     <div className="col-12">
-                        <input ref={accessLocationRef} className="form-control" type="text" id="access_location" name="access_location"/>
+                        <input ref={accessLocationRef} className="form-control form-control-lg" type="text" id="access_location" name="access_location" defaultValue="" onChange={handleAccessLocation}/>
                     </div>
                 </div>
 
                 <div className="row justify-content-center">
                     <div className="col btn-group btn-group-lg">
-
-                            <button className="btn btn-success" onClick={handleAddToAccessLocation}>Left</button>
-                            <button className="btn btn-success border-left" onClick={handleAddToAccessLocation}>Right</button>
-                            <button className="btn btn-success border-left" onClick={handleAddToAccessLocation}>Front</button>
-                            <button className="btn btn-success border-left" onClick={handleAddToAccessLocation}>Back</button>
-
+                        <button className="btn btn-success" onClick={handleAddToAccessLocation}>Left</button>
+                        <button className="btn btn-success border-left" onClick={handleAddToAccessLocation}>Right</button>
+                        <button className="btn btn-success border-left" onClick={handleAddToAccessLocation}>Front</button>
+                        <button className="btn btn-success border-left" onClick={handleAddToAccessLocation}>Back</button>
                     </div>
                 </div>
                 <div className="row justify-content-center my-2">
-
                     <div className="col btn-group btn-group-lg">
-
-                        <button className="btn btn-warning" onClick={handleAddToAccessLocation}>of</button>
-                        <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>@</button>
+                        <button className="btn btn-warning" onClick={handleAddToAccessLocation}>@</button>
+                        <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>of</button>
                         <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>in</button>
+                        <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>and</button>
+                    </div>
+                </div>
+                <div className="row justify-content-center my-2">
+                    <div className="col btn-group btn-group-lg">
+                        <button className="btn btn-warning" onClick={handleAddToAccessLocation}>covered</button>
+                        <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>side</button>
                         <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>under</button>
-                        <button className="btn btn-warning border-left" onClick={handleAddToAccessLocation}>covered</button>
-
                     </div>
                 </div>
                 <div className="row justify-content-center my-2">
                     <div className="col btn-group btn-group-lg">
-
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.purple)}>Foundation Edge</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.purple)}>Property Line</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.purple)}>Residence</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.purple)}>Corner</button>
-
+                        <button className="btn btn-primary" onClick={handleAddToAccessLocation}>Foundation Edge</button>
+                        <button className="btn border-left btn-primary" onClick={handleAddToAccessLocation}>Property Line</button>
                     </div>
                 </div>
                 <div className="row justify-content-center my-2">
                     <div className="col btn-group btn-group-lg">
-
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.red)}>Walk</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.red)}>Porch</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.red)}>Entry</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.red)}>Window</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.red)}>Deck</button>
-
+                        <button className="btn btn-primary" onClick={handleAddToAccessLocation}>Corner</button>
+                        <button className="btn border-left btn-primary" onClick={handleAddToAccessLocation}>Residence</button>
+                    </div>
+                </div>
+                <div className="row justify-content-center my-2">
+                    <div className="col btn-group btn-group-lg">
+                        <button className="btn btn-danger" onClick={handleAddToAccessLocation}>Entry</button>
+                        <button className="btn border-left btn-danger" onClick={handleAddToAccessLocation}>Walk</button>
+                        <button className="btn border-left btn-danger" onClick={handleAddToAccessLocation}>Window</button>
+                    </div>
+                </div>
+                <div className="row justify-content-center my-2">
+                    <div className="col btn-group btn-group-lg">
+                        <button className="btn btn-danger" onClick={handleAddToAccessLocation}>Porch</button>
+                        <button className="btn border-left btn-danger" onClick={handleAddToAccessLocation}>Deck</button>
+                        <button className="btn border-left btn-danger" onClick={handleAddToAccessLocation}>Hose Bib</button>
+                    </div>
+                </div>
+                <div className="row justify-content-center my-2">
+                    <div className="col btn-group btn-group-lg">
+                        <button className="btn btn-info" onClick={handleAddToAccessLocation}>Garage</button>
+                        <button className="btn border-left btn-info" onClick={handleAddToAccessLocation}>Driveway</button>
+                        <button className="btn border-left btn-info" onClick={handleAddToAccessLocation}>Living Room</button>
                     </div>
                 </div>
                 <div className="row justify-content-center">
                     <div className="col btn-group btn-group-lg">
-
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Garage</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Driveway</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Kitchen</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Bathroom</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Living Room</button>
-                            <button className="btn border-left" onClick={handleAddToAccessLocation} style={bg(color.blue)}>Bedroom</button>
-
+                        <button className="btn btn-info" onClick={handleAddToAccessLocation}>Bathroom</button>
+                        <button className="btn border-left btn-info" onClick={handleAddToAccessLocation}>Closet</button>
+                        <button className="btn border-left btn-info" onClick={handleAddToAccessLocation}>Kitchen</button>
+                        <button className="btn border-left btn-info" onClick={handleAddToAccessLocation}>Bedroom</button>
                     </div>
-
-                </div>
-
-                
-                <div className="my-5">
-                    <div className="h6">Location</div>
-                    <select ref={locationRef} className="custom-select" id="location" onChange={handleNewAccessLocationState}>
-                        <option>Select...</option>
-                        <option value="foundation_edge">Foundation Edge</option>
-                        <option value="property_line">Property Line</option>
-                    </select>        
-                </div>
-
-                <div className="my-5">
-                    <div className="h6">Location Position</div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="location_position_front" value="front" onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="location_position_front">Front</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="location_position_back" value="back" onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="location_position_back">Back</label>
-                    </div>
-
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="location_position_left" value="left" onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="location_position_left">Left</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input radio-button" type="checkbox" id="location_position_right" value="right" onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="location_position_right">Right</label>
-                    </div>
-                </div>
-                <div className="my-5">
-                    <div className="h6">Location Position Modifier</div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="location_position_modifier_of_residence" value="of_residence" onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="location_position_modifier_of_residence">Of Residence</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="location_position_modifier_corner" value="corner" onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="location_position_modifier_corner">Corner</label>
-                    </div>
-
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="location_position_modifier_under_window" value="under_window" onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="location_position_modifier_under_window">Under Window</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="location_position_modifier_in" value="in" onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="location_position_modifier_in">In</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="location_position_modifier_under_deck" value="under_deck" onChange={handleNewAccessLocationState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="location_position_modifier_under_deck">Under Deck</label>
-                    </div>
-                </div>
-
-                <div>
-                    <label className="h6" htmlFor='location_position_modifier_text_manual'>Location Position Modifier (specify)</label>
-                    <input {...{className: 'form-control mb-3', type: 'text', name: 'location_position_modifier_manual', id: 'location_position_modifier_manual', placeholder: '(Optional)'}} onChange={handleNewAccessLocationState}/>
-                </div>
-
-                <div className="my-5">
-                    <div className="h6">Entry</div>
-                    <select ref={entryRef} className="custom-select" id="entry" defaultValue="none" onChange={handleNewAccessLocationState}>
-                        {/* <option>Select...</option> */}
-                        <option value="left">Left</option>
-                        <option value="right">Right</option>
-                        <option value="none">None</option>
-                    </select> 
-                </div>
-                
-                <div className="my-5">
-                    <div className="h6">Porch</div>
-                    <select ref={porchRef} className="custom-select" id="porch" defaultValue="none" onChange={handleNewAccessLocationState}>
-                        {/* <option>Select...</option> */}
-                        <option value="left">Left</option>
-                        <option value="right">Right</option>
-                        <option value="none">None</option>
-                    </select> 
-                </div>
-                
-                <div className="my-5">
-                    <div className="h6">Walk</div>
-                    <select ref={walkRef} className="custom-select" id="walk" defaultValue="none" onChange={handleNewAccessLocationState}>
-                        {/* <option>Select...</option> */}
-                        <option value="left">Left</option>
-                        <option value="right">Right</option>
-                        <option value="none">None</option>
-                    </select> 
                 </div>
             </div>
         </div>
@@ -396,12 +307,51 @@ const AccessLocation = (props) => {
 
 const AccessDetails = (props) => {
     const {handleNewAccessDetailsState} = props
-    
-    const pipeDiameterRef = useRef(null)
-    const directionRef = useRef(null)
-    const bopdRef = useRef(null)
-    const accessMaterialRef = useRef(null)
-    const initialPipeMaterialRef = useRef(null)
+    const [accessDetailsState, setAccessDetailsState] = useState(null)
+
+    const [pipeDiameter, setPipeDiameter] = useState(null)
+    const [cleanoutDirection, setCleanoutDirection] = useState(null)
+    const [bopdType, setBopdType] = useState(null)
+    const [bopdCondition, setBopdCondition] = useState('N/A')
+    const [accessMaterial, setAccessMaterial] = useState(null)
+    const [cleanoutIssues, setCleanoutIssues] = useState('N/A')
+
+    const bopdConditionDivRef = useRef(null)
+    const bopdConditionTitleDivRef = useRef(null)
+
+    const pipeDiameter3Ref = useRef(null)
+    const pipeDiameter4Ref = useRef(null)
+    const pipeDiameter6Ref = useRef(null)
+
+    const cleanoutDirection1WayRef = useRef(null)
+    const cleanoutDirection2WayRef = useRef(null)
+    const cleanoutDirectionBreakInRef = useRef(null)
+    const cleanoutDirectionStubRef = useRef(null)
+    const cleanoutDirectionToiletRef = useRef(null)
+    const cleanoutDirectionRoofRef = useRef(null)
+
+    const bopdTypeNoneRef = useRef(null)
+    const bopdTypePopperRef = useRef(null)
+    const bopdTypeMushroomRef = useRef(null)
+    const bopdTypeCheckValveRef = useRef(null)
+    const bopdTypeReliefRef = useRef(null)
+
+    const bopdConditionGoodRef = useRef(null)
+    const bopdConditionBrokenRef = useRef(null)
+    const bopdConditionMissingRef = useRef(null)
+    const bopdConditionBallRef = useRef(null)
+    const bopdConditionTooLowRef = useRef(null)
+    const bopdConditionTooHighRef = useRef(null)
+
+    const accessMaterialCiRef = useRef(null)
+    const accessMaterialAcRef = useRef(null)
+    const accessMaterialAbsRef = useRef(null)
+    const accessMaterialVcpRef = useRef(null)
+    const accessMaterialPvcRef = useRef(null)
+    const accessMaterialOrbgRef = useRef(null)
+
+    const cleanoutIssuesBelowGradeRef = useRef(null)
+    const cleanoutIssuesExcessVegetationRef = useRef(null)
 
     // useEffect(()=>{
     //     [pipeDiameterRef,
@@ -414,200 +364,272 @@ const AccessDetails = (props) => {
 
     // }, [])
 
+    // useEffect(()=>{ console.log(pipeDiameter) }, [pipeDiameter])
+    // useEffect(()=>{ console.log(cleanoutDirection) }, [cleanoutDirection])
+    // useEffect(()=>{ console.log(bopdType) }, [bopdType])
+    // useEffect(()=>{ console.log(bopdCondition) }, [bopdCondition])
+    // useEffect(()=>{ console.log(accessMaterial) }, [accessMaterial])
+    // useEffect(()=>{ console.log(cleanoutIssues) }, [cleanoutIssues])
+
+    useEffect(()=>{
+        handleNewAccessDetailsState(accessDetailsState)
+    },[accessDetailsState])
+
+    useEffect(()=>{
+        let accessDetails = {
+            pipe_diameter: pipeDiameter,
+            cleanout_direction: cleanoutDirection,
+            bopd_type: bopdType,
+            bopd_condition: bopdCondition,
+            access_material: accessMaterial,
+            cleanout_issues: cleanoutIssues
+        }
+
+        setAccessDetailsState(accessDetails)
+    },[pipeDiameter, cleanoutDirection, bopdType, bopdCondition, accessMaterial, cleanoutIssues])
+
+    const handlePipeDiameter = (e) => {
+        e.preventDefault();
+        let pipeDiameterValue = e.target.getAttribute('data-value')
+        let bsColor = e.target.getAttribute('data-bscolor')
+
+        // remove selected button formatting
+        let pipeDiamRefs = [pipeDiameter3Ref, pipeDiameter4Ref, pipeDiameter6Ref]
+        
+        pipeDiamRefs.forEach(item => {
+            let itemColor = item.current.getAttribute('data-bscolor')
+            item.current.classList.remove(`btn-${itemColor}`)
+            item.current.classList.remove(`text-white`)
+        })
+
+        // add selected button formatting
+        e.target.classList.add(`btn-${bsColor}`)
+        e.target.classList.add(`text-white`)
+        setPipeDiameter(pipeDiameterValue)
+    }
+
+    const handleCleanoutDirection = (e) => {
+        e.preventDefault();
+        let cleanoutDirectionValue = e.target.getAttribute('data-value')
+        let bsColor = e.target.getAttribute('data-bscolor')
+
+        // remove selected button formatting
+        let cleanoutDirectionRefs = [
+            cleanoutDirection1WayRef,
+            cleanoutDirection2WayRef,
+            cleanoutDirectionBreakInRef,
+            cleanoutDirectionStubRef,
+            cleanoutDirectionToiletRef,
+            cleanoutDirectionRoofRef
+        ]
+        
+        cleanoutDirectionRefs.forEach(item => {
+            let itemColor = item.current.getAttribute('data-bscolor')
+            item.current.classList.remove(`btn-${itemColor}`)
+            item.current.classList.remove(`text-white`)
+        })
+
+        // add selected button formatting
+        e.target.classList.add(`btn-${bsColor}`)
+        e.target.classList.add(`text-white`)
+        setCleanoutDirection(cleanoutDirectionValue)
+    }
+
+    const handleBopdType = (e) => {
+        e.preventDefault();
+        let bopdTypeValue = e.target.getAttribute('data-value')
+        let bsColor = e.target.getAttribute('data-bscolor')
+
+        if(bopdTypeValue === 'none') {
+            bopdConditionDivRef.current.style.display = 'none'
+            bopdConditionTitleDivRef.current.style.display = 'none'
+
+        } else {
+            bopdConditionDivRef.current.style.display = 'inherit'
+            bopdConditionTitleDivRef.current.style.display = 'inherit'
+        }
+
+        // remove selected button formatting
+        let bopdTypeRefs = [
+            bopdTypeNoneRef,
+            bopdTypePopperRef,
+            bopdTypeMushroomRef,
+            bopdTypeCheckValveRef,
+            bopdTypeReliefRef
+        ]
+        
+        bopdTypeRefs.forEach(item => {
+            let itemColor = item.current.getAttribute('data-bscolor')
+            item.current.classList.remove(`btn-${itemColor}`)
+            item.current.classList.remove(`text-white`)
+        })
+
+        // add selected button formatting
+        e.target.classList.add(`btn-${bsColor}`)
+        e.target.classList.add(`text-white`)
+        setBopdType(bopdTypeValue)
+    }
+    
+    const handleBopdCondition = (e) => {
+        e.preventDefault();
+        let bopdConditionValue = e.target.getAttribute('data-value')
+        let bsColor = e.target.getAttribute('data-bscolor')
+
+        // remove selected button formatting
+        let bopdConditionRefs = [
+            bopdConditionGoodRef,
+            bopdConditionBrokenRef,
+            bopdConditionMissingRef,
+            bopdConditionBallRef,
+            bopdConditionTooLowRef,
+            bopdConditionTooHighRef
+        ]
+        
+        bopdConditionRefs.forEach(item => {
+            let itemColor = item.current.getAttribute('data-bscolor')
+            item.current.classList.remove(`btn-${itemColor}`)
+            item.current.classList.remove(`text-white`)
+        })
+
+        // add selected button formatting
+        e.target.classList.add(`btn-${bsColor}`)
+        e.target.classList.add(`text-white`)
+        setBopdCondition(bopdConditionValue)
+    }
+    
+    const handleAccessMaterial = (e) => {
+        e.preventDefault();
+        let accessMaterialValue = e.target.getAttribute('data-value')
+        let bsColor = e.target.getAttribute('data-bscolor')
+
+        // remove selected button formatting
+        let accessMaterialRefs = [
+            accessMaterialCiRef,
+            accessMaterialAcRef,
+            accessMaterialAbsRef,
+            accessMaterialVcpRef,
+            accessMaterialPvcRef,
+            accessMaterialOrbgRef
+        ]
+        
+        accessMaterialRefs.forEach(item => {
+            let itemColor = item.current.getAttribute('data-bscolor')
+            item.current.classList.remove(`btn-${itemColor}`)
+            item.current.classList.remove(`text-white`)
+        })
+
+        // add selected button formatting
+        e.target.classList.add(`btn-${bsColor}`)
+        e.target.classList.add(`text-white`)
+        setAccessMaterial(accessMaterialValue)
+    }
+
+    const handleCleanoutIssues = (e) => {
+        e.preventDefault();
+        let cleanoutIssuesValue = e.target.getAttribute('data-value')
+        let bsColor = e.target.getAttribute('data-bscolor')
+
+        // remove selected button formatting
+        let cleanoutIssuesRef = [
+            cleanoutIssuesBelowGradeRef,
+            cleanoutIssuesExcessVegetationRef
+        ]
+        
+        cleanoutIssuesRef.forEach(item => {
+            let itemColor = item.current.getAttribute('data-bscolor')
+            item.current.classList.remove(`btn-${itemColor}`)
+            item.current.classList.remove(`text-white`)
+        })
+
+        // add selected button formatting
+        e.target.classList.add(`btn-${bsColor}`)
+        e.target.classList.add(`text-white`)
+        setCleanoutIssues(cleanoutIssuesValue)
+    }
+    
     return(
 
         <div className="py-3 px-4 border bg-foreground">
             <div className="">
                 <h3>Access Details</h3>
-                <div className="my-5">
-                    <div className="h6">Pipe Diameter</div>
-                    <select ref={pipeDiameterRef} className="custom-select" id="pipe_diameter" onChange={handleNewAccessDetailsState}>
-                        <option>Select...</option>
-                        <option value="3">3"</option>
-                        <option value="4">4"</option>
-                        <option value="6">6"</option>
-                    </select> 
-                    {/* <div className="form-check form-check-inline mr-5">
-                        <input ref={pipeDiameterRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'pipe_diameter', id: 'pipe_diameter_3', value: '3', defaultChecked: 'checked'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">3"</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'pipe_diameter', id: 'pipe_diameter_4', value: '4'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">4"</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'pipe_diameter', id: 'pipe_diameter_6', value: '6'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">6"</label>
-                    </div> */}
+                <div className="row mt-4">
+                    <div className="col h6">Pipe Diameter <span className="text-danger">*</span></div>
                 </div>
-                <div className="my-5">
-                    <div className="h6">Direction</div>
-                    <select ref={directionRef} className="custom-select" id="direction" onChange={handleNewAccessDetailsState}>
-                        <option>Select...</option>
-                        <option value="one_way">One-Way</option>
-                        <option value="two_way">Two-Way</option>
-                    </select> 
-                    {/* <div className="form-check form-check-inline mr-5">
-                        <input ref={directionRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'direction', id: 'direction_one_way', value: 'one_way', defaultChecked: 'checked'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">One Way</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'direction', id: 'direction_two_way', value: 'two_way'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">Two Way</label>
-                    </div> */}
-                </div>
-                <div className="my-5">
-                    <div className="h6">Opening Modifier</div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="opening_stub" value="stub" onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="opening_stub">Stub</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="opening_break_in" value="break_in" onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="opening_break_in">Break In</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="opening_roof" value="roof" onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="opening_roof">Roof</label>
-                    </div>
-
-                </div>
-                <div className="my-5">
-                    <div className="h6">BOPD</div>
-                    <select ref={bopdRef} className="custom-select" id="bopd" defaultValue="none" onChange={handleNewAccessDetailsState}>
-                        {/* <option>Select...</option> */}
-                        <option value="none">None</option>
-                        <option value="check_valve">Check Valve</option>
-                        <option value="mushroom">Mushroom</option>
-                        <option value="popper">Popper</option>
-                        <option value="relief">Relief</option>
-                    </select> 
-                    {/* <div className="form-check form-check-inline mr-5">
-                        <input ref={bopdRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'bopd', id: 'bopd_none', value: 'none', defaultChecked: 'checked'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">None</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'bopd', id: 'bopd_check_valve', value: 'check_valve'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">Check Valve</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'bopd', id: 'bopd_mushroom', value: 'mushroom'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">Mushroom</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'bopd', id: 'bopd_popper', value: 'popper'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">Popper</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'bopd', id: 'bopd_relief', value: 'relief'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">Relief</label>
-                    </div> */}
-                </div>
-
-                <div className="my-5">
-                    <div className="h6">BOPD Condition</div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="bopd_condition_broken" value="broken" onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="bopd_condition_broken">Broken</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="bopd_condition_missing" value="missing" onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="bopd_condition_missing">Missing</label>
-                    </div>
-
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="bopd_condition_ball" value="ball" onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="bopd_condition_ball">Ball</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input radio-button" type="checkbox" id="bopd_condition_too_low" value="too_low" onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="bopd_condition_too_low">Too Low</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input radio-button" type="checkbox" id="bopd_condition_too_high" value="too_high" onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="bopd_condition_too_high">Too High</label>
+                <div className="row">
+                    <div className="col btn-group">
+                        <button ref={pipeDiameter3Ref} className="btn btn-outline-secondary font-weight-bold" data-bscolor="secondary" data-value="3" onClick={handlePipeDiameter}>3"</button>
+                        <button ref={pipeDiameter4Ref} className="btn btn-outline-success border-left-success font-weight-bold" data-bscolor="success" data-value="4" onClick={handlePipeDiameter}>4"</button>
+                        <button ref={pipeDiameter6Ref} className="btn btn-outline-danger border-left-danger font-weight-bold" data-bscolor="danger" data-value="6" onClick={handlePipeDiameter}>6"</button>
                     </div>
                 </div>
 
-                <div className="my-5">
-                    <div className="h6">Access Material</div>
-                    <select ref={accessMaterialRef} className="custom-select" id="access_material" onChange={handleNewAccessDetailsState}>
-                        <option>Select...</option>
-                        <option value="ci">CI</option>
-                        <option value="ac">AC</option>
-                        <option value="abs">ABS</option>
-                        <option value="vcp">VCP</option>
-                        <option value="pvc">PVC</option>
-                        <option value="orbg">ORBG</option>
-                    </select> 
-                    {/* <div className="form-check form-check-inline mr-5">
-                        <input ref={accessMaterialRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'access_material', id: 'access_material_ci', value: 'ci', defaultChecked: 'checked'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">CI</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'access_material', id: 'access_material_abs', value: 'abs'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">ABS</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'access_material', id: 'access_material_vcp', value: 'vcp'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">VCP</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'access_material', id: 'access_material_pvc', value: 'pvc'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">PVC</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'access_material', id: 'access_material_orbg', value: 'orbg'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">ORBG</label>
-                    </div> */}
-                </div>
-                <div className="my-5">
-                    <div className="h6">Initial Pipe Material</div>
-                    <select ref={initialPipeMaterialRef} className="custom-select" id="initial_pipe_material" onChange={handleNewAccessDetailsState}>
-                        <option>Select...</option>
-                        <option value="ci">CI</option>
-                        <option value="ac">AC</option>
-                        <option value="abs">ABS</option>
-                        <option value="vcp">VCP</option>
-                        <option value="pvc">PVC</option>
-                        <option value="orbg">ORBG</option>
-                        <option value="hdpe">HDPE</option>
-                    </select> 
-                    {/* <div className="form-check form-check-inline mr-5">
-                        <input ref={initialPipeMaterialRef} {...{className: 'form-check-input radio-button', type: 'radio', name: 'initial_pipe_material', id: 'initial_pipe_material_ci', value: 'ci', defaultChecked: 'checked'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">CI</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'initial_pipe_material', id: 'initial_pipe_material_abs', value: 'abs'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">ABS</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'initial_pipe_material', id: 'initial_pipe_material_vcp', value: 'vcp'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">VCP</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'initial_pipe_material', id: 'initial_pipe_material_pvc', value: 'pvc'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">PVC</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'initial_pipe_material', id: 'initial_pipe_material_orbg', value: 'orbg'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">ORBG</label>
-                    </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input {...{className: 'form-check-input radio-button', type: 'radio', name: 'initial_pipe_material', id: 'initial_pipe_material_hdpe', value: 'hdpe'}} onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label">HDPE</label>
-                    </div> */}
+                <div className="row mt-4">
+                    <div className="col h6">Cleanout Direction <span className="text-danger">*</span></div>
                 </div>
 
-                <div className="my-5">
-                    <div className="h6">Clean Out</div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="clean_out_below_grade" value="below_grade" onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="clean_out_below_grade">Below Grade</label>
+                <div className="row">
+                    <div className="col btn-group">
+                        <button ref={cleanoutDirection1WayRef} className="btn btn-outline-primary font-weight-bold" data-bscolor="primary" data-value="one_way" onClick={handleCleanoutDirection}>1-Way</button>
+                        <button ref={cleanoutDirection2WayRef} className="btn btn-outline-success border-left-success font-weight-bold" data-bscolor="success" data-value="two_way" onClick={handleCleanoutDirection}>2-Way</button>
+                        <button ref={cleanoutDirectionBreakInRef} className="btn btn-outline-danger border-left-danger font-weight-bold" data-bscolor="danger" data-value="break_in" onClick={handleCleanoutDirection}>Break-In</button>
+                        <button ref={cleanoutDirectionStubRef} className="btn btn-outline-warning border-left-warning font-weight-bold" data-bscolor="warning" data-value="stub" onClick={handleCleanoutDirection}>Stub</button>
+                        <button ref={cleanoutDirectionToiletRef} className="btn btn-outline-secondary border-left-secondary font-weight-bold" data-bscolor="secondary" data-value="toilet" onClick={handleCleanoutDirection}>Toilet</button>
+                        <button ref={cleanoutDirectionRoofRef} className="btn btn-outline-info border-left-info font-weight-bold" data-bscolor="info" data-value="roof" onClick={handleCleanoutDirection}>Roof</button>
                     </div>
-                    <div className="form-check form-check-inline mr-5">
-                        <input className="form-check-input radio-button" type="checkbox" id="clean_out_excess_vegetation" value="excess_vegetation" onChange={handleNewAccessDetailsState}/>
-                        <label className="form-check-label radio-button-label" htmlFor="clean_out_excess_vegetation">Excess Vegetation</label>
+                </div>
+
+                <div className="row mt-4">
+                    <div className="col h6">BOPD <span className="text-danger">*</span></div>
+                </div>
+
+                <div className="row">
+                    <div className="col btn-group">
+                        <button ref={bopdTypeNoneRef} className="btn btn-outline-secondary font-weight-bold" data-bscolor="secondary" data-value="none" onClick={handleBopdType}>None</button>
+                        <button ref={bopdTypePopperRef} className="btn btn-outline-primary border-left-primary font-weight-bold" data-bscolor="primary" data-value="popper" onClick={handleBopdType}>Popper</button>
+                        <button ref={bopdTypeMushroomRef} className="btn btn-outline-success border-left-success font-weight-bold" data-bscolor="success" data-value="mushroom" onClick={handleBopdType}>Mushroom</button>
+                        <button ref={bopdTypeCheckValveRef} className="btn btn-outline-info border-left-info font-weight-bold" data-bscolor="info" data-value="check_valve" onClick={handleBopdType}>Check Valve</button>
+                        <button ref={bopdTypeReliefRef} className="btn btn-outline-danger border-left-danger font-weight-bold" data-bscolor="danger" data-value="relief" onClick={handleBopdType}>Relief</button>
+                    </div>
+                </div>
+
+                <div className="row mt-4" ref={bopdConditionTitleDivRef} style={{display: 'none'}}>
+                    <div className="col h6">BOPD Condition <span className="text-danger">*</span></div>
+                </div>
+
+                <div className="row" ref={bopdConditionDivRef} style={{display: 'none'}}>
+                    <div className="col btn-group">
+                        <button ref={bopdConditionGoodRef} className="btn btn-outline-success font-weight-bold" data-bscolor="success" data-value="good" onClick={handleBopdCondition}>Good</button>
+                        <button ref={bopdConditionBrokenRef} className="btn btn-outline-danger font-weight-bold" data-bscolor="danger" data-value="broken" onClick={handleBopdCondition}>Broken</button>
+                        <button ref={bopdConditionMissingRef} className="btn btn-outline-secondary border-left-secondary font-weight-bold" data-bscolor="secondary" data-value="missing" onClick={handleBopdCondition}>Missing</button>
+                        <button ref={bopdConditionBallRef} className="btn btn-outline-primary border-left-primary font-weight-bold" data-bscolor="primary" data-value="ball" onClick={handleBopdCondition}>Ball</button>
+                        <button ref={bopdConditionTooLowRef} className="btn btn-outline-warning border-left-warning font-weight-bold" data-bscolor="warning" data-value="too_low" onClick={handleBopdCondition}>Too Low</button>
+                        <button ref={bopdConditionTooHighRef} className="btn btn-outline-info border-left-info font-weight-bold" data-bscolor="info" data-value="too_high" onClick={handleBopdCondition}>Too High</button>
+                    </div>
+                </div>
+
+                <div className="row mt-4">
+                    <div className="col h6">Access Material <span className="text-danger">*</span></div>
+                </div>
+
+                <div className="row">
+                    <div className="col btn-group">
+                        <button ref={accessMaterialCiRef} className="btn btn-outline-warning font-weight-bold" data-bscolor="warning" data-value="ci" onClick={handleAccessMaterial}>CI</button>
+                        <button ref={accessMaterialAcRef} className="btn btn-outline-secondary border-left-secondary font-weight-bold" data-bscolor="secondary" data-value="ac" onClick={handleAccessMaterial}>AC</button>
+                        <button ref={accessMaterialAbsRef} className="btn btn-outline-primary border-left-primary font-weight-bold" data-bscolor="primary" data-value="abs" onClick={handleAccessMaterial}>ABS</button>
+                        <button ref={accessMaterialVcpRef} className="btn btn-outline-success border-left-success font-weight-bold" data-bscolor="success" data-value="vcp" onClick={handleAccessMaterial}>VCP</button>
+                        <button ref={accessMaterialPvcRef} className="btn btn-outline-info border-left-info font-weight-bold" data-bscolor="info" data-value="pvc" onClick={handleAccessMaterial}>PVC</button>
+                        <button ref={accessMaterialOrbgRef} className="btn btn-outline-danger border-left-danger font-weight-bold" data-bscolor="danger" data-value="orbg" onClick={handleAccessMaterial}>ORBG</button>
+                    </div>
+                </div>
+
+                <div className="row mt-4">
+                    <div className="col h6">Cleanout Issues</div>
+                </div>
+
+                <div className="row">
+                    <div className="col btn-group">
+                        <button ref={cleanoutIssuesBelowGradeRef} className="btn btn-outline-secondary font-weight-bold" data-bscolor="secondary" data-value="below_grade" onClick={handleCleanoutIssues}>Below Grade</button>
+                        <button ref={cleanoutIssuesExcessVegetationRef} className="btn btn-outline-secondary border-left-secondary font-weight-bold" data-bscolor="secondary" data-value="excess_vegetation" onClick={handleCleanoutIssues}>Excess Vegetation</button>
                     </div>
                 </div>
             </div>
