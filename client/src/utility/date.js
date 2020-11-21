@@ -8,6 +8,14 @@ export const monthNumberToName = (monthNumber) => {
     }
 }
 
+export const todaysDate = () => {
+    let today = new Date()
+    let year = today.getFullYear()
+    let month = today.getMonth() + 1
+    let day = today.getDate()
+    return `${month} / ${day} / ${year}`
+}
+
 const MONTH_REFERENCE = [
     'January',
     'February',
