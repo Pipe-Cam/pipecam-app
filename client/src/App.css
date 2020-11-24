@@ -5,3 +5,11 @@ html, body, .bg {
 .bg-foreground {
     background-color: #FAFAFA;
 }
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: inherit;
+}

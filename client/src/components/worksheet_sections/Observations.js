@@ -5,9 +5,24 @@ import {updateInspectionById} from '../../db/write'
 import capitalizeEachWord from '../../utility/capitalizeEachWord'
 import Spinner from '../ui_components/Spinner'
 import IconPlus from '../icons/IconPlus'
+import Modal from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button'
+import IconBackspace from '../icons/IconBackspace'
+
+import IconTieIn from '../icons/IconTieIn'
+import IconLeftArrow from '../icons/IconLeftArrow'
+import IconRightArrow from '../icons/IconRightArrow'
+import IconUpArrow from '../icons/IconUpArrow'
+import IconDownArrow from '../icons/IconDownArrow'
+import IconFlatArrow from '../icons/IconFlatArrow'
+
+
+
+
 
 import {todaysDate} from '../../utility/date'
 const _ = require('lodash')
+
 
 function Observations() {
     const history = useHistory()
@@ -288,53 +303,61 @@ const ObservationNew = (props) => {
     const [footageVal, setFootageVal] = useState([])
     const [lossOfCrossection, setLossOfCrossection] = useState(0)
     const footageRef = useRef(null)
+    const footageModalRef = useRef(null)
 
-    const standingWaterRef = useRef(null)
-    const standingWaterStartRef = useRef(null)
-    const standingWaterEndRef = useRef(null)
-    const underWaterRef = useRef(null)
-    const underWaterStartRef = useRef(null)
-    const underWaterEndRef = useRef(null)
+    const rangeSliderRef = useRef(null)
+
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    // const standingWaterRef = useRef(null)
+    // const standingWaterStartRef = useRef(null)
+    // const standingWaterEndRef = useRef(null)
+    // const underWaterRef = useRef(null)
+    // const underWaterStartRef = useRef(null)
+    // const underWaterEndRef = useRef(null)
 
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString)
     const observationNumber = Number(urlParams.get('observation_num'))
 
-    const handleStandingWater = (e) => {
-        if(standingWaterRef.current.checked){
-            standingWaterStartRef.current.style.display = 'block'
-            standingWaterEndRef.current.style.display = 'block'
-        } else {
-            standingWaterStartRef.current.style.display = 'none'
-            standingWaterEndRef.current.style.display = 'none'
-        }
-    }
+    // const handleStandingWater = (e) => {
+    //     if(standingWaterRef.current.checked){
+    //         standingWaterStartRef.current.style.display = 'block'
+    //         standingWaterEndRef.current.style.display = 'block'
+    //     } else {
+    //         standingWaterStartRef.current.style.display = 'none'
+    //         standingWaterEndRef.current.style.display = 'none'
+    //     }
+    // }
 
-    const handleUnderWater = (e) => {
-        if(underWaterRef.current.checked){
-            underWaterStartRef.current.style.display = 'block'
-            underWaterEndRef.current.style.display = 'block'
-        } else {
-            underWaterStartRef.current.style.display = 'none'
-            underWaterEndRef.current.style.display = 'none'
-        }
-    }
+    // const handleUnderWater = (e) => {
+    //     if(underWaterRef.current.checked){
+    //         underWaterStartRef.current.style.display = 'block'
+    //         underWaterEndRef.current.style.display = 'block'
+    //     } else {
+    //         underWaterStartRef.current.style.display = 'none'
+    //         underWaterEndRef.current.style.display = 'none'
+    //     }
+    // }
 
-    const handleNewObservationOnChange = (e) => {
-        let form_id = e.target.id
-        let form_value = e.target.value
-        let tmpObservationState = observationState
+    // const handleNewObservationOnChange = (e) => {
+    //     let form_id = e.target.id
+    //     let form_value = e.target.value
+    //     let tmpObservationState = observationState
 
-        if(form_id && form_value){
-            tmpObservationState[form_id] = form_value
-        }
+    //     if(form_id && form_value){
+    //         tmpObservationState[form_id] = form_value
+    //     }
 
-        if(!form_value){
-            tmpObservationState[form_id] = ''
-        }
+    //     if(!form_value){
+    //         tmpObservationState[form_id] = ''
+    //     }
 
-        setObservationState(tmpObservationState)
-    }
+    //     setObservationState(tmpObservationState)
+    // }
 
 
     const handleNewObservationFormSubmit = async (e) => {
@@ -396,56 +419,496 @@ const ObservationNew = (props) => {
     }
 
     ////////////////////////////////////////////////////////////////////////
+    // good
     const handleAddToFootage = (e)=>{
         // footageRef
         e.preventDefault()
-        e.target.disabled = true
         let tmpFootageVal = footageVal
         let btnValue = e.target.innerText
 
         if(tmpFootageVal.includes('.')){
-            // do nothing
+            // do nothing if decimal already exists
             if(btnValue === '.'){
-                e.target.disabled = false
                 return
             }
 
             let decimalIndex = _.indexOf(tmpFootageVal, '.')
             let footageIndexLast = tmpFootageVal.length - 1
 
-            // console.log(`${footageIndexLast - decimalIndex} after decimal`)
+            // only 2 digits after decimal are allowed
             if((footageIndexLast - decimalIndex) >= 2){
-                e.target.disabled = false
+                return
+            }
+
+            if((footageIndexLast - decimalIndex) === 1 && tmpFootageVal[footageIndexLast] === '0' && btnValue === '0'){
                 return
             }
         } else {
+            // only 4 digits before decimal are allowed
             if(tmpFootageVal.length >= 4 && btnValue !== '.'){
-                e.target.disabled = false
                 return
             }
         }
 
-        tmpFootageVal.push(btnValue)
+        tmpFootageVal = [...tmpFootageVal, btnValue]
         setFootageVal(tmpFootageVal)
-
-        footageRef.current.value = tmpFootageVal.join('')
         console.log(btnValue)
-
-        e.target.disabled = false
     }
 
+    // good
     const handleClearFootage = (e) => {
         e.preventDefault()
-        footageRef.current.value = ''
         setFootageVal([])
     }
 
+    const handleBackspace = (e) => {
+        e.preventDefault()
+        let tmpFootageVal = footageVal
+
+        tmpFootageVal.pop()
+
+        setFootageVal(tmpFootageVal)
+        footageModalRef.current.innerText = tmpFootageVal.join('')
+        footageModalRef.current.focus()
+        
+        // let footage = footageModalRef.current.innerText.split('')
+        // footage.pop()
+        // let updatedFootage = footage.join('')
+        // footageRef.current.innerText = updatedFootage
+        // footageModalRef.current.innerText = updatedFootage
+    }
+
+    const handleEnter = (e) => {
+        e.preventDefault()
+        // e.target.disabled = true
+        let tmpFootageVal = footageVal
+
+        
+        if(!tmpFootageVal.includes('.') && tmpFootageVal.length > 0){
+            setFootageVal([...tmpFootageVal, '.', '0'])
+        }
+        
+        if(tmpFootageVal[0] === '.'){
+            setFootageVal(['0', ...tmpFootageVal])
+        }
+        
+        if(tmpFootageVal[tmpFootageVal.length - 1] === '.'){
+            setFootageVal([...tmpFootageVal, '0'])
+            footageModalRef.current.innerText = [...tmpFootageVal, '0'].join('')
+        }
+
+        // e.target.disabled = false
+        handleClose()
+    }
+    // good
     const handleRangeSlider = (e) => {
         // const sliderValue = e.target.value
         setLossOfCrossection(e.target.value)
     }
+    // good
+    const handleAdjustRangeSlider = (e) => {
+        e.preventDefault()
+        let action = e.target.getAttribute('data-action')
+        let step = 10
+        let value = Number(rangeSliderRef.current.value)
 
-    const btnClasses = 'btn btn-secondary border btn-lg px-3 align-middle'
+        if(action === 'increment' && value <= 90){
+            let incremented = value + step
+            rangeSliderRef.current.value = incremented
+            setLossOfCrossection(incremented)
+        }
+
+        if(action === 'decrement' && value >= 10){
+            let decremented = value - step
+            rangeSliderRef.current.value = decremented
+            setLossOfCrossection(decremented)
+        } 
+
+    }
+
+    const tiRef = useRef(null)
+    const ltlRef = useRef(null)
+    const ltrRef = useRef(null)
+    const ltuRef = useRef(null)
+    const ltdRef = useRef(null)
+    const ltfRef = useRef(null)
+
+    const rtsRef = useRef(null)
+    const rtsInFlowLineRef = useRef(null)
+    const rtsConRef = useRef(null)
+    const rtsFineRef = useRef(null)
+
+    const ojRef = useRef(null)
+    const ojMinorRef = useRef(null)
+    const ojSevereRef = useRef(null)
+
+    const debRef = useRef(null)
+    const debDarRef = useRef(null)
+    const debLooseRef = useRef(null)
+    const debWallRef = useRef(null)
+    const debInFlowRef = useRef(null)
+
+    const swRef = useRef(null)
+    const swStartRef = useRef(null)
+    const swEndRef = useRef(null)
+    const swByOjRef = useRef(null)
+
+    const uwRef = useRef(null)
+    const uwStartRef = useRef(null)
+    const uwEndRef = useRef(null)
+    
+    const pipeBreakRef = useRef(null)
+    const pipeCrackRef = useRef(null)
+    const pipeHoleRef = useRef(null)
+    const pipeSeparatedJointRef = useRef(null)
+    const pipeBreakMultipleRef = useRef(null)
+    const pipeCrackMultipleRef = useRef(null)
+
+    const rtsModifierDivRef = useRef(null)
+    const ojModifierDivRef = useRef(null)
+    const debModifierDivRef = useRef(null)
+    const swModifierDivRef = useRef(null)
+    const uwModifierDivRef = useRef(null)
+    const pipeBreakModifierDivRef = useRef(null)
+    const pipeCrackModifierDivRef = useRef(null)
+    
+    const handleLineNotation = (e) => {
+        e.preventDefault()
+        let dataObservation = e.target.getAttribute('data-observation')
+        let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
+
+        if(dataActive) {
+            toggleElem({'action': 'on', 'elem': e.target, 'color': 'dark'})
+        } else {
+            toggleElem({'action': 'off', 'elem': e.target, 'color': 'dark'})
+        }
+
+
+        // tiRef
+        // ltlRef
+        // ltrRef
+        // ltuRef
+        // ltdRef
+        // ltfRef
+
+    }
+
+    const handleRoots = (e) => {
+        e.preventDefault()
+        let dataObservation = e.target.getAttribute('data-observation')
+        let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
+        e.target.setAttribute('data-active', dataActive)
+
+        console.log(dataObservation)
+        console.log(dataActive)
+
+        if(dataObservation === 'roots'){
+
+            if(dataActive === true){
+                rtsModifierDivRef.current.classList.remove('hide')
+                e.target.classList.add('btn-success')
+            } else {
+                rtsModifierDivRef.current.classList.add('hide')
+                e.target.classList.remove('btn-success')
+            }
+        } else {
+            if(dataActive === true){
+                toggleElem({'action': 'on', 'elem': e.target, 'color': 'info'})
+            } else {
+                toggleElem({'action': 'off', 'elem': e.target, 'color': 'info'})
+            }
+        }
+
+        // rtsRef
+        // rtsModifierDivRef
+
+        // rtsInFlowLineRef
+        // rtsConRef
+        // rtsFineRef
+
+    }
+
+    const handleOj = (e) => {
+        e.preventDefault()
+        let dataObservation = e.target.getAttribute('data-observation')
+        let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
+        e.target.setAttribute('data-active', dataActive)
+
+        console.log(dataObservation)
+        console.log(dataActive)
+
+        let minor = 'warning'
+        let severe = 'danger'
+
+        if(dataObservation === 'offset_joint'){
+
+            if(dataActive === true){
+                ojModifierDivRef.current.classList.remove('hide')
+                e.target.classList.add('btn-success')
+            } else {
+                ojModifierDivRef.current.classList.add('hide')
+                e.target.classList.remove('btn-success')
+
+                // toggleElem({'action': 'off', 'elem': ojMinorRef.current, 'color': minor})
+                // toggleElem({'action': 'off', 'elem': ojSevereRef.current, 'color': severe})
+            }
+        } else {
+            if(dataActive === true){
+                if(dataObservation === 'minor'){
+                    toggleElem({'action': 'on', 'elem': ojMinorRef.current, 'color': minor})
+                    toggleElem({'action': 'off', 'elem': ojSevereRef.current, 'color': severe})
+
+                } else{
+                    toggleElem({'action': 'on', 'elem': ojSevereRef.current, 'color': severe})
+                    toggleElem({'action': 'off', 'elem': ojMinorRef.current, 'color': minor})
+                }
+            } else {
+                if(dataObservation === 'minor'){
+                    toggleElem({'action': 'off', 'elem': ojMinorRef.current, 'color': minor})
+                } else{
+                    toggleElem({'action': 'off', 'elem': ojSevereRef.current, 'color': severe})
+                }
+            }
+        }
+
+        // ojRef
+        // ojModifierDivRef
+
+        // ojMinorRef
+        // ojSevereRef
+
+    }
+
+    const handleDeb = (e) => {
+        e.preventDefault()
+        let dataObservation = e.target.getAttribute('data-observation')
+        let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
+        e.target.setAttribute('data-active', dataActive)
+
+        console.log(dataObservation)
+        console.log(dataActive)
+
+        if(dataObservation === 'debris'){
+
+            if(dataActive === true){
+                debModifierDivRef.current.classList.remove('hide')
+                e.target.classList.add('btn-success')
+            } else {
+                debModifierDivRef.current.classList.add('hide')
+                e.target.classList.remove('btn-success')
+            }
+        } else {
+            if(dataActive === true){
+                toggleElem({'action': 'on', 'elem': e.target, 'color': 'info'})
+            } else {
+                toggleElem({'action': 'off', 'elem': e.target, 'color': 'info'})
+            }
+        }
+
+        // debRef
+        // debModifierDivRef
+        
+        // debDarRef
+        // debLooseRef
+        // debWallRef
+        // debInFlowRef
+
+    }
+
+    const toggleElem = (paramObj) => {
+        const {action, elem, color} = paramObj
+        const {inverse} = paramObj
+        let activeAttribute = false
+        let actionVar = action
+
+        if(inverse) {
+            actionVar = (actionVar === 'on') ? 'off' : 'on'
+            activeAttribute = !activeAttribute
+        }
+
+        if(actionVar === 'off'){
+            elem.classList.add(`btn-outline-${color}`)
+            elem.classList.remove(`btn-${color}`)
+            elem.setAttribute('data-active', activeAttribute)
+        } else {
+            elem.classList.add(`btn-${color}`) 
+            elem.classList.remove(`btn-outline-${color}`)
+            elem.setAttribute('data-active', !activeAttribute)
+        }
+    }
+
+    const handleSw = (e) => {
+        e.preventDefault()
+        let dataObservation = e.target.getAttribute('data-observation')
+        let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
+        e.target.setAttribute('data-active', dataActive)
+
+        console.log(dataObservation)
+        console.log(dataActive)
+
+        let start = 'warning' 
+        let end = 'danger'
+        let byOj = 'info'
+
+        if(dataObservation === 'standing_water'){
+
+            if(dataActive === true){
+                swModifierDivRef.current.classList.remove('hide')
+                swRef.current.classList.add('btn-success')
+            } else {
+                swModifierDivRef.current.classList.add('hide')
+                swRef.current.classList.remove('btn-success')
+
+                // toggleElem({'action': 'off', 'elem': swStartRef.current, 'color': start})
+                // toggleElem({'action': 'off', 'elem': swEndRef.current, 'color': end})
+                // toggleElem({'action': 'off', 'elem': swByOjRef.current, 'color': byOj})
+            }
+        } else {
+            if(dataActive === true){
+                if(dataObservation === 'start'){
+                    toggleElem({'action': 'on', 'elem': swStartRef.current, 'color': start})
+                    toggleElem({'action': 'off', 'elem': swEndRef.current, 'color': end})
+                    toggleElem({'action': 'off', 'elem': swByOjRef.current, 'color': byOj})
+                } else if(dataObservation === 'end') {
+                    toggleElem({'action': 'off', 'elem': swStartRef.current, 'color': start})
+                    toggleElem({'action': 'on', 'elem': swEndRef.current, 'color': end})
+                    toggleElem({'action': 'off', 'elem': swByOjRef.current, 'color': byOj})
+                } else {
+                    toggleElem({'action': 'off', 'elem': swEndRef.current, 'color': end})
+                    toggleElem({'action': 'off', 'elem': swStartRef.current, 'color': start})
+                    toggleElem({'action': 'on', 'elem': swByOjRef.current, 'color': byOj})
+                }
+            } else {
+                if(dataObservation === 'start'){
+                    toggleElem({'action': 'off', 'elem': swStartRef.current, 'color': start})
+                } else if(dataObservation === 'end'){
+                    toggleElem({'action': 'off', 'elem': swEndRef.current, 'color': end})
+                } else {
+                    toggleElem({'action': 'off', 'elem': swByOjRef.current, 'color': byOj})
+
+                }
+            }
+        }
+
+        // swRef
+        // swModifierDivRef
+
+        // swStartRef
+        // swEndRef
+        // swByOjRef
+
+    }
+
+    const handleUw = (e) => {
+        e.preventDefault()
+        let dataObservation = e.target.getAttribute('data-observation')
+        let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
+        e.target.setAttribute('data-active', dataActive)
+
+        console.log(dataObservation)
+        console.log(dataActive)
+
+        let start = 'warning'
+        let end = 'danger'
+
+        if(dataObservation === 'under_water'){
+
+            if(dataActive === true){
+                uwModifierDivRef.current.classList.remove('hide')
+                e.target.classList.add('btn-success')
+            } else {
+                uwModifierDivRef.current.classList.add('hide')
+                e.target.classList.remove('btn-success')
+
+                // toggleElem({'action': 'off', 'elem': uwStartRef.current, 'color': start})
+                // toggleElem({'action': 'off', 'elem': uwEndRef.current, 'color': end})
+            }
+        } else {
+            if(dataActive === true){
+                if(dataObservation === 'start'){
+                    toggleElem({'action': 'on', 'elem': uwStartRef.current, 'color': start})
+                    toggleElem({'action': 'off', 'elem': uwEndRef.current, 'color': end})
+
+                } else{
+                    toggleElem({'action': 'off', 'elem': uwStartRef.current, 'color': start})
+                    toggleElem({'action': 'on', 'elem': uwEndRef.current, 'color': end})
+                }
+            } else {
+                if(dataObservation === 'start'){
+                    toggleElem({'action': 'off', 'elem': uwStartRef.current, 'color': start})
+                } else{
+                    toggleElem({'action': 'off', 'elem': uwEndRef.current, 'color': end})
+                }
+            }
+        }
+
+        // uwRef
+        // uwModifierDivRef
+        
+        // uwStartRef
+        // uwEndRef
+
+    }
+
+    const handlePipe = (e) => {
+        e.preventDefault()
+        let dataObservation = e.target.getAttribute('data-observation')
+        let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
+        e.target.setAttribute('data-active', dataActive)
+
+        console.log(dataObservation)
+        console.log(dataActive)
+
+        if(dataObservation === 'break'){
+            if(dataActive === true){
+                pipeBreakModifierDivRef.current.classList.remove('hide')
+                e.target.classList.remove('btn-info')
+                e.target.classList.add('btn-success')
+            } else {
+                pipeBreakModifierDivRef.current.classList.add('hide')
+                e.target.classList.remove('btn-success')
+                e.target.classList.add('btn-info')
+            }
+        } else if(dataObservation === 'crack'){
+            if(dataActive === true){
+                pipeCrackModifierDivRef.current.classList.remove('hide')
+                e.target.classList.remove('btn-info')
+                e.target.classList.add('btn-success')
+            } else {
+                pipeCrackModifierDivRef.current.classList.add('hide')
+                e.target.classList.remove('btn-success')
+                e.target.classList.add('btn-info')
+            }
+        } else if(dataObservation === 'hole' || dataObservation === 'separated_joint'){
+            if(dataActive === true){
+                e.target.classList.remove('btn-info')
+                e.target.classList.add('btn-success')
+            } else {
+                e.target.classList.remove('btn-success')
+                e.target.classList.add('btn-info')
+            }
+        } else {
+            let ref = (dataObservation === 'break_multiple') ? pipeBreakMultipleRef : pipeCrackMultipleRef
+            if(dataActive === true){
+                toggleElem({'action': 'on', 'elem': ref.current, 'color': 'danger'})
+
+            } else {
+                toggleElem({'action': 'off', 'elem': ref.current, 'color': 'danger'})
+
+            }
+        }
+
+        // pipeBreakRef
+        // pipeModifierDivRef
+
+        // pipeCrackRef
+        // pipeHoleRef
+        // pipeSeparatedJointRef
+        // pipeMultipleRef
+
+    }
+
+    const btnClasses = 'btn btn-secondary border border-dark btn-lg px-3 align-middle'
 
     return(
         <>
@@ -459,242 +922,128 @@ const ObservationNew = (props) => {
                             <div className="row justify-content-left">
                                 <div className="col-12">
                                     <label className="h6 pt-2" htmlFor='footage'>Footage (in Feet) <span className="text-danger">*</span></label>
-                                    <button className="btn btn-danger float-right mb-2" onClick={handleClearFootage}>Clear</button>
-                                    <input ref={footageRef} {...{className: 'form-control form-control-lg mb-3 ml-1 text-right', type: 'text', name: 'footage', id: 'footage', placeholder: '0.00', required: true, disabled: true}} style={{minWidth: '268px'}}/>
                                 </div>
-                            </div>
-                            <div className="row justify-content-left">
-                                <div className="col-12 text-center" style={{minWidth: '308px'}}>
-                                    <div>
-                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>7</button>
-                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>8</button>
-                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>9</button>
-                                    </div>
-                                    <div>
-                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>4</button>
-                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>5</button>
-                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>6</button>
-                                    </div>
-                                    <div>
-                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>1</button>
-                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>2</button>
-                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>3</button>
-                                    </div>
-                                    <div>
-                                        <button className={btnClasses} style={{width: '180px', height: '90px'}} onClick={handleAddToFootage}>0</button>
-                                        <button className={btnClasses} style={{width: '90px', height: '90px'}} onClick={handleAddToFootage}>.</button>
-                                    </div>
+                                <div className="col-12">
+                                    <div ref={footageRef} {...{className: 'form-control form-control-lg mb-1 ml-1 mt-3 text-right', name: 'footage', id: 'footage'}} style={{minWidth: '268px'}} onClick={handleShow}>{(!footageVal.length) ? "0.00" : (footageVal.join(''))}</div>
                                 </div>
+                              
                             </div>
+                            
                             <div className="row justify-content-left mt-5">
-                                <div className="col-12 text-center" style={{minWidth: '308px'}}>
-                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Tie-In</button>
-                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Line Turns Left</button>
-                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Line Turns Right</button>
-                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Line Turns Up</button>
-                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Line Turns Down</button>
-                                    <button className="btn btn-outline-dark btn-lg mt-1 w-100">Line Turns Flat</button>
+                                <div className="col-12 text-left" style={{minWidth: '308px'}}>
+                                    <button ref={tiRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ti" onClick={handleLineNotation}>Tie-In<span className="float-right"><IconTieIn/></span></button>
+                                    <button ref={ltlRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ltl" onClick={handleLineNotation}>Line Turns Left<span className="float-right"><IconLeftArrow/></span></button>
+                                    <button ref={ltrRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ltr" onClick={handleLineNotation}>Line Turns Right<span className="float-right"><IconRightArrow/></span></button>
+                                    <button ref={ltuRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ltu" onClick={handleLineNotation}>Line Turns Up<span className="float-right"><IconUpArrow/></span></button>
+                                    <button ref={ltdRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ltd" onClick={handleLineNotation}>Line Turns Down<span className="float-right"><IconDownArrow/></span></button>
+                                    <button ref={ltfRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ltf" onClick={handleLineNotation}>Line Turns Flat<span className="float-right"><IconFlatArrow/></span></button>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="col-sm-12 col-md-6 col-lg-8">
-                            <div className="row py-3 px-5">
+                        <div className="col-sm-12 col-md-6 col-lg-8 pt-4">
+                            <div className="row py-1 px-5">
                                 <div className="col-12">
                                     <div className="form-group">
                                         <label htmlFor="formControlRange"><span className="font-weight-bold lead">{lossOfCrossection.toString()}%</span> Loss of Cross Section</label>
-                                        <input type="range" className="form-control-range" id="formControlRange" min="0" max="100" step="10" defaultValue="0" onChange={handleRangeSlider}/>
-                                        <div className="mt-3">
-                                            <button className="btn btn-secondary">-</button><button className="btn btn-secondary float-right">+</button>
+                                        <input ref={rangeSliderRef} type="range" className="form-control-range" id="formControlRange" min="0" max="100" step="10" defaultValue="0" onChange={handleRangeSlider}/>
+                                        <div className="mt-3 text-center">
+                                            <button className="btn btn-secondary btn-lg border border-dark float-left ml-3" data-action="decrement" onClick={handleAdjustRangeSlider}>&nbsp;-&nbsp;</button>
+                                            <button className="btn btn-secondary btn-lg border border-dark float-right mr-3" data-action="increment" onClick={handleAdjustRangeSlider}>&nbsp;+&nbsp;</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row py-3 px-5">
+                            <div className="row py-1 px-5 mt-sm-5 mt-md-5 mt-lg-4">
                                 <div className="col-sm-12 mt-sm-0 col-md-12 mt-md-0 col-lg-6 mt-lg-3">
-                                    <button className="btn btn-primary btn-lg w-100 my-1">Roots</button>
-                                    <button className="btn btn-outline-info w-100 my-1">In Flow Line</button>
-                                    <button className="btn btn-outline-info w-100 my-1">Continuous</button>
-                                    <button className="btn btn-outline-info w-100 my-1">Fine</button>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <button ref={rtsRef} className="btn btn-primary btn-lg w-100 my-1" data-active="false" data-observation="roots" onClick={handleRoots}>Roots</button>
+                                        </div>
+                                        <div className="col-12 hide" ref={rtsModifierDivRef}>
+                                            <button ref={rtsInFlowLineRef} className="btn btn-outline-info w-100 my-1" data-active="false" data-observation="in_flow_line" onClick={handleRoots}>In Flow Line</button>
+                                            <button ref={rtsConRef} className="btn btn-outline-info w-100 my-1" data-active="false" data-observation="continuous" onClick={handleRoots}>Continuous</button>
+                                            <button ref={rtsFineRef} className="btn btn-outline-info w-100 my-1" data-active="false" data-observation="fine" onClick={handleRoots}>Fine</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="col-sm-12 mt-sm-3 col-md-12 mt-md-3 col-lg-6">
-                                    <button className="btn btn-primary btn-lg w-100 my-1">Offset Joint</button>
-                                    <button className="btn btn-outline-warning w-100 my-1">Minor</button>
-                                    <button className="btn btn-outline-danger w-100 my-1">Severe</button>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <button ref={ojRef} className="btn btn-primary btn-lg w-100 my-1" data-active="false" data-observation="offset_joint" onClick={handleOj}>Offset Joint</button>
+                                        </div>
+                                        <div className="col-12 hide" ref={ojModifierDivRef}>
+                                            <button ref={ojMinorRef} className="btn btn-outline-warning w-100 my-1" data-active="false" data-observation="minor" onClick={handleOj}>Minor</button>
+                                            <button ref={ojSevereRef} className="btn btn-outline-danger w-100 my-1" data-active="false" data-observation="severe" onClick={handleOj}>Severe</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="row py-3 px-5">
+                            <div className="row py-1 px-5">
                                 <div className="col-sm-12 mt-sm-3 col-md-12 mt-md-3 col-lg-6">
-                                    <button className="btn btn-primary btn-lg w-100 my-1">Debris</button>
-                                    <button className="btn btn-outline-info w-100 my-1">Attached To Roots</button>
-                                    <button className="btn btn-outline-info w-100 my-1">Loose</button>
-                                    <button className="btn btn-outline-info w-100 my-1">On Wall</button>
-                                    <button className="btn btn-outline-info w-100 my-1">In Flow Line</button>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <button ref={debRef} className="btn btn-primary btn-lg w-100 my-1" data-active="false" data-observation="debris" onClick={handleDeb}>Debris</button>
+                                        </div>
+                                        <div className="col-12 hide" ref={debModifierDivRef}>
+                                            <button ref={debDarRef} className="btn btn-outline-info w-100 my-1" data-active="false" data-observation="attached_to_roots" onClick={handleDeb}>Attached To Roots</button>
+                                            <button ref={debLooseRef} className="btn btn-outline-info w-100 my-1" data-active="false" data-observation="loose" onClick={handleDeb}>Loose</button>
+                                            <button ref={debWallRef} className="btn btn-outline-info w-100 my-1" data-active="false" data-observation="on_wall" onClick={handleDeb}>On Wall</button>
+                                            <button ref={debInFlowRef} className="btn btn-outline-info w-100 my-1" data-active="false" data-observation="in_flow_line" onClick={handleDeb}>In Flow Line</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="col-sm-12 mt-sm-3 col-md-12 mt-md-3 col-lg-6">
-                                    <button className="btn btn-primary btn-lg w-100 my-1">Standing Water</button>
-                                    <button className="btn btn-outline-success w-100 my-1">Start</button>
-                                    <button className="btn btn-outline-danger w-100 my-1">End</button>
-                                    <button className="btn btn-outline-info w-100 my-1">By Offset Joint</button>
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <button ref={swRef} className="btn btn-primary btn-lg w-100 my-1" data-active="false" data-observation="standing_water" onClick={handleSw}>Standing Water</button>
+                                        </div>
+                                        <div className="col-12 hide" ref={swModifierDivRef}>
+                                            <button ref={swStartRef} className="btn btn-outline-warning w-100 my-1" data-active="false" data-observation="start" onClick={handleSw}>Start</button>
+                                            <button ref={swEndRef} className="btn btn-outline-danger w-100 my-1" data-active="false" data-observation="end" onClick={handleSw}>End</button>
+                                            <button ref={swByOjRef} className="btn btn-outline-info w-100 my-1" data-active="false" data-observation="by_offset_joint" onClick={handleSw}>By Offset Joint</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row py-1 px-5 mt-sm-3 mt-md-3">
+                                <div className="col-12">
+                                    <button ref={uwRef} className="btn btn-primary btn-lg w-100 my-1" data-active="false" data-observation="under_water" onClick={handleUw}>Under Water</button>
+                                </div>
+                                <div className="col-12 hide" ref={uwModifierDivRef}>
+                                    <button ref={uwStartRef} className="btn btn-outline-warning w-100 my-1" data-active="false" data-observation="start" onClick={handleUw}>Start</button>
+                                    <button ref={uwEndRef} className="btn btn-outline-danger w-100 my-1" data-active="false" data-observation="end" onClick={handleUw}>End</button>
                                 </div>
                             </div>
                             <div className="row py-3 px-5">
                                 <div className="col-12">
-                                    <button className="btn btn-primary btn-lg w-100 my-1">Under Water</button>
-                                    <button className="btn btn-outline-success w-100 my-1">Start</button>
-                                    <button className="btn btn-outline-danger w-100 my-1">End</button>
+                                    <button ref={pipeBreakRef} className="btn btn-info btn-lg w-100 my-1" data-active="false" data-observation="break" onClick={handlePipe}>Break</button>
                                 </div>
-                            </div>
-                            <div className="row py-3 px-5">
+                                <div className="col-12 hide" ref={pipeBreakModifierDivRef}>
+                                    <button ref={pipeBreakMultipleRef} className="btn btn-outline-danger w-100 my-1" data-active="false" data-observation="break_multiple" onClick={handlePipe}>Multiple Breaks</button>
+                                </div>
+
                                 <div className="col-12">
-                                    <button className="btn btn-info btn-lg w-100 my-1">Break</button>
-                                    <button className="btn btn-info btn-lg w-100 my-1">Crack</button>
-                                    <button className="btn btn-info btn-lg w-100 my-1">Hole</button>
-                                    <button className="btn btn-info btn-lg w-100 my-1">Separated Joint</button>
-                                    <button className="btn btn-outline-danger w-100 my-1">Multiple</button>
+                                    <button ref={pipeCrackRef} className="btn btn-info btn-lg w-100 my-1" data-active="false" data-observation="crack" onClick={handlePipe}>Crack</button>
+                                </div>
+                                <div className="col-12 hide" ref={pipeCrackModifierDivRef}>
+                                    <button ref={pipeCrackMultipleRef} className="btn btn-outline-danger w-100 my-1" data-active="false" data-observation="crack_multiple" onClick={handlePipe}>Multiple Cracks</button>
+                                </div>
+
+                                <div className="col-12">
+                                    <button ref={pipeHoleRef} className="btn btn-info btn-lg w-100 my-1" data-active="false" data-observation="hole" onClick={handlePipe}>Hole</button>
+                                    <button ref={pipeSeparatedJointRef} className="btn btn-info btn-lg w-100 my-1" data-active="false" data-observation="separated_joint" onClick={handlePipe}>Separated Joint</button>
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="col-sm-12 col-md-4 col-lg-6 text-left border">
-
-                            <div className="row justify-content-center p-4">
-                                <div className="col-12">
-                                    <div className="form-group">
-                                        <label htmlFor="formControlRange"><span className="font-weight-bold lead">{lossOfCrossection.toString()}%</span> Loss of Cross Section</label>
-                                        <input type="range" className="form-control-range" id="formControlRange" min="0" max="100" step="10" defaultValue="0" onChange={handleRangeSlider}/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="row justify-content-left mt-3">
-                                <div className="col-sm-12 col-md-4 col-lg-4 text-center">
-                                    <span className="h6 pt-2">Blockage</span>
-                                    <div className="btn-group-vertical">
-                                        <button className="btn btn-secondary">Roots</button>
-                                        <button className="btn btn-secondary">Roots Fine</button>
-                                        <button className="btn btn-secondary">RFL</button>
-                                    </div>
-                                    <div className="btn-group-vertical">
-                                        <button className="btn btn-secondary">Debris</button>
-                                        <button className="btn btn-secondary">DAR</button>
-                                    </div>
-
-                                </div>
-                                <div className="col-sm-12 col-md-4 col-lg-4 text-center">
-                                    <span className="h6 pt-2">Pipe</span>
-                                </div>
-                                <div className="col-sm-12 col-md-4 col-lg-4 text-center">
-                                    <span className="h6 pt-2">Notation</span>
-
-                                </div>
-                            </div>
-                        </div> */}
+                    </div>
+                    <div className="row border p-2 m-2 pb-3 bg-foreground">
+                        <div className="col col-12 pt-3">
+                            {/* <textarea name="observation_notes" id="observation_notes" placeholder="Notes" rows="3" className="form-control w-100 p-3" onChange={handleNewObservationOnChange}/> */}
+                            <textarea name="observation_notes" id="observation_notes" placeholder="Notes" rows="3" className="form-control w-100 p-3"/>
+                        </div>
                     </div>                    
                 </div>
-
-
-
-
-                {/* <div className="row border p-2 m-2 bg-foreground">
-                    <div className="col col-12 pt-3">
-                        <div className="h6">Blockage</div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="roots" value="roots" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="roots">Roots</label>
-                        </div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="debris" value="debris" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="debris">Debris</label>
-                        </div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="debris_loose" value="loose" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="debris_loose">Loose</label>
-                        </div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="debris_attached_to_wall" value="attached_to_wall" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="debris_attached_to_wall">Attached To Wall</label>
-                        </div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="continuous" value="continuous" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="continuous">Continuous</label>
-                        </div>
-                    </div>
-                    <div className="col col-6 mt-4">
-                        <label className="h6 float-left" htmlFor='footage'>% Loss of Crosssection</label>
-                        <input {...{className: 'form-control mb-3 float-right', type: 'number', name: 'loss_of_crosssection', id: 'loss_of_crosssection', step: '10', min: '0', max: '100', placeholder: '%'}} onChange={handleNewObservationOnChange}/>
-                    </div>
-                </div>
-                <div className="row border p-2 m-2 pb-3 bg-foreground">
-                    <div className="col col-12 pt-3">
-                        <div className="h6">Pipe Issue</div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="pipe_issue_offset_joint" value="offset_joint" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="pipe_issue_offset_joint">Offset Joint</label>
-                        </div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="pipe_issue_crack" value="crack" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="pipe_issue_crack">Crack</label>
-                        </div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="pipe_issue_hole" value="hole" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="pipe_issue_hole">Hole</label>
-                        </div>
-                    </div>
-                </div>
-                <div className="row border p-2 m-2 pt-4 bg-foreground">
-                    <div className="col col-4">
-                        <div className="form-check form-check-inline mr-5 mb-3">
-                            <input ref={standingWaterRef} className="form-check-input radio-button" type="checkbox" id="standing_water" value="standing_water" onClick={handleStandingWater} onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="roots">Standing Water</label>
-                        </div>
-                    </div>
-                    <div ref={standingWaterStartRef} className="col col-4" style={{display: 'none'}}>
-                        <input {...{className: 'form-control mb-3', type: 'number', name: 'standing_water_start', id: 'standing_water_start', step: '0.1', min: '0', placeholder: 'Standing Water - Start'}} onChange={handleNewObservationOnChange}/>
-                    </div>
-                    <div ref={standingWaterEndRef} className="col col-4" style={{display: 'none'}}>
-                        <input {...{className: 'form-control mb-3', type: 'number', name: 'standing_water_end', id: 'standing_water_end', step: '0.1', min: '0', placeholder: 'Standing Water - End'}} onChange={handleNewObservationOnChange}/>
-                    </div>
-                </div>
-                <div className="row border p-2 m-2 pt-4 bg-foreground">
-                    <div className="col col-4">
-                        <div className="form-check form-check-inline mr-5 mb-3">
-                            <input ref={underWaterRef} className="form-check-input radio-button" type="checkbox" id="under_water" value="under_water" onClick={handleUnderWater} onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="roots">Under Water</label>
-                        </div>
-                    </div>
-                    <div ref={underWaterStartRef} className="col col-4" style={{display: 'none'}}>
-                        <input {...{className: 'form-control mb-3', type: 'number', name: 'under_water_start', id: 'under_water_start', step: '0.1', min: '0', placeholder: 'Under Water - Start'}} onChange={handleNewObservationOnChange}/>
-                    </div>
-                    <div ref={underWaterEndRef} className="col col-4" style={{display: 'none'}}>
-                        <input {...{className: 'form-control mb-3', type: 'number', name: 'under_water_end', id: 'under_water_end', step: '0.1', min: '0', placeholder: 'Under Water - End'}} onChange={handleNewObservationOnChange}/>
-                    </div>
-                </div>
-                <div className="row border p-2 m-2 pb-3 bg-foreground">
-                    <div className="col col-12 pt-3">
-                        <div className="h6">Additional Notation</div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="tie_in" value="tie-in" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="tie_in">Tie-In</label>
-                        </div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="ltl" value="ltl" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="ltl">LTL</label>
-                        </div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="ltr" value="ltr" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="ltr">LTR</label>
-                        </div>
-                        <div className="form-check form-check-inline mr-5">
-                            <input className="form-check-input radio-button" type="checkbox" id="ltf" value="ltf" onChange={handleNewObservationOnChange}/>
-                            <label className="form-check-label radio-button-label" htmlFor="ltf">LTF</label>
-                        </div>
-                    </div>
-                </div>
-                <div className="row border p-2 m-2 pb-3 bg-foreground">
-                    <div className="col col-12 pt-3">
-                        <textarea name="observation_notes" id="observation_notes" placeholder="Notes" rows="3" className="w-100 p-3" onChange={handleNewObservationOnChange}/>
-                    </div>
-                </div> */}
                 <div className="row mt-5">
                     <div className="col col-5">
                         <button id="done_observation_btn" className="btn btn-secondary btn-lg m-0 mt-3" data-toggle="tooltip" data-placement="top" title="Save & Done" data-action="done" onMouseOver={handleNewObservationFormSubmitClick}>
@@ -710,6 +1059,55 @@ const ObservationNew = (props) => {
                 </div>
             </div>
         </form>
+
+        <Modal show={show} onHide={handleClose} animation={false} size="md" aria-labelledby="contained-modal-title-vcenter" centered>
+            <Modal.Header closeButton className="bg-dark text-white border-bottom-0">
+                <Modal.Title id="contained-modal-title-vcenter">Footage (in Feet)</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body className="bg-dark">
+                <div className="py-2">
+                    <div className="pb-4 align-center" style={{minWidth: '382px'}}>
+                        <div ref={footageModalRef} {...{className: 'form-control form-control-lg text-right', name: 'footage', id: 'footage'}} style={{minWidth: '238px', height: '5rem', fontSize: '3rem'}}>{(!footageVal.length) ? "0.00" : (footageVal.join(''))}</div>
+                    </div>
+                    <div className="text-center" style={{minWidth: '386px'}}>
+                        <div style={{display: 'inline-block'}} className="">
+                            <div style={{minWidth: "278px"}}>
+                                <button className={btnClasses} style={{width: '100px', height: '100px'}} onClick={handleAddToFootage}>7</button>
+                                <button className={btnClasses} style={{width: '100px', height: '100px'}} onClick={handleAddToFootage}>8</button>
+                                <button className={btnClasses} style={{width: '100px', height: '100px'}} onClick={handleAddToFootage}>9</button>
+                            </div>
+                            <div style={{minWidth: "278px"}}>
+                                <button className={btnClasses} style={{width: '100px', height: '100px'}} onClick={handleAddToFootage}>4</button>
+                                <button className={btnClasses} style={{width: '100px', height: '100px'}} onClick={handleAddToFootage}>5</button>
+                                <button className={btnClasses} style={{width: '100px', height: '100px'}} onClick={handleAddToFootage}>6</button>
+                            </div>
+                            <div style={{minWidth: "278px"}}>
+                                <button className={btnClasses} style={{width: '100px', height: '100px'}} onClick={handleAddToFootage}>1</button>
+                                <button className={btnClasses} style={{width: '100px', height: '100px'}} onClick={handleAddToFootage}>2</button>
+                                <button className={btnClasses} style={{width: '100px', height: '100px'}} onClick={handleAddToFootage}>3</button>
+                            </div>
+                            <div style={{minWidth: "278px"}}>
+                                <button className={btnClasses} style={{width: '200px', height: '100px'}} onClick={handleAddToFootage}>0</button>
+                                <button className={btnClasses} style={{width: '100px', height: '100px'}} onClick={handleAddToFootage}>.</button>
+                            </div>
+                        </div>
+                        <div style={{display: 'inline-block', verticalAlign: 'top'}} className="">
+                            <div style={{minWidth: '106px'}}>
+                                <button className="btn btn-secondary border border-dark btn-lg" style={{width: '100px', height: '200px', display: 'block'}} onClick={handleBackspace}><IconBackspace /></button>
+                                <button className="btn btn-secondary border border-dark btn-lg" style={{width: '100px', height: '200px', display: 'block'}} onClick={handleEnter} type="button" data-dismiss="modal" aria-label="Enter">Enter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Modal.Body>
+
+            <Modal.Footer className="bg-dark border-top-0">
+                <Button variant="danger" onClick={handleClearFootage}>
+                    Clear
+                </Button>
+            </Modal.Footer>
+        </Modal>
         </>
     )
 }
