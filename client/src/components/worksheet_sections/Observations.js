@@ -526,6 +526,28 @@ const ObservationNew = (props) => {
 
     }
 
+    const toggleElem = (paramObj) => {
+        const {action, elem, color} = paramObj
+        const {inverse} = paramObj
+        let activeAttribute = false
+        let actionVar = action
+
+        if(inverse) {
+            actionVar = (actionVar === 'on') ? 'off' : 'on'
+            activeAttribute = !activeAttribute
+        }
+
+        if(actionVar === 'off'){
+            elem.classList.add(`btn-outline-${color}`)
+            elem.classList.remove(`btn-${color}`)
+            elem.setAttribute('data-active', activeAttribute)
+        } else {
+            elem.classList.add(`btn-${color}`) 
+            elem.classList.remove(`btn-outline-${color}`)
+            elem.setAttribute('data-active', !activeAttribute)
+        }
+    }
+
     const tiRef = useRef(null)
     const ltlRef = useRef(null)
     const ltrRef = useRef(null)
@@ -571,6 +593,84 @@ const ObservationNew = (props) => {
     const uwModifierDivRef = useRef(null)
     const pipeBreakModifierDivRef = useRef(null)
     const pipeCrackModifierDivRef = useRef(null)
+
+
+    const [lineNotation, setLineNotation] = useState([])
+
+    const [rootsObservation, setRootsObservation] = useState({
+        roots: false,
+        modifier: {
+            in_flow_line: false,
+            continuous: false,
+            fine: false
+        }
+    })
+    
+    const [ojObservation, setOjObservation] = useState({
+        oj: false,
+        modifier: {
+            minor: false,
+            severe: false
+        }
+    })
+
+    const [debObservation, setDebObservation] = useState({
+        deb: false,
+        modifier: {
+            attached_to_roots: false,
+            loose: false,
+            on_wall: false,
+            in_flow_line: false
+        }
+    })
+
+    const [swObservation, setSwObservation] = useState({
+        sw: false,
+        modifier: {
+            start: false,
+            end: false,
+            by_offset_joint: false
+        }
+    })
+
+    const [uwObservation, setUwObservation] = useState({
+        uw: false,
+        modifier: {
+            start: false,
+            end: false
+        }
+    })
+
+    const [pipeBreakObservation, setPipeBreakObservation] = useState({
+        break: false, 
+        modifier: {
+            break_multiple: false
+        }
+    })
+
+    const [pipeCrackObservation, setPipeCrackObservation] = useState({
+        crack: false, 
+        modifier: {
+            crack_multiple: false
+        }
+    })
+
+    const [pipeHoleObservation, setPipeHoleObservation] = useState({hole: false})
+    const [pipeSeparatedJointObservation, setPipeSeparatedJointObservation] = useState({separated_joint: false})
+    const [observationNotes, setObservationNotes] = useState(null)
+
+    useEffect(() => {console.log(lineNotation)}, [lineNotation])
+    useEffect(() => {console.log(rootsObservation)}, [rootsObservation])
+    useEffect(() => {console.log(ojObservation)}, [ojObservation])
+    useEffect(() => {console.log(debObservation)}, [debObservation])
+    useEffect(() => {console.log(swObservation)}, [swObservation])
+    useEffect(() => {console.log(uwObservation)}, [uwObservation])
+    useEffect(() => {console.log(pipeBreakObservation)}, [pipeBreakObservation])
+    useEffect(() => {console.log(pipeCrackObservation)}, [pipeCrackObservation])
+    useEffect(() => {console.log(pipeHoleObservation)}, [pipeHoleObservation])
+    useEffect(() => {console.log(pipeSeparatedJointObservation)}, [pipeSeparatedJointObservation])
+    useEffect(() => {console.log(observationNotes)}, [observationNotes])
+
     
     const handleLineNotation = (e) => {
         e.preventDefault()
@@ -583,6 +683,7 @@ const ObservationNew = (props) => {
             toggleElem({'action': 'off', 'elem': e.target, 'color': 'dark'})
         }
 
+        setLineNotation([...lineNotation, dataObservation])
 
         // tiRef
         // ltlRef
@@ -619,6 +720,17 @@ const ObservationNew = (props) => {
             }
         }
 
+        let tmpRootsObservation = rootsObservation
+
+        if(dataObservation === 'roots'){
+            tmpRootsObservation.roots = JSON.parse(dataActive)
+        } else {
+            tmpRootsObservation.modifier[dataObservation] = dataActive
+        }
+
+        console.log(tmpRootsObservation)
+        setRootsObservation(tmpRootsObservation)
+
         // rtsRef
         // rtsModifierDivRef
 
@@ -648,9 +760,6 @@ const ObservationNew = (props) => {
             } else {
                 ojModifierDivRef.current.classList.add('hide')
                 e.target.classList.remove('btn-success')
-
-                // toggleElem({'action': 'off', 'elem': ojMinorRef.current, 'color': minor})
-                // toggleElem({'action': 'off', 'elem': ojSevereRef.current, 'color': severe})
             }
         } else {
             if(dataActive === true){
@@ -670,6 +779,16 @@ const ObservationNew = (props) => {
                 }
             }
         }
+ 
+        let tmpOjObservation = ojObservation
+
+        if(dataObservation === 'oj'){
+            tmpOjObservation.oj = JSON.parse(dataActive)
+        } else {
+            tmpOjObservation.modifier[dataObservation] = dataActive
+        }
+
+        setOjObservation(tmpOjObservation)
 
         // ojRef
         // ojModifierDivRef
@@ -705,6 +824,18 @@ const ObservationNew = (props) => {
             }
         }
 
+
+        // debObservation, setDebObservation
+        let tmpDebObservation = debObservation
+
+        if(dataObservation === 'oj'){
+            tmpDebObservation.deb = JSON.parse(dataActive)
+        } else {
+            tmpDebObservation.modifier[dataObservation] = dataActive
+        }
+
+        setDebObservation(tmpDebObservation)
+        
         // debRef
         // debModifierDivRef
         
@@ -715,27 +846,7 @@ const ObservationNew = (props) => {
 
     }
 
-    const toggleElem = (paramObj) => {
-        const {action, elem, color} = paramObj
-        const {inverse} = paramObj
-        let activeAttribute = false
-        let actionVar = action
-
-        if(inverse) {
-            actionVar = (actionVar === 'on') ? 'off' : 'on'
-            activeAttribute = !activeAttribute
-        }
-
-        if(actionVar === 'off'){
-            elem.classList.add(`btn-outline-${color}`)
-            elem.classList.remove(`btn-${color}`)
-            elem.setAttribute('data-active', activeAttribute)
-        } else {
-            elem.classList.add(`btn-${color}`) 
-            elem.classList.remove(`btn-outline-${color}`)
-            elem.setAttribute('data-active', !activeAttribute)
-        }
-    }
+    
 
     const handleSw = (e) => {
         e.preventDefault()
@@ -758,10 +869,6 @@ const ObservationNew = (props) => {
             } else {
                 swModifierDivRef.current.classList.add('hide')
                 swRef.current.classList.remove('btn-success')
-
-                // toggleElem({'action': 'off', 'elem': swStartRef.current, 'color': start})
-                // toggleElem({'action': 'off', 'elem': swEndRef.current, 'color': end})
-                // toggleElem({'action': 'off', 'elem': swByOjRef.current, 'color': byOj})
             }
         } else {
             if(dataActive === true){
@@ -789,6 +896,18 @@ const ObservationNew = (props) => {
                 }
             }
         }
+        
+        // swObservation, setSwObservation
+
+        let tmpSwObservation = swObservation
+
+        if(dataObservation === 'sw'){
+            tmpSwObservation.sw = JSON.parse(dataActive)
+        } else {
+            tmpSwObservation.modifier[dataObservation] = dataActive
+        }
+
+        setSwObservation(tmpSwObservation)
 
         // swRef
         // swModifierDivRef
@@ -819,9 +938,6 @@ const ObservationNew = (props) => {
             } else {
                 uwModifierDivRef.current.classList.add('hide')
                 e.target.classList.remove('btn-success')
-
-                // toggleElem({'action': 'off', 'elem': uwStartRef.current, 'color': start})
-                // toggleElem({'action': 'off', 'elem': uwEndRef.current, 'color': end})
             }
         } else {
             if(dataActive === true){
@@ -841,6 +957,17 @@ const ObservationNew = (props) => {
                 }
             }
         }
+
+        // uwObservation, setUwObservation
+        let tmpUwObservation = uwObservation
+
+        if(dataObservation === 'uw'){
+            tmpUwObservation.uw = JSON.parse(dataActive)
+        } else {
+            tmpUwObservation.modifier[dataObservation] = dataActive
+        }
+
+        setUwObservation(tmpUwObservation)
 
         // uwRef
         // uwModifierDivRef
@@ -898,6 +1025,38 @@ const ObservationNew = (props) => {
             }
         }
 
+        let tmpPipeBreakObservation = pipeBreakObservation
+        let tmpPipeCrackObservation = pipeCrackObservation
+        let tmpPipeHoleObservation = pipeHoleObservation
+        let tmpPipeSeparatedJointObservation = pipeSeparatedJointObservation
+
+        if(dataObservation === 'break'){
+            tmpPipeBreakObservation.break = JSON.parse(dataActive)
+            setPipeBreakObservation(tmpPipeBreakObservation)
+        }
+        if(dataObservation === 'crack'){
+            tmpPipeCrackObservation.crack = JSON.parse(dataActive)
+            setPipeCrackObservation(tmpPipeCrackObservation)
+        }
+        if(dataObservation === 'hole'){
+            tmpPipeHoleObservation.hole = JSON.parse(dataActive)
+            setPipeHoleObservation(tmpPipeHoleObservation)
+        }
+        if(dataObservation === 'separated_joint'){
+            tmpPipeSeparatedJointObservation.separated_joint = JSON.parse(dataActive)
+            setPipeSeparatedJointObservation(tmpPipeSeparatedJointObservation)
+        }
+
+        if(dataObservation === 'break_multiple'){
+            tmpPipeBreakObservation.modifier.break_multiple = JSON.parse(dataActive)
+            setPipeBreakObservation(tmpPipeBreakObservation)
+        }
+        if(dataObservation === 'crack_multiple'){
+            tmpPipeCrackObservation.modifier.crack_multiple = JSON.parse(dataActive)
+            setPipeCrackObservation(tmpPipeCrackObservation)
+        }
+        
+
         // pipeBreakRef
         // pipeModifierDivRef
 
@@ -906,6 +1065,11 @@ const ObservationNew = (props) => {
         // pipeSeparatedJointRef
         // pipeMultipleRef
 
+    }
+
+    const handleObservationNotes = (e) => {
+        e.preventDefault()
+        setObservationNotes(e.target.value)
     }
 
     const btnClasses = 'btn btn-secondary border border-dark btn-lg px-3 align-middle'
@@ -1039,8 +1203,7 @@ const ObservationNew = (props) => {
                     </div>
                     <div className="row border p-2 m-2 pb-3 bg-foreground">
                         <div className="col col-12 pt-3">
-                            {/* <textarea name="observation_notes" id="observation_notes" placeholder="Notes" rows="3" className="form-control w-100 p-3" onChange={handleNewObservationOnChange}/> */}
-                            <textarea name="observation_notes" id="observation_notes" placeholder="Notes" rows="3" className="form-control w-100 p-3"/>
+                            <textarea name="observation_notes" id="observation_notes" placeholder="Notes" rows="3" className="form-control w-100 p-3" onChange={handleObservationNotes}/>
                         </div>
                     </div>                    
                 </div>
@@ -1055,6 +1218,14 @@ const ObservationNew = (props) => {
                         <button id="add_observation_btn" className="btn btn-primary btn-lg p-3 m-0" data-toggle="tooltip" data-placement="left" title="Save & Next" data-action="next" onMouseOver={handleNewObservationFormSubmitClick}>
                             <IconPlus />
                         </button>
+                    </div>
+                </div>
+
+                <div className="row my-5">
+                    <div className="col-12">
+                        <div className="border">
+                            stuff
+                        </div>
                     </div>
                 </div>
             </div>
