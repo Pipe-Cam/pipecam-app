@@ -302,6 +302,7 @@ const ObservationNew = (props) => {
 
     const [footageVal, setFootageVal] = useState([])
     const [lossOfCrossection, setLossOfCrossection] = useState(0)
+
     const footageRef = useRef(null)
     const footageModalRef = useRef(null)
 
@@ -380,7 +381,25 @@ const ObservationNew = (props) => {
             throw(`Invalid observation submit action. 'next' and 'done' are the only two options.`)
         }
 
-        await handleUpdateInspectionDataState(observationState)
+        let observationData = {
+            footage: (footageVal.map(item => item.trim())).join(''),
+            loss_of_crosssection: lossOfCrossection,
+            line_notation: lineNotation,
+            roots: rootsObservation,
+            offset_joint: ojObservation,
+            debris: debObservation,
+            standing_water: swObservation,
+            under_water: uwObservation,
+            pipe_break: pipeBreakObservation,
+            pipe_crack: pipeCrackObservation,
+            pipe_hole: pipeHoleObservation,
+            pipe_separated_joint: pipeSeparatedJointObservation,
+            locate_depth: locateDepth,
+            material_change: materialX2,
+            notes: observationNotes,
+        }
+
+        await handleUpdateInspectionDataState(observationData)
 
         history.push(historyRedirect)
         window.location.reload()
@@ -554,6 +573,14 @@ const ObservationNew = (props) => {
     const ltuRef = useRef(null)
     const ltdRef = useRef(null)
     const ltfRef = useRef(null)
+    const waterGradeRef = useRef(null)
+    const waterDebrisRef = useRef(null)
+    const waterCameraRef = useRef(null)
+    const mainRef = useRef(null)
+
+    const locateDivRef = useRef(null)
+    const locateRef = useRef(null)
+    const locateDepthRef = useRef(null)
 
     const rtsRef = useRef(null)
     const rtsInFlowLineRef = useRef(null)
@@ -594,8 +621,31 @@ const ObservationNew = (props) => {
     const pipeBreakModifierDivRef = useRef(null)
     const pipeCrackModifierDivRef = useRef(null)
 
+    const materialX2Ref = useRef(null)
+    const materialX2DivRef = useRef(null)
+    
+    const x2MaterialCiRef = useRef(null)
+    const x2MaterialAcRef = useRef(null)
+    const x2MaterialAbsRef = useRef(null)
+    const x2MaterialVcpRef = useRef(null)
+    const x2MaterialPvcRef = useRef(null)
+    const x2MaterialOrbgRef = useRef(null)
+    const x2MaterialHdpeRef = useRef(null)
 
-    const [lineNotation, setLineNotation] = useState([])
+
+    const [lineNotation, setLineNotation] = useState({
+        ti: false,
+        ltl: false,
+        ltr: false,
+        ltu: false,
+        ltd: false,
+        ltf: false,
+        intro_water_grade: false,
+        intro_water_debris: false,
+        intro_water_camera: false,
+        main: false,
+        locate: false
+    })
 
     const [rootsObservation, setRootsObservation] = useState({
         roots: false,
@@ -655,8 +705,11 @@ const ObservationNew = (props) => {
         }
     })
 
+    
     const [pipeHoleObservation, setPipeHoleObservation] = useState({hole: false})
     const [pipeSeparatedJointObservation, setPipeSeparatedJointObservation] = useState({separated_joint: false})
+    const [locateDepth, setLocateDepth] = useState(null)
+    const [materialX2, setMaterialX2] = useState(null)
     const [observationNotes, setObservationNotes] = useState(null)
 
     useEffect(() => {console.log(lineNotation)}, [lineNotation])
@@ -670,6 +723,8 @@ const ObservationNew = (props) => {
     useEffect(() => {console.log(pipeHoleObservation)}, [pipeHoleObservation])
     useEffect(() => {console.log(pipeSeparatedJointObservation)}, [pipeSeparatedJointObservation])
     useEffect(() => {console.log(observationNotes)}, [observationNotes])
+    
+    useEffect(() => {console.log(locateRef.current.getAttribute('data-active'))}, [locateRef])
 
     
     const handleLineNotation = (e) => {
@@ -679,18 +734,25 @@ const ObservationNew = (props) => {
 
         if(dataActive) {
             toggleElem({'action': 'on', 'elem': e.target, 'color': 'dark'})
+            if(dataObservation === 'locate'){
+                locateDepthRef.current.classList.remove('hide')
+                locateDivRef.current.classList.add('border')
+                locateDivRef.current.classList.add('border-warning')
+                locateDivRef.current.classList.add('rounded-lg')
+            }
         } else {
             toggleElem({'action': 'off', 'elem': e.target, 'color': 'dark'})
+            if(dataObservation === 'locate'){
+                locateDepthRef.current.classList.add('hide')
+                locateDivRef.current.classList.remove('border')
+                locateDivRef.current.classList.remove('border-warning')
+                locateDivRef.current.classList.remove('rounded-lg')
+            }
         }
 
-        setLineNotation([...lineNotation, dataObservation])
-
-        // tiRef
-        // ltlRef
-        // ltrRef
-        // ltuRef
-        // ltdRef
-        // ltfRef
+        let tmpLineNotation = lineNotation
+        tmpLineNotation[dataObservation] = dataActive
+        setLineNotation(tmpLineNotation)
 
     }
 
@@ -730,14 +792,6 @@ const ObservationNew = (props) => {
 
         console.log(tmpRootsObservation)
         setRootsObservation(tmpRootsObservation)
-
-        // rtsRef
-        // rtsModifierDivRef
-
-        // rtsInFlowLineRef
-        // rtsConRef
-        // rtsFineRef
-
     }
 
     const handleOj = (e) => {
@@ -782,20 +836,16 @@ const ObservationNew = (props) => {
  
         let tmpOjObservation = ojObservation
 
-        if(dataObservation === 'oj'){
+        if(dataObservation === 'offset_joint'){
             tmpOjObservation.oj = JSON.parse(dataActive)
         } else {
+            tmpOjObservation.modifier.minor = false
+            tmpOjObservation.modifier.severe = false
+
             tmpOjObservation.modifier[dataObservation] = dataActive
         }
 
         setOjObservation(tmpOjObservation)
-
-        // ojRef
-        // ojModifierDivRef
-
-        // ojMinorRef
-        // ojSevereRef
-
     }
 
     const handleDeb = (e) => {
@@ -824,30 +874,18 @@ const ObservationNew = (props) => {
             }
         }
 
-
-        // debObservation, setDebObservation
         let tmpDebObservation = debObservation
 
-        if(dataObservation === 'oj'){
+        if(dataObservation === 'debris'){
             tmpDebObservation.deb = JSON.parse(dataActive)
         } else {
             tmpDebObservation.modifier[dataObservation] = dataActive
         }
 
         setDebObservation(tmpDebObservation)
-        
-        // debRef
-        // debModifierDivRef
-        
-        // debDarRef
-        // debLooseRef
-        // debWallRef
-        // debInFlowRef
-
     }
 
     
-
     const handleSw = (e) => {
         e.preventDefault()
         let dataObservation = e.target.getAttribute('data-observation')
@@ -896,27 +934,22 @@ const ObservationNew = (props) => {
                 }
             }
         }
-        
-        // swObservation, setSwObservation
 
         let tmpSwObservation = swObservation
 
-        if(dataObservation === 'sw'){
+        if(dataObservation === 'standing_water'){
             tmpSwObservation.sw = JSON.parse(dataActive)
         } else {
+            tmpSwObservation.modifier['start'] = false
+            tmpSwObservation.modifier['end'] = false
+            tmpSwObservation.modifier['by_offset_joint'] = false
+
             tmpSwObservation.modifier[dataObservation] = dataActive
         }
 
         setSwObservation(tmpSwObservation)
-
-        // swRef
-        // swModifierDivRef
-
-        // swStartRef
-        // swEndRef
-        // swByOjRef
-
     }
+
 
     const handleUw = (e) => {
         e.preventDefault()
@@ -958,23 +991,17 @@ const ObservationNew = (props) => {
             }
         }
 
-        // uwObservation, setUwObservation
         let tmpUwObservation = uwObservation
 
-        if(dataObservation === 'uw'){
+        if(dataObservation === 'under_water'){
             tmpUwObservation.uw = JSON.parse(dataActive)
         } else {
+            tmpUwObservation.modifier['start'] = false
+            tmpUwObservation.modifier['end'] = false
             tmpUwObservation.modifier[dataObservation] = dataActive
         }
 
         setUwObservation(tmpUwObservation)
-
-        // uwRef
-        // uwModifierDivRef
-        
-        // uwStartRef
-        // uwEndRef
-
     }
 
     const handlePipe = (e) => {
@@ -1055,21 +1082,98 @@ const ObservationNew = (props) => {
             tmpPipeCrackObservation.modifier.crack_multiple = JSON.parse(dataActive)
             setPipeCrackObservation(tmpPipeCrackObservation)
         }
-        
-
-        // pipeBreakRef
-        // pipeModifierDivRef
-
-        // pipeCrackRef
-        // pipeHoleRef
-        // pipeSeparatedJointRef
-        // pipeMultipleRef
-
     }
 
     const handleObservationNotes = (e) => {
         e.preventDefault()
-        setObservationNotes(e.target.value)
+        setObservationNotes(Number(e.target.value.trim()))
+    }
+
+    const handleLocateDepth = (e) => {
+        e.preventDefault()
+        console.log(e.target.value)
+        setLocateDepth(Number(e.target.value.trim()))
+    }
+
+    const handleMaterialX2 = (e) => {
+        e.preventDefault()
+        let dataObservation = e.target.getAttribute('data-observation')
+        let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
+        e.target.setAttribute('data-active', dataActive)
+
+        console.log(dataObservation)
+        console.log(dataActive)
+
+        let color = {
+            'ci': 'warning',
+            'ac': 'secondary',
+            'abs': 'primary',
+            'vcp': 'success',
+            'pvc': 'info',
+            'orbg': 'danger',
+            'hdpe': 'dark'
+        }
+
+        let materialRefs = [
+            x2MaterialCiRef,
+            x2MaterialAcRef,
+            x2MaterialAbsRef,
+            x2MaterialVcpRef,
+            x2MaterialPvcRef,
+            x2MaterialOrbgRef,
+            x2MaterialHdpeRef
+        ]
+
+        if(dataObservation === 'material_change'){
+            if(dataActive === true){
+                materialX2DivRef.current.classList.remove('hide')
+                materialX2Ref.current.classList.add('btn-success')
+                materialX2Ref.current.classList.remove('btn-warning')
+            } else {
+                materialX2DivRef.current.classList.add('hide')
+                materialX2Ref.current.classList.remove('btn-success')
+                materialX2Ref.current.classList.add('btn-warning')
+
+            }
+        } else {
+            let selectedMaterial = null
+
+            materialRefs.forEach(item => {
+                toggleElem({'action': 'off', 'elem': item.current, 'color': color[item.current.getAttribute('data-observation')]})
+            })
+
+            if(dataActive === true){
+                toggleElem({'action': 'on', 'elem': e.target, 'color': color[e.target.getAttribute('data-observation')]})
+                setMaterialX2(dataObservation.trim())
+            } else {
+                setMaterialX2(null)
+            }
+        }
+
+        // let tmpSwObservation = materialX2
+
+        // if(dataObservation === 'standing_water'){
+        //     tmpSwObservation.sw = JSON.parse(dataActive)
+        // } else {
+        //     tmpSwObservation.modifier['start'] = false
+        //     tmpSwObservation.modifier['end'] = false
+        //     tmpSwObservation.modifier['by_offset_joint'] = false
+
+        //     tmpSwObservation.modifier[dataObservation] = dataActive
+        // }
+
+        // setSwObservation(tmpSwObservation)
+
+
+        // setMaterialX2('')
+
+        // x2MaterialCiRef
+        // x2MaterialAcRef
+        // x2MaterialAbsRef
+        // x2MaterialVcpRef
+        // x2MaterialPvcRef
+        // x2MaterialOrbgRef
+        // x2MaterialHdpeRef
     }
 
     const btnClasses = 'btn btn-secondary border border-dark btn-lg px-3 align-middle'
@@ -1101,6 +1205,16 @@ const ObservationNew = (props) => {
                                     <button ref={ltuRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ltu" onClick={handleLineNotation}>Line Turns Up<span className="float-right"><IconUpArrow/></span></button>
                                     <button ref={ltdRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ltd" onClick={handleLineNotation}>Line Turns Down<span className="float-right"><IconDownArrow/></span></button>
                                     <button ref={ltfRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ltf" onClick={handleLineNotation}>Line Turns Flat<span className="float-right"><IconFlatArrow/></span></button>
+                                    <button ref={waterGradeRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="intro_water_grade" onClick={handleLineNotation}>Intro Water - Grade<span className="float-right"></span></button>
+                                    <button ref={waterDebrisRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="intro_water_debris" onClick={handleLineNotation}>Intro Water - Debris<span className="float-right"></span></button>
+                                    <button ref={waterCameraRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="intro_water_camera" onClick={handleLineNotation}>Intro Water - Camera<span className="float-right"></span></button>
+                                    <button ref={mainRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="main" onClick={handleLineNotation}>@ Main<span className="float-right"></span></button>
+                                    <div ref={locateDivRef} className="mt-2">
+                                        <button ref={locateRef} className="btn btn-outline-dark btn-lg w-100" data-active="false" data-observation="locate" onClick={handleLineNotation}>Locate<span className="float-right"></span></button>
+                                        <div className="mt-1 hide" ref={locateDepthRef}>
+                                            <input className="form-control form-control-lg" type="number" min="0.00" max="100.00" step="1.00" id="locateDepth" placeholder="Depth Footage" onChange={handleLocateDepth}/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1199,6 +1313,20 @@ const ObservationNew = (props) => {
                                     <button ref={pipeSeparatedJointRef} className="btn btn-info btn-lg w-100 my-1" data-active="false" data-observation="separated_joint" onClick={handlePipe}>Separated Joint</button>
                                 </div>
                             </div>
+                            <div className="row py-3 px-5">
+                                <div className="col-12">
+                                    <button ref={materialX2Ref} className="btn btn-warning btn-lg w-100 my-1" data-active="false" data-observation="material_change" onClick={handleMaterialX2}>Material Change</button>
+                                </div>
+                                    <div ref={materialX2DivRef} className="col-12 hide">
+                                        <button ref={x2MaterialCiRef} className="btn btn-outline-warning w-100 my-1" data-active="false" data-observation="ci" onClick={handleMaterialX2}>CI</button>
+                                        <button ref={x2MaterialAcRef} className="btn btn-outline-secondary w-100 my-1" data-active="false" data-observation="ac" onClick={handleMaterialX2}>AC</button>
+                                        <button ref={x2MaterialAbsRef} className="btn btn-outline-primary w-100 my-1" data-active="false" data-observation="abs" onClick={handleMaterialX2}>ABS</button>
+                                        <button ref={x2MaterialVcpRef} className="btn btn-outline-success w-100 my-1" data-active="false" data-observation="vcp" onClick={handleMaterialX2}>VCP</button>
+                                        <button ref={x2MaterialPvcRef} className="btn btn-outline-info w-100 my-1" data-active="false" data-observation="pvc" onClick={handleMaterialX2}>PVC</button>
+                                        <button ref={x2MaterialOrbgRef} className="btn btn-outline-danger w-100 my-1" data-active="false" data-observation="orbg" onClick={handleMaterialX2}>ORBG</button>
+                                        <button ref={x2MaterialHdpeRef} className="btn btn-outline-dark w-100 my-1" data-active="false" data-observation="hdpe" onClick={handleMaterialX2}>HDPE</button>
+                                    </div>
+                            </div>
                         </div>
                     </div>
                     <div className="row border p-2 m-2 pb-3 bg-foreground">
@@ -1224,7 +1352,21 @@ const ObservationNew = (props) => {
                 <div className="row my-5">
                     <div className="col-12">
                         <div className="border">
-                            stuff
+                            <div className="text-break">{JSON.stringify(lineNotation)}</div>
+                            <div className="text-break text-danger">{JSON.stringify(lossOfCrossection)}</div>
+                            <div className="text-break">{JSON.stringify(rootsObservation)}</div>
+                            <div className="text-break text-danger">{JSON.stringify(ojObservation)}</div>
+                            <div className="text-break">{JSON.stringify(debObservation)}</div>
+                            <div className="text-break text-danger">{JSON.stringify(swObservation)}</div>
+                            <div className="text-break">{JSON.stringify(uwObservation)}</div>
+                            <div className="text-break text-danger">{JSON.stringify(pipeBreakObservation)}</div>
+                            <div className="text-break">{JSON.stringify(pipeCrackObservation)}</div>
+                            <div className="text-break text-danger">{JSON.stringify(pipeHoleObservation)}</div>
+                            <div className="text-break">{JSON.stringify(pipeSeparatedJointObservation)}</div>
+                            <div className="text-break text-danger">{JSON.stringify(locateDepth)}</div>
+                            <div className="text-break">{JSON.stringify(materialX2)}</div>
+                            <div className="text-break text-danger">{JSON.stringify(observationNotes)}</div>
+                            
                         </div>
                     </div>
                 </div>
