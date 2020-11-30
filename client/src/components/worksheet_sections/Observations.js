@@ -62,7 +62,9 @@ function Observations() {
     const getInspectionData = async (id) => {
         if(id){
             let inspectionJSON = await getInspectionById(id)
+            console.log(inspectionJSON)
             return JSON.parse(inspectionJSON)[0]
+            // return JSON.parse(inspectionJSON)
         }
     }
 
@@ -141,7 +143,7 @@ function Observations() {
                         <ObservationEdit {...{handleUpdateInspectionDataState}}/>
                     </Route>
                     <Route path='/observations/view' exact>
-                        <ObservationView/>
+                        <ObservationView {...{inspectionData}}/>
                     </Route>
                 </Switch>
             </Router>
@@ -1447,6 +1449,9 @@ const ObservationView = (props) => {
             </div>
             <div>
                 Observation Number: {observation_num}
+            </div>
+            <div className="lead mt-5">
+                {(!props.inspectionData) ? (<Spinner />) : (JSON.stringify(props.inspectionData.access[access_num].observations[observation_num - 1], null, 2))}
             </div>
         </>
     )
