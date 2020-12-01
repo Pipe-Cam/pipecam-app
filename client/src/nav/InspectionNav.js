@@ -1,6 +1,6 @@
 import React from 'react'
 import InspectionHome from '../components/inspection/InspectionHome'
-import InspectionAccess from '../components/inspection/InspectionHome'
+// import InspectionAccess from '../components/inspection/InspectionHome'
 import NewInspection from '../components/inspection/NewInspection'
 
 import {  

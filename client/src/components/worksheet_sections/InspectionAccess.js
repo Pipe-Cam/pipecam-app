@@ -37,6 +37,7 @@ function InspectionAccess() {
 
     useEffect(()=>{
         getInspectionDataOnLoad(id)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleRedirectToNewAccess = (e) => {
@@ -195,7 +196,7 @@ const AccordionList = (props) => {
 }
 
 const AccessList = (props)=>{
-    const {inspectionData, id, setNextAccessNumber} = props
+    const {inspectionData, id/*, setNextAccessNumber*/} = props
     if(inspectionData && inspectionData.access){
         let accessData = inspectionData.access
         let accessDataKeys = Object.keys(accessData)

@@ -1,6 +1,6 @@
 // imports
-import React, {useRef, useState, useEffect, useContext} from 'react'
-import {getClients as getClientsFromDB, searchForClient as searchForClientInDB, getArchivedClients as getArchivedClientsFromDB} from '../db/read.js'
+import React, {useState, useEffect} from 'react'
+import {getClients as getClientsFromDB, /*searchForClient as searchForClientInDB, */getArchivedClients as getArchivedClientsFromDB} from '../db/read.js'
 
 // contexts
 import ClientContext from '../context/ClientContext'
@@ -14,7 +14,7 @@ import ClientNav from '../nav/ClientNav'
 // import AlternatingList from '../components/ui_components/AlternatingList'
 
 // modules
-const _ = require('lodash')
+// const _ = require('lodash')
 
 
 function Clients() {
@@ -27,26 +27,26 @@ function Clients() {
     const [newClientFormData, setNewClientFormData] = useState({})
 
 
-    const [forceUpdate, setForceUpdate] = useState(true)
+    // const [forceUpdate, setForceUpdate] = useState(true)
 
-    const handleEditClient = (e) => {
-        console.log("edited client")
+    // const handleEditClient = (e) => {
+    //     console.log("edited client")
 
-        let dataAttributes = {
-            value: e.target.getAttribute("data-value"),
-            id: e.target.getAttribute("data-id"),
-            action: e.target.getAttribute("data-action")
-        }
+    //     let dataAttributes = {
+    //         value: e.target.getAttribute("data-value"),
+    //         id: e.target.getAttribute("data-id"),
+    //         action: e.target.getAttribute("data-action")
+    //     }
 
-        let clientData = _.find(clientsFromDb, function(o){ return o._id === dataAttributes.id; })
-        setClientViewData(clientData)
-        // setClientNav('client_view')
-    }
+    //     let clientData = _.find(clientsFromDb, function(o){ return o._id === dataAttributes.id; })
+    //     setClientViewData(clientData)
+    //     // setClientNav('client_view')
+    // }
 
-    const handleDeleteClient = (e) => {
-        console.log("deleted client")
-        console.log(e.target)
-    }
+    // const handleDeleteClient = (e) => {
+    //     console.log("deleted client")
+    //     console.log(e.target)
+    // }
 
     const getClientsOnLoad = async () => {
         let clientList = await getClientsFromDB()

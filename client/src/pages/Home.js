@@ -1,27 +1,28 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import AlternatingList from '../components/ui_components/AlternatingList'
 import {getScheduledInspections as getScheduledInspectionsFromDB, getRecentInspections as getRecentInspectionsFromDB} from '../db/read.js'
 import ActiveContext from '../context/ActiveContext'
 
-const formatDate = (dateStr) => {
-    let date = new Date(dateStr)
-    let month = date.getMonth() + 1
-    let day = date.getDate()
-    let year = date.getFullYear()
+// const formatDate = (dateStr) => {
+//     let date = new Date(dateStr)
+//     let month = date.getMonth() + 1
+//     let day = date.getDate()
+//     let year = date.getFullYear()
 
-    // console.log(month)
-    // console.log(day)
-    // console.log(year)
+//     // console.log(month)
+//     // console.log(day)
+//     // console.log(year)
 
-    console.log(`${month}/${day}/${year}`)
+//     console.log(`${month}/${day}/${year}`)
 
-    return dateStr
-}
+//     return dateStr
+// }
 
 function Home() {
     const [scheduledInspectionsFromDB, setScheduledInspectionsFromDB] = useState(null)
     const [recentInspectionsFromDB, setRecentInspectionsFromDB] = useState(null)
+    // eslint-disable-next-line
     const {activeClientId, setActiveClientId} = useContext(ActiveContext)
 
     const getInspectionsOnLoad = async () => {
@@ -32,7 +33,7 @@ function Home() {
         setRecentInspectionsFromDB(JSON.parse(recentInspections))
     }
 
-    const history = useHistory()
+    // const history = useHistory()
 
     useEffect(()=>{
         getInspectionsOnLoad()

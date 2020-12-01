@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import ClientContext from '../../context/ClientContext'
+// import ClientContext from '../../context/ClientContext'
 import AlternatingList from '../ui_components/AlternatingList'
 
 import {getArchivedClients as getArchivedClientsFromDB} from '../../db/read'

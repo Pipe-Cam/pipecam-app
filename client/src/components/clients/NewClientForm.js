@@ -8,10 +8,10 @@ const _ = require('lodash')
 const NewClientForm = (props) => {
     const [newClientFormData, setNewClientFormData] = useState({})
     const { 
-        clientsFromDb, 
-        setClientsFromDb, 
-        clientNav, 
-        setClientNav,
+        // clientsFromDb, 
+        // setClientsFromDb, 
+        // clientNav, 
+        // setClientNav,
         getClientsOnLoad
     } = useContext(ClientContext)
             
@@ -139,6 +139,7 @@ const NewClientForm = (props) => {
 
     useEffect(()=>{
         handleDefaultValue()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     let bgStyle = {backgroundColor: '#FAFAFA'}

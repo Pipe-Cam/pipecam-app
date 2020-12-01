@@ -1,19 +1,16 @@
 import React, {useState, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 import InspectionOverview from '../worksheet_sections/InspectionOverview'
-import InspectionLocation from '../worksheet_sections/InspectionLocation'
-import JobHome from '../worksheet_sections/JobHome'
+// import InspectionLocation from '../worksheet_sections/InspectionLocation'
+// import JobHome from '../worksheet_sections/JobHome'
 import InspectionContext from '../../context/InspectionContext'
 import {newInspection as saveNewInspectionToDB} from '../../db/write'
 
-const _ = require('lodash')
+// const _ = require('lodash')
 
 function NewInspection() {
     const [job, setJob] = useState({status: '', client_id: '', overview: {}, location: {}, access: {}})
-    // const [appNav, setAppNav] = useState('new_inspection')
     const [formMode, setFormMode] = useState(null)
-    // const [appNav, setAppNav] = useState('job_home')
-    // const [appNav, setAppNav] = useState('new_access')
     const history = useHistory();
 
     const newInspectionFormRef = useRef(null)
@@ -54,8 +51,6 @@ function NewInspection() {
         // create new job in DB
         let savedInspection = await saveNewInspectionToDB(job)
         console.log('savedInspection: ', savedInspection)
-        // redirect to job-dashboard
-        // setAppNav('job_home')
     }
 
     const handleSaveJob = async () => {
@@ -91,51 +86,14 @@ function NewInspection() {
                     </div>
                 </div>
 
-                {/* <div className="row">
-                    <div className="col col-12">
-                        <InspectionContext.Provider value={{job, setJob, appNav, setAppNav}}>
-                            <JobLocation />
-                        </InspectionContext.Provider>
-                    </div>
-                </div> */}
-
                 <div className="row justify-content-center py-5">
                     <div className="col col-5 text-center">
                         <button className="btn-primary btn-lg" data-name="save" onClick={handleChangeFormMode}>&nbsp; Save &nbsp;</button>
                     </div>
-                    {/* <div className="col col-7 text-left">
-                        <button className="btn-warning btn-lg" data-name="create" onClick={handleChangeFormMode}>&nbsp; Create & Continue &nbsp;</button>
-                    </div> */}
                 </div>
             </form>
         </div>
     )
-    
-    // if(appNav === 'new_inspection'){
-        
-    // } else if (appNav === 'job_home' || appNav === 'new_access' || appNav === 'observations' || appNav === 'new_observation') {
-    //     return(
-    //         <InspectionContext.Provider value={{job, setJob, appNav, setAppNav}}>
-    //             <JobHome />
-    //         </InspectionContext.Provider> 
-    //     )
-    // } else {
-    //     return(
-    //         <div>
-    //             <div>
-    //                 <h3>COMPONENT: NewInspection.js</h3>
-
-    //             </div>
-    //             <div>
-    //                 <em>No such view is available</em>
-    //             </div>
-    //             <div>
-    //                 appNav: {appNav}
-    //             </div>
-    //         </div>
-    //     )
-    // }
-
 }
 
 export default NewInspection

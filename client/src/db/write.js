@@ -98,7 +98,7 @@ export const updateInspectionById = async (id, data) => {
 //DELETE /inspection/:id
 export const deleteInspectionById = async (id, data) => {
     data.last_modified = new Date();
-    let _id = 1234 // get id from data obj
+    // let _id = 1234 // get id from data obj
 
     let response = await fetch(`http://${host}/inspection/${id}`, {
         method: 'DELETE',

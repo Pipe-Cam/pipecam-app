@@ -1,5 +1,5 @@
-import React, {useRef, useState, useEffect} from 'react'
-import {Link, useLocation} from 'react-router-dom'
+import React, {useRef, useEffect} from 'react'
+import {useLocation} from 'react-router-dom'
 import IconGear from '../components/icons/IconGear'
 const _ = require('lodash')
 
@@ -16,15 +16,6 @@ function Header() {
         todo: {id: 'todoNav', ref: navLinkTodoRef}
     }
 
-    const handleSetActiveClass = (id) => {
-        Object.keys(navDict).forEach(item => {
-            navDict[item].ref.current.classList.remove("active")
-            if(navDict[item].id === id){
-                navDict[item].ref.current.classList.add("active")
-            }
-        })
-    }
-
     useEffect(()=>{
         let pathArr = _.tail(currentPath.split(''))
         let pathStr = pathArr.join('')
@@ -36,6 +27,7 @@ function Header() {
         if(navDict[pathStr]){
             navDict[pathStr].ref.current.classList.add("active")
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

@@ -27,6 +27,7 @@ const _ = require('lodash');
 function ReportOverview() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString)
+    // eslint-disable-next-line
     const [inspectionId, setInspectionId] = useState(urlParams.get('inspection_id'))
     const [inspectionData, setInspectionData] = useState(null)
     const [plusOneYear, setPlusOneYear] = useState(null)
@@ -70,10 +71,12 @@ function ReportOverview() {
     
     useEffect(()=>{
         getInspectionByIdOnLoad(inspectionId)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[inspectionId])
 
     useEffect(()=>{
         handleSetDateEndOfWarranty()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[inspectionData])
 
     

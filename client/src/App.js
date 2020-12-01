@@ -1,4 +1,10 @@
 import React, {useState} from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom'
+
 import Inspection from './pages/Inspection'
 import Home from './pages/Home'
 import Report from './pages/Report'
@@ -7,26 +13,13 @@ import Observations from './components/worksheet_sections/Observations'
 import Clients from './pages/Clients'
 import Header from './layout/Header'
 import Footer from './layout/Footer'
-
-
 import NewAccess from './components/inspection/NewAccess'
+import Todo from './todo/Todo'
+import Settings from './components/settings/SettingsHome'
 
 import './components/form_elements/InputRadio.css'
 import './App.css'
 
-import Todo from './todo/Todo'
-
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-  useHistory,
-  useLocation
-} from 'react-router-dom'
-
-import Settings from './components/settings/SettingsHome'
 import ActiveContext from './context/ActiveContext'
 
 function App() {
@@ -77,16 +70,3 @@ function App() {
 }
 
 export default App;
-
-
-/*
-  Nav tree after login                           
-
-  - Clients
-  -> New Client
-  -> Update Client
-
-  - Inspections
-    -> Select Client
-    ---> Add new client
-*/

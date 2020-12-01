@@ -1,5 +1,4 @@
 import React from 'react'
-// import IconPencil from '../icons/IconPencil'
 
 function DeleteButton(props) {
     let iconTrash = `<svg width="1.5em" height="1.5em" viewBox="0 0 16 16" className="bi bi-trash" fill="#dc3545" xmlns="http://www.w3.org/2000/svg">
@@ -12,8 +11,6 @@ function DeleteButton(props) {
     return (
         <>
             <a className="px-3 py-3" onClick={()=>{props.handler(invocationValue)}} data-value={props.value.value} data-id={props.value._id} data-action='delete' style={{backgroundImage: `url("data:image/svg+xml;base64,${btoa(iconTrash)}")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'center', cursor: 'pointer'}}></a>
-            {/* <button className="btn btn-info btn-sm px-2" onClick={props.handler} data-value={props.value.value} data-id={props.value._id} style={{backgroundImage: `url(\"data:image/svg+xml;utf8,${iconPencil}\")`}}></button> */}
-            {/* <button className="btn btn-info btn-sm px-2" onClick={props.handler} data-value={props.value.value} data-id={props.value._id}><IconPencil /></button> */}
         </>
     )
 }

@@ -8,11 +8,11 @@ import {updateInspectionById} from '../../db/write'
 import capitalizeEachWord from '../../utility/capitalizeEachWord'
 
 function InspectionHome() {
-    let {id} = useParams()
+    var {id} = useParams()
     let history = useHistory()
 
     const [inspectionData, setInspectionData] = useState(null)
-    const [reloadSpinner, setReloadSpinner] = useState(0)
+    // const [reloadSpinner, setReloadSpinner] = useState(0)
     const [locationData, setLocationData] = useState({
         "occupancy": "",
         "outbuilding": "",
@@ -28,6 +28,7 @@ function InspectionHome() {
 
     useEffect(()=>{
         getInspectionData(id)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const getInspectionData = async (id) => {
@@ -55,7 +56,8 @@ function InspectionHome() {
     const handleUpdateLocation = async (e)=>{
         e.preventDefault()
         console.log('handleUpdateLocation: ', JSON.stringify(locationData))
-        await updateInspectionById(id, {location: locationData, last_modified: new Date(), status: 'active_inspection'})
+        // await updateInspectionById(id, {location: locationData, last_modified: new Date(), status: 'active_inspection'})
+        await updateInspectionById(id, {location: locationData, last_modified: new Date()})
         history.push(`/access/${id}`)
         window.location.reload()
     }
@@ -80,6 +82,7 @@ function InspectionHome() {
                         <div className="pt-3 container">
                             <form onSubmit={handleUpdateOverview}>
                                 {Object.keys(inspectionData.overview).map(item => {
+                                    // eslint-disable-next-line
                                     let disabledAttribute = ''
                                     if(item === 'client'){
                                         disabledAttribute = 'disabled'

@@ -21,6 +21,7 @@ function ClientViewPage() {
         } else {
             setClientViewData([])
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const BreadCrumbClientView = (props)=>{

@@ -4,7 +4,7 @@ import ClientContext from '../../context/ClientContext'
 
 const SearchClients = (props) =>{
     const clientSearchInputRef = useRef(null)
-    const {searchForClientInDB, handleEditClient, searchResult, setSearchResult} = useContext(ClientContext)
+    const {searchForClientInDB, /*handleEditClient, */searchResult, setSearchResult} = useContext(ClientContext)
 
     const handleClientSearch = async (e) => {
         e.preventDefault();

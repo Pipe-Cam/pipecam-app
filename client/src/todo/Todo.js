@@ -3,11 +3,10 @@ import React from 'react'
 function Todo() {
     return (
         <div>
-            - add "root cut"
             - add "inspected by" to input
-            - add "distance from cleanout to sewer main"
             - add "estimated length of uninspected lateral"
-            - add "street, unit, city, state, zip for property address"
+
+
 
             <h1 style={{textDecoration: 'underline'}}>TODO LIST - INPUT</h1>
 
@@ -125,8 +124,24 @@ function Todo() {
             </ol>
 
             <h2 style={{textDecoration: 'underline'}}>DONE</h2>
+
             <ul>
 
+                 <li>
+                    <s className="text-danger">
+                    <strong className="text-success">[JOB OVERVIEW]</strong> add "root cut"
+                    </s>
+                </li>
+                 <li>
+                    <s className="text-danger">
+                    <strong className="text-success">[JOB OVERVIEW]</strong> add "distance from cleanout to sewer main"
+                    </s>
+                </li>
+                 <li>
+                    <s className="text-danger">
+                    <strong className="text-success">[JOB OVERVIEW]</strong> "street, unit, city, state, zip for property address"
+                    </s>
+                </li>
                  <li>
                     <s className="text-danger">
                     <strong className="text-success">[JOB OVERVIEW]</strong> Move Opening Observations from Job Overview to Job Home

@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import {Link} from 'react-router-dom'
+import React, { useState, useRef } from "react";
+// import {Link} from 'react-router-dom'
 
 function InsertVideos() {
     const [videoLinks, setVideoLinks] = useState([])
@@ -10,7 +10,6 @@ function InsertVideos() {
             console.log(videoUrlRef.current.value)
             setVideoLinks([...videoLinks, videoUrlRef.current.value])
             videoUrlRef.current.value = ''
-            // console.log(videoUrlRef.current.innerText)
         }
     }
 

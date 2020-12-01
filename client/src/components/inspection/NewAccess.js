@@ -38,7 +38,7 @@ function NewAccess() {
         }
 
         getInspectionDataOnLoad(id, accessNum)
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     useEffect(() => {
@@ -56,6 +56,7 @@ function NewAccess() {
                 preloadFormData()
             }
         }
+    // eslint-disable-next-line
     }, [, inspectionData])
 
     const doesAccessObjExist = (data) => {
@@ -187,6 +188,7 @@ const AccessLocation = (props) => {
     useEffect(()=>{
         console.log(accessLocationState)
         handleNewAccessLocationState(accessLocationState)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[accessLocationState])
 
     const handleAddToAccessLocation = (e) => {
@@ -199,7 +201,6 @@ const AccessLocation = (props) => {
 
     const handleClearAccessLocation = (e) => {
         e.preventDefault()
-        // let currentValue = accessLocationRef.current.value
         let updatedValue = ''
         accessLocationRef.current.value = updatedValue
         setAccessLocationState(updatedValue)
@@ -353,26 +354,9 @@ const AccessDetails = (props) => {
     const cleanoutIssuesBelowGradeRef = useRef(null)
     const cleanoutIssuesExcessVegetationRef = useRef(null)
 
-    // useEffect(()=>{
-    //     [pipeDiameterRef,
-    //     directionRef,
-    //     bopdRef,
-    //     accessMaterialRef,
-    //     initialPipeMaterialRef].forEach(item => {
-    //         handleNewAccessDetailsStateDefault(item.current)
-    //     })
-
-    // }, [])
-
-    // useEffect(()=>{ console.log(pipeDiameter) }, [pipeDiameter])
-    // useEffect(()=>{ console.log(cleanoutDirection) }, [cleanoutDirection])
-    // useEffect(()=>{ console.log(bopdType) }, [bopdType])
-    // useEffect(()=>{ console.log(bopdCondition) }, [bopdCondition])
-    // useEffect(()=>{ console.log(accessMaterial) }, [accessMaterial])
-    // useEffect(()=>{ console.log(cleanoutIssues) }, [cleanoutIssues])
-
     useEffect(()=>{
         handleNewAccessDetailsState(accessDetailsState)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[accessDetailsState])
 
     useEffect(()=>{
