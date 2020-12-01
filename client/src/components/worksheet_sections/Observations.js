@@ -278,7 +278,7 @@ const ObservationList = (props) => {
         inspectionData.access[accessNumber] && inspectionData.access[accessNumber].observations && 
         JSON.stringify(inspectionData.access[accessNumber].observations) !== '[]'){
             return(
-                <div>{inspectionData.access.[accessNumber].observations.map((item, index)=>{
+                <div>{inspectionData.access[accessNumber].observations.map((item, index)=>{
                     return(<div key={item + Math.random(9999).toString() + index.toString()}><Link to={`/observations/view?inspection_id=${inspectionId}&access_num=${accessNumber}&observation_num=${index+1}`}>{item.footage.toString()} Ft</Link></div>)
                 })}</div>
             )
