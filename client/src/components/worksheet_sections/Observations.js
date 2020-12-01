@@ -482,9 +482,10 @@ const ObservationNew = (props) => {
             updateObservationQty('add', 1)
             window.scrollTo(0, 0)
             window.location.reload()
-        } else {
-            throw new Error(`Invalid observation submit action. 'next' and 'done' are the only two options.`) // do nothing
-        }
+        } 
+        // else {
+        //     throw new Error(`Invalid observation submit action. 'next' and 'close' are the only two options.`) // do nothing
+        // }
 
         let footage_var = (footageVal.map(item => item.trim())).join('').trim()
         let footage = (footage_var === '') ? ('0.00') : (footage_var)
