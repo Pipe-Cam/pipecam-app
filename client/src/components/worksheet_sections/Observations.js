@@ -474,11 +474,13 @@ const ObservationNew = (props) => {
         let historyRedirect = `/observations/home?inspection_id=${inspectionId}&access_num=${accessNumber}`
 
 
-        if(btnAction === 'done'){
-            updateObservationQty('add', 1)
-        } else if(btnAction === 'next') {
+        // if(btnAction === 'close'){
+        //     updateObservationQty('add', 1)
+        // } else 
+        if(btnAction === 'next') {
             historyRedirect = `/observations/new?inspection_id=${inspectionId}&access_num=${accessNumber}&observation_num=${observationNumber + 1}`
             updateObservationQty('add', 1)
+            window.scrollTo(0, 0)
             window.location.reload()
         } else {
             throw new Error(`Invalid observation submit action. 'next' and 'done' are the only two options.`) // do nothing
@@ -1213,12 +1215,12 @@ const ObservationNew = (props) => {
                 </div>
                 <div className="row mt-5">
                     <div className="col col-5">
-                        <button id="done_observation_btn" className="btn btn-secondary btn-lg m-0 mt-3" data-toggle="tooltip" data-placement="top" title="Save & Done" data-action="done" onMouseOver={handleNewObservationFormSubmitClick}>
-                            Done
+                        <button id="done_observation_btn" className="btn btn-secondary btn-lg m-0 mt-3" data-toggle="tooltip" data-placement="top" title="Close" data-action="close" onMouseOver={handleNewObservationFormSubmitClick}>
+                            Close
                         </button>
                     </div>
                     <div className="col col-7 text-right">
-                        <button id="add_observation_btn" className="btn btn-primary btn-lg p-3 m-0" data-toggle="tooltip" data-placement="left" title="Save & Next" data-action="next" onMouseOver={handleNewObservationFormSubmitClick}>
+                        <button id="add_observation_btn" className="btn btn-primary btn-lg p-3 m-0" data-toggle="tooltip" data-placement="left" title="Next" data-action="next" onMouseOver={handleNewObservationFormSubmitClick}>
                             <IconPlus />
                         </button>
                     </div>
