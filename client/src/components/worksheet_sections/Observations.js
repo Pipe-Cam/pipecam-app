@@ -473,10 +473,10 @@ const ObservationNew = (props) => {
 
         let historyRedirect = `/observations/home?inspection_id=${inspectionId}&access_num=${accessNumber}`
 
-
         // if(btnAction === 'close'){
         //     updateObservationQty('add', 1)
         // } else 
+
         if(btnAction === 'next') {
             historyRedirect = `/observations/new?inspection_id=${inspectionId}&access_num=${accessNumber}&observation_num=${observationNumber + 1}`
             updateObservationQty('add', 1)
@@ -486,8 +486,11 @@ const ObservationNew = (props) => {
             throw new Error(`Invalid observation submit action. 'next' and 'done' are the only two options.`) // do nothing
         }
 
+        let footage_var = (footageVal.map(item => item.trim())).join('').trim()
+        let footage = (footage_var === '') ? ('0.00') : (footage_var)
+
         let observationData = {
-            footage: (footageVal.map(item => item.trim())).join(''),
+            footage: footage,
             loss_of_crosssection: lossOfCrossection,
             line_notation: lineNotation,
             roots: rootsObservation,
@@ -501,7 +504,7 @@ const ObservationNew = (props) => {
             pipe_separated_joint: pipeSeparatedJointObservation,
             locate_depth: locateDepth,
             material_change: materialX2,
-            notes: observationNotes,
+            notes: observationNotes
         }
 
         await handleUpdateInspectionDataState(observationData)
