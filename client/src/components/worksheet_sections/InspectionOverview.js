@@ -32,7 +32,7 @@ function JobOverview() {
     const clientDropdownRef = useRef(null)
 
 
-    useEffect((handleUpdateJobOverviewStateDefault)=>{
+    useEffect(()=>{
         [
             dateRef,
             clientTextRef,
@@ -104,18 +104,18 @@ function JobOverview() {
         }
     }
 
-    // const handleUpdateJobOverviewStateDefault = (elem) => {
-    //     let objBranch = 'overview'
-    //     let name = elem.name || elem.id
+    const handleUpdateJobOverviewStateDefault = (elem) => {
+        let objBranch = 'overview'
+        let name = elem.name || elem.id
         
-    //     let tmpJob = job
-    //     if(elem.type === 'checkbox'){
-    //         tmpJob[objBranch][name] = Boolean(elem.checked)
-    //     } else {
-    //         tmpJob[objBranch][name] = elem.value
-    //     }
-    //     setJob(tmpJob)
-    // }
+        let tmpJob = job
+        if(elem.type === 'checkbox'){
+            tmpJob[objBranch][name] = Boolean(elem.checked)
+        } else {
+            tmpJob[objBranch][name] = elem.value
+        }
+        setJob(tmpJob)
+    }
 
     const handleClientDropDown = async (e) => {
         console.log(clientTextRef.current.value)
