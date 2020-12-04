@@ -7,6 +7,7 @@ import Spinner from '../ui_components/Spinner'
 import IconCaretDown from '../icons/IconCaretDown'
 
 import {getInspectionById} from '../../db/read'
+import {updateInspectionById} from '../../db/write'
 import capitalizeEachWord from '../../utility/capitalizeEachWord'
 
 
@@ -45,7 +46,11 @@ function InspectionAccess() {
         history.push(`/new-access/${id}?access=${nextAccessNumber}`)
     }
 
-    const handleGoHome = (e) => {
+    const handleGoHome = async (e) => {
+        let tmpInspectionData = inspectionData
+        tmpInspectionData.status = "completed_inspection"
+
+        await updateInspectionById(tmpInspectionData._id, tmpInspectionData)
         history.push('/')
     }
 

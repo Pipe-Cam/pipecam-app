@@ -563,6 +563,21 @@ const AccessDetails = (props) => {
                 </div>
 
                 <div className="row mt-4">
+                    <div className="col h6">Access Material <span className="text-danger">*</span></div>
+                </div>
+
+                <div className="row">
+                    <div className="col btn-group">
+                        <button ref={accessMaterialCiRef} className="btn btn-outline-warning font-weight-bold" data-bscolor="warning" data-value="ci" onClick={handleAccessMaterial}>CI</button>
+                        <button ref={accessMaterialAcRef} className="btn btn-outline-secondary border-left-secondary font-weight-bold" data-bscolor="secondary" data-value="ac" onClick={handleAccessMaterial}>AC</button>
+                        <button ref={accessMaterialAbsRef} className="btn btn-outline-primary border-left-primary font-weight-bold" data-bscolor="primary" data-value="abs" onClick={handleAccessMaterial}>ABS</button>
+                        <button ref={accessMaterialVcpRef} className="btn btn-outline-success border-left-success font-weight-bold" data-bscolor="success" data-value="vcp" onClick={handleAccessMaterial}>VCP</button>
+                        <button ref={accessMaterialPvcRef} className="btn btn-outline-info border-left-info font-weight-bold" data-bscolor="info" data-value="pvc" onClick={handleAccessMaterial}>PVC</button>
+                        <button ref={accessMaterialOrbgRef} className="btn btn-outline-danger border-left-danger font-weight-bold" data-bscolor="danger" data-value="orbg" onClick={handleAccessMaterial}>ORBG</button>
+                    </div>
+                </div>
+
+                <div className="row mt-4">
                     <div className="col h6">BOPD <span className="text-danger">*</span></div>
                 </div>
 
@@ -572,7 +587,7 @@ const AccessDetails = (props) => {
                         <button ref={bopdTypePopperRef} className="btn btn-outline-primary border-left-primary font-weight-bold" data-bscolor="primary" data-value="popper" onClick={handleBopdType}>Popper</button>
                         <button ref={bopdTypeMushroomRef} className="btn btn-outline-success border-left-success font-weight-bold" data-bscolor="success" data-value="mushroom" onClick={handleBopdType}>Mushroom</button>
                         <button ref={bopdTypeCheckValveRef} className="btn btn-outline-info border-left-info font-weight-bold" data-bscolor="info" data-value="check_valve" onClick={handleBopdType}>Check Valve</button>
-                        <button ref={bopdTypeReliefRef} className="btn btn-outline-danger border-left-danger font-weight-bold" data-bscolor="danger" data-value="relief" onClick={handleBopdType}>Relief</button>
+                        <button ref={bopdTypeReliefRef} className="btn btn-outline-danger border-left-danger font-weight-bold" data-bscolor="danger" data-value="relief" onClick={handleBopdType}>Relief Valve</button>
                     </div>
                 </div>
 
@@ -590,22 +605,7 @@ const AccessDetails = (props) => {
                         <button ref={bopdConditionTooHighRef} className="btn btn-outline-info border-left-info font-weight-bold" data-bscolor="info" data-value="too_high" onClick={handleBopdCondition}>Too High</button>
                     </div>
                 </div>
-
-                <div className="row mt-4">
-                    <div className="col h6">Access Material <span className="text-danger">*</span></div>
-                </div>
-
-                <div className="row">
-                    <div className="col btn-group">
-                        <button ref={accessMaterialCiRef} className="btn btn-outline-warning font-weight-bold" data-bscolor="warning" data-value="ci" onClick={handleAccessMaterial}>CI</button>
-                        <button ref={accessMaterialAcRef} className="btn btn-outline-secondary border-left-secondary font-weight-bold" data-bscolor="secondary" data-value="ac" onClick={handleAccessMaterial}>AC</button>
-                        <button ref={accessMaterialAbsRef} className="btn btn-outline-primary border-left-primary font-weight-bold" data-bscolor="primary" data-value="abs" onClick={handleAccessMaterial}>ABS</button>
-                        <button ref={accessMaterialVcpRef} className="btn btn-outline-success border-left-success font-weight-bold" data-bscolor="success" data-value="vcp" onClick={handleAccessMaterial}>VCP</button>
-                        <button ref={accessMaterialPvcRef} className="btn btn-outline-info border-left-info font-weight-bold" data-bscolor="info" data-value="pvc" onClick={handleAccessMaterial}>PVC</button>
-                        <button ref={accessMaterialOrbgRef} className="btn btn-outline-danger border-left-danger font-weight-bold" data-bscolor="danger" data-value="orbg" onClick={handleAccessMaterial}>ORBG</button>
-                    </div>
-                </div>
-
+                
                 <div className="row mt-4">
                     <div className="col h6">Cleanout Issues</div>
                 </div>

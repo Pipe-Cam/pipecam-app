@@ -4,21 +4,6 @@ import AlternatingList from '../components/ui_components/AlternatingList'
 import {getScheduledInspections as getScheduledInspectionsFromDB, getRecentInspections as getRecentInspectionsFromDB} from '../db/read.js'
 import ActiveContext from '../context/ActiveContext'
 
-// const formatDate = (dateStr) => {
-//     let date = new Date(dateStr)
-//     let month = date.getMonth() + 1
-//     let day = date.getDate()
-//     let year = date.getFullYear()
-
-//     // console.log(month)
-//     // console.log(day)
-//     // console.log(year)
-
-//     console.log(`${month}/${day}/${year}`)
-
-//     return dateStr
-// }
-
 function Home() {
     const [scheduledInspectionsFromDB, setScheduledInspectionsFromDB] = useState(null)
     const [recentInspectionsFromDB, setRecentInspectionsFromDB] = useState(null)
@@ -33,8 +18,6 @@ function Home() {
         setRecentInspectionsFromDB(JSON.parse(recentInspections))
     }
 
-    // const history = useHistory()
-
     useEffect(()=>{
         getInspectionsOnLoad()
     }, [])
@@ -43,7 +26,6 @@ function Home() {
     const handleEditInspection = () => {
         console.log('handleEditInspection')
     }
-    // let {listTitle, dataObject, edit, _delete} = props
 
     const handleAssignActiveClient = (clientId) => {
         setActiveClientId(clientId)
@@ -78,8 +60,6 @@ function Home() {
                         }
                     }
                     />)}
-
-
                 </div>
                 <div className="col col-sm-12 col-md-6 col-lg-6 py-3">
                     <h3 className="text-center">Recent Inspections</h3>
@@ -118,11 +98,9 @@ const HomeNavButtons = () => {
     return(
             <>
                 <div className="col-12 col-md-6 col-lg-6 my-2">
-                    {/* <a href="/inspection/new" className="btn btn-primary border-dark btn-lg btn-block">New Inspection</a> */}
                     <Link to="/inspection/new" className="btn btn-primary border-dark btn-lg btn-block">New Inspection</Link>
                 </div>
                 <div className="col-12 col-md-6 col-lg-6 my-2">
-                    {/* <a href="clients" className="btn btn-white border-dark btn-lg btn-block font-weight-bold">Manage Clients</a> */}
                     <Link to="/clients" className="btn btn-white border-dark btn-lg btn-block font-weight-bold">Manage Clients</Link>
                 </div>
             </>

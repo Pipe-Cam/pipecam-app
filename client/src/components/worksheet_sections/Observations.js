@@ -21,6 +21,10 @@ import IconFlatArrow from '../icons/IconFlatArrow'
 
 import capitalizeEachWord from '../../utility/capitalizeEachWord'
 import {todaysDate} from '../../utility/date'
+import material from '../../utility/materials'
+import direction from '../../utility/direction'
+import bopd from '../../utility/bopd'
+
 const _ = require('lodash')
 
 
@@ -168,6 +172,12 @@ const ObservationHome = (props) => {
         window.location.reload()
     }
 
+    const handleCompleteAccess = (e) => {
+        e.preventDefault()
+        history.push(`/access/${inspectionId}`)
+        window.location.reload()
+    }
+
     if(!inspectionData){
         return(
             <div className="w-100 text-center pt-5">
@@ -246,6 +256,22 @@ const ObservationHome = (props) => {
                                 <span className="lead">{inspectionData.access[accessNumber].location}</span>
                             </div>
                         </div>
+                        <div className="row">
+                            <div className="col-md-4 text-sm-left text-md-right">
+                                <strong>
+                                    Access Details: 
+                                </strong>
+                            </div>
+                            <div className="col-md-8">
+                                <span className="lead">{inspectionData.access[accessNumber].details.pipe_diameter}" {direction(inspectionData.access[accessNumber].details.cleanout_direction)} {material(inspectionData.access[accessNumber].details.access_material)} Cleanout {bopd(inspectionData.access[accessNumber].details.bopd_type)}</span>
+                                {/* pipe_diameter: null
+                                cleanout_direction: null
+                                bopd_type: null
+                                bopd_condition: "N/A"
+                                access_material: null
+                                cleanout_issues: "N/A" */}
+                            </div>
+                        </div>
                     </div>
 
                     <div className="row mt-5 mb-2">
@@ -263,7 +289,7 @@ const ObservationHome = (props) => {
                     </div>
                     <div className="row my-5">
                         <div className="col-12 text-right">
-                            <button className="btn btn-secondary btn-lg shadow">Complete Access #{accessNumber}</button>
+                            <button className="btn btn-secondary btn-lg shadow" onClick={handleCompleteAccess}>Complete Access #{accessNumber}</button>
                         </div>
                     </div>
                 </>
