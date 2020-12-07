@@ -9,7 +9,7 @@ import ObservationEdit from '../inspection/ObservationEdit'
 import Spinner from '../ui_components/Spinner'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-
+import ToggleSwitch from '../ui_components/ToggleSwitch'
 import IconPlus from '../icons/IconPlus'
 import IconBackspace from '../icons/IconBackspace'
 import IconTieIn from '../icons/IconTieIn'
@@ -24,8 +24,13 @@ import {todaysDate} from '../../utility/date'
 import material from '../../utility/materials'
 import direction from '../../utility/direction'
 import bopd from '../../utility/bopd'
+import { useDebugValue } from 'react'
 
 const _ = require('lodash')
+
+const sortByFootage = (obj) => {
+    return _.sortBy(obj, ['upstream', 'footage'])
+}
 
 
 function Observations() {
@@ -90,7 +95,7 @@ function Observations() {
                JSON.stringify(data.access[accessNumber].observations) !== '[]'){
                     return(data.access[accessNumber].observations.length)
             } else {
-                throw new Error('object does not contain observation data Function(getObservationQty)' )
+                throw new Error('object does not contain observation data Function(getObservationQty)')
             }
         } catch(err){
             console.log(err)
@@ -185,6 +190,7 @@ const ObservationHome = (props) => {
             </div>
         )
     } else {
+
         return(
                 <>
                     <h2>Access #{accessNumber}</h2>
@@ -303,9 +309,13 @@ const ObservationList = (props) => {
     if(accessNumber && inspectionData && inspectionData.access && 
         inspectionData.access[accessNumber] && inspectionData.access[accessNumber].observations && 
         JSON.stringify(inspectionData.access[accessNumber].observations) !== '[]'){
+
+            let observationArray = sortByFootage(inspectionData.access[accessNumber].observations)
+            // console.log(observationArray)
+
             return(
-                <div>{inspectionData.access[accessNumber].observations.map((item, index)=>{
-                    return(<div key={item + Math.random(9999).toString() + index.toString()}><Link to={`/observations/view?inspection_id=${inspectionId}&access_num=${accessNumber}&observation_num=${index+1}`}>{item.footage.toString()} Ft</Link></div>)
+                <div>{observationArray.map((item, index)=>{
+                    return(<div key={item + Math.random(9999).toString() + index.toString()}><Link to={`/observations/view?inspection_id=${inspectionId}&access_num=${accessNumber}&observation_num=${index+1}`}>{item.footage.toString()} Ft {(item.upstream) ? ('(upstream)') : ('')}</Link></div>)
                 })}</div>
             )
         } else {
@@ -319,9 +329,10 @@ const ObservationList = (props) => {
 }
 const ObservationNew = (props) => {
     const {inspectionId, accessNumber, history, /*observationState, setObservationState, observationQty*/} = props
-    const {handleUpdateInspectionDataState, updateObservationQty,} = props
+    const {handleUpdateInspectionDataState, updateObservationQty} = props
 
     const [footageVal, setFootageVal] = useState([])
+    const [upstream, setUpstream] = useState(false)
     const [lossOfCrossection, setLossOfCrossection] = useState(0)
     const [pipeHoleObservation, setPipeHoleObservation] = useState({hole: false})
     const [pipeSeparatedJointObservation, setPipeSeparatedJointObservation] = useState({separated_joint: false})
@@ -406,6 +417,7 @@ const ObservationNew = (props) => {
     })
 
     const footageRef = useRef(null)
+    const streamToggleRef = useRef(null)
     const footageModalRef = useRef(null)
     const rangeSliderRef = useRef(null)
 
@@ -476,7 +488,8 @@ const ObservationNew = (props) => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString)
     const observationNumber = Number(urlParams.get('observation_num'))
-
+    
+    // useEffect(() => {console.log(upstream)}, [upstream])
     useEffect(() => {console.log(lineNotation)}, [lineNotation])
     useEffect(() => {console.log(rootsObservation)}, [rootsObservation])
     useEffect(() => {console.log(ojObservation)}, [ojObservation])
@@ -511,6 +524,7 @@ const ObservationNew = (props) => {
     
             let observationData = {
                 footage: footage,
+                upstream: upstream,
                 loss_of_crosssection: lossOfCrossection,
                 line_notation: lineNotation,
                 roots: rootsObservation,
@@ -526,6 +540,8 @@ const ObservationNew = (props) => {
                 material_change: materialX2,
                 notes: observationNotes
             }
+
+            console.log(observationData)
     
             await handleUpdateInspectionDataState(observationData)
         }
@@ -1082,6 +1098,26 @@ const ObservationNew = (props) => {
         }
     }
 
+    const handleToggleChange = (e) => {
+        // console.log(e.target.checked)
+        setUpstream(e.target.checked)
+    }
+
+    const handleToggleChangeProxyUp = (e) => {
+        const value = true
+        console.log(value)
+        streamToggleRef.current.checked = value
+        setUpstream(value)
+
+    }
+
+    const handleToggleChangeProxyDown = (e) => {
+        const value = false
+        console.log(value)
+        streamToggleRef.current.checked = value
+        setUpstream(value)
+    }
+
     const btnClasses = 'btn btn-secondary border border-dark btn-lg px-3 align-middle'
 
     return(
@@ -1100,8 +1136,16 @@ const ObservationNew = (props) => {
                                 <div className="col-12">
                                     <div ref={footageRef} {...{className: 'form-control form-control-lg mb-1 ml-1 mt-3 text-right', name: 'footage', id: 'footage'}} style={{minWidth: '268px'}} onClick={handleShow}>{(!footageVal.length) ? "0.00" : (footageVal.join(''))}</div>
                                 </div>
+                                <div className="col-12 ml-3 mt-3 text-center">
+                                    <div>
+                                        Downstream - Upstream
+                                    </div>
+                                    <div>
+                                        <span onClick={handleToggleChangeProxyDown}><IconDownArrow {...{width: '2em', height: '2em'}}/></span> &nbsp;<ToggleSwitch {...{streamToggleRef, handleToggleChange}}/>&nbsp; <span onClick={handleToggleChangeProxyUp}><IconUpArrow {...{width: '2em', height: '2em'}}/></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="row justify-content-left mt-5">
+                            <div className="row justify-content-left mt-2">
                                 <div className="col-12 text-left" style={{minWidth: '308px'}}>
                                     <button ref={tiRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ti" onClick={handleLineNotation}>Tie-In<span className="float-right"><IconTieIn/></span></button>
                                     <button ref={ltlRef} className="btn btn-outline-dark btn-lg mt-1 w-100" data-active="false" data-observation="ltl" onClick={handleLineNotation}>Line Turns Left<span className="float-right"><IconLeftArrow/></span></button>
@@ -1116,7 +1160,7 @@ const ObservationNew = (props) => {
                                     <div ref={locateDivRef} className="mt-2">
                                         <button ref={locateRef} className="btn btn-outline-dark btn-lg w-100" data-active="false" data-observation="locate" onClick={handleLineNotation}>Locate<span className="float-right"></span></button>
                                         <div className="mt-1 hide" ref={locateDepthRef}>
-                                            <input className="form-control form-control-lg" type="number" min="0.00" max="100.00" step="1.00" id="locateDepth" placeholder="Depth Footage" onChange={handleLocateDepth}/>
+                                            <input className="form-control form-control-lg" type="number" min="0.00" max="1000.00" id="locateDepth" placeholder="Depth Footage" onChange={handleLocateDepth}/>
                                         </div>
                                     </div>
                                 </div>

@@ -1,10 +1,11 @@
 import React, {useRef, useContext} from 'react'
 import SearchResults from './SearchResults'
 import ClientContext from '../../context/ClientContext'
+import {searchForClient as searchForClientInDB} from '../../db/read'
 
 const SearchClients = (props) =>{
     const clientSearchInputRef = useRef(null)
-    const {searchForClientInDB, /*handleEditClient, */searchResult, setSearchResult} = useContext(ClientContext)
+    const {/*handleEditClient, */searchResult, setSearchResult} = useContext(ClientContext)
 
     const handleClientSearch = async (e) => {
         e.preventDefault();

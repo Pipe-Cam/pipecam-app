@@ -22,7 +22,7 @@ function SearchResults(props) {
                                     )
                                 } else {
                                     return(
-                                        <li key={item._id}><a href="#" className="text-primary" data-value={item.business_name} data-id={item._id} data-action="edit" onClick={handleEditClient}>{item.business_name}</a></li>
+                                        <li key={item._id}><a href="#" className="text-primary" data-value={item.organization_name} data-id={item._id} data-action="edit" onClick={handleEditClient}>{item.organization_name}</a></li>
                                     )
                                 }
                             })}

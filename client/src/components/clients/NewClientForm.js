@@ -15,20 +15,20 @@ const NewClientForm = (props) => {
         getClientsOnLoad
     } = useContext(ClientContext)
             
-    const businessDivRef = useRef(null)
+    const organizationDivRef = useRef(null)
     const clientTypeRef = useRef(null)
     const clientStatusDefaultRef = useRef(null)
     const paymentTypeRef = useRef(null)
     const clientSourceRef = useRef(null)
     const clientTypeOtherRef = useRef(null)
     const clientSourceOtherRef = useRef(null)
-    const businessNameRef = useRef(null)
-    const businessPhoneRef = useRef(null)
-    const businessAddressStreetRef = useRef(null)
-    const businessAddressUnitRef = useRef(null)
-    const businessAddressCityRef = useRef(null)
-    const businessAddressStateRef = useRef(null)
-    const businessAddressZipRef = useRef(null)
+    const organizationNameRef = useRef(null)
+    const organizationPhoneRef = useRef(null)
+    const organizationAddressStreetRef = useRef(null)
+    const organizationAddressUnitRef = useRef(null)
+    const organizationAddressCityRef = useRef(null)
+    const organizationAddressStateRef = useRef(null)
+    const organizationAddressZipRef = useRef(null)
     const contactNameRef = useRef(null)
     const contactPhoneRef = useRef(null)
     const emailPrimaryRef = useRef(null)
@@ -47,13 +47,13 @@ const NewClientForm = (props) => {
         clientSourceRef,
         clientTypeOtherRef,
         clientSourceOtherRef,
-        businessNameRef,
-        businessPhoneRef,
-        businessAddressStreetRef,
-        businessAddressUnitRef,
-        businessAddressCityRef,
-        businessAddressStateRef,
-        businessAddressZipRef,
+        organizationNameRef,
+        organizationPhoneRef,
+        organizationAddressStreetRef,
+        organizationAddressUnitRef,
+        organizationAddressCityRef,
+        organizationAddressStateRef,
+        organizationAddressZipRef,
         contactNameRef,
         contactPhoneRef,
         emailPrimaryRef,
@@ -83,14 +83,14 @@ const NewClientForm = (props) => {
 
         if(id === 'client_type'){
             if(val === 'Resident'){
-                businessDivRef.current.classList.remove('d-none')
-                businessDivRef.current.classList.add('d-none')
+                organizationDivRef.current.classList.remove('d-none')
+                organizationDivRef.current.classList.add('d-none')
                 // clientAddressDivRef.current.classList.remove('d-none')
             } else if(val === 'Other') {
-                businessDivRef.current.classList.remove('d-none')
+                organizationDivRef.current.classList.remove('d-none')
                 // clientAddressDivRef.current.classList.remove('d-none')
             } else {
-                businessDivRef.current.classList.remove('d-none')
+                organizationDivRef.current.classList.remove('d-none')
                 // clientAddressDivRef.current.classList.remove('d-none')
                 // clientAddressDivRef.current.classList.add('d-none')
             }
@@ -102,7 +102,7 @@ const NewClientForm = (props) => {
         let val = e.target.value
         let tmpNewClientFormData = newClientFormData;
 
-        if(id === 'contact_name' || id === 'business_name' || id === 'contact_email_primary' || id === 'contact_email_secondary'){
+        if(id === 'contact_name' || id === 'organization_name' || id === 'contact_email_primary' || id === 'contact_email_secondary'){
             tmpNewClientFormData[id] = val
         } else {
             tmpNewClientFormData[id] = _.lowerCase(val)
@@ -119,7 +119,7 @@ const NewClientForm = (props) => {
             let id = item.current.id
             let val = item.current.value
 
-            if(id === 'contact_name' || id === 'business_name'){
+            if(id === 'contact_name' || id === 'organization_name'){
                 newClientFormData[id] = val
             } else {
                 newClientFormData[id] = _.lowerCase(val)
@@ -148,17 +148,17 @@ const NewClientForm = (props) => {
             <div className="shadow-sm px-4 pt-4 mb-3 rounded" style={bgStyle}>
                 <div className="form-row">
                     <div className="form-group col-md-3">
-                        <select ref={clientTypeRef} id="client_type" className="form-control" defaultValue="Client Type" onInput={handleNewClientFormData} onChange={handleShowHideOtherInput}>
-                            <option disabled>Client Type</option>
+                        <label for="client_type" className="pl-1">Client Type</label>
+                        <select ref={clientTypeRef} id="client_type" className="form-control" defaultValue="Realtor" onInput={handleNewClientFormData} onChange={handleShowHideOtherInput}>
                             <option>Realtor</option>
                             <option>Resident</option>
-                            <option>Business - Other</option>
+                            <option>Organization - Other</option>
                             <option>Other</option>
                         </select>
                     </div>
                     <div className="form-group col-md-3">
+                        <label for="client_status" className="pl-1">Client Status</label>
                         <select ref={clientStatusDefaultRef} id="client_status" className="form-control" defaultValue="Active" onInput={handleNewClientFormData} >
-                                <option disabled>Client Status</option>
                                 <option>Active</option>
                                 <option>Inactive</option>
                                 <option>Preferred</option>
@@ -167,18 +167,18 @@ const NewClientForm = (props) => {
                     </div>
 
                     <div className="form-group col-md-3">
-                        <select ref={paymentTypeRef} id="preferred_payment_type" className="form-control" defaultValue="Pmt Method" onInput={handleNewClientFormData} onChange={handleShowHideOtherInput}>
-                                <option disabled>Pmt Method</option>
+                        <label for="preferred_payment_type" className="pl-1">Preferred Pmt Method</label>
+                        <select ref={paymentTypeRef} id="preferred_payment_type" className="form-control" defaultValue="Card" onInput={handleNewClientFormData} onChange={handleShowHideOtherInput}>
                                 <option>Card</option>
-                                <option>Check</option>
                                 <option>Cash</option>
+                                <option>Check</option>
                         </select>
                     </div>
                     <div className="form-group col-md-3">
-                        <select ref={clientSourceRef} id="client_source" className="form-control" defaultValue="Lead Source" onInput={handleNewClientFormData} onChange={handleShowHideOtherInput}>
-                                <option disabled>Lead Source</option>
-                                <option>Referral</option>
+                        <label for="client_source" className="pl-1">Lead Source</label>
+                        <select ref={clientSourceRef} id="client_source" className="form-control" defaultValue="Existing" onInput={handleNewClientFormData} onChange={handleShowHideOtherInput}>
                                 <option>Existing</option>
+                                <option>Referral</option>
                                 <option>Online</option>
                                 <option>Other</option>
                         </select>
@@ -195,47 +195,47 @@ const NewClientForm = (props) => {
                 </div>
             </div>
 
-            <div ref={businessDivRef} className="shadow-sm p-4 mb-3 rounded" style={bgStyle}>
-                <div className="form-row mb-3">
-                    <h3>Business</h3>
+            <div ref={organizationDivRef} className="shadow-sm p-4 mb-3 rounded" style={bgStyle}>
+                <div className="form-row">
+                        <h3>Organization <span className="h4 text-secondary">(optional)</span></h3>
                 </div>
 
                 <div className="border px-4 pt-3 mb-4">
                     <div className="form-row">
                         <div className="form-group col-md-9">
-                            <label htmlFor="business_name">Business Name</label>
-                            <input ref={businessNameRef} type="text" className="form-control" id="business_name" placeholder="" onChange={handleNewClientFormData}/>
+                            <label htmlFor="organization_name">Organization Name</label>
+                            <input ref={organizationNameRef} type="text" className="form-control" id="organization_name" placeholder="" onChange={handleNewClientFormData}/>
                         </div>
                         <div className="form-group col-md-3">
-                            <label htmlFor="business_phone">Business Phone</label>
-                            <input ref={businessPhoneRef} type="text" className="form-control" id="business_phone" placeholder="" onChange={handleNewClientFormData}/>
+                            <label htmlFor="organization_phone">Organization Phone</label>
+                            <input ref={organizationPhoneRef} type="text" className="form-control" id="organization_phone" placeholder="" onChange={handleNewClientFormData}/>
                         </div>
                     </div>
                 </div>
 
                 <div className="border p-4 mb-4">
                     <div className="form-group">
-                        <label htmlFor="business_address_street">Business Address</label>
-                        <input ref={businessAddressStreetRef} type="text" className="form-control" id="business_address_street" placeholder="1234 Main St, San Francisco, CA 94132" onChange={handleNewClientFormData}/>
+                        <label htmlFor="organization_address_street">Organization Address</label>
+                        <input ref={organizationAddressStreetRef} type="text" className="form-control" id="organization_address_street" placeholder="1234 Main St, San Francisco, CA 94132" onChange={handleNewClientFormData}/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="business_address_unit">Unit (if applicable)</label>
-                        <input ref={businessAddressUnitRef} type="text" className="form-control" id="business_address_unit" placeholder="Apartment, studio, or floor" onChange={handleNewClientFormData}/>
+                        <label htmlFor="organization_address_unit">Unit (if applicable)</label>
+                        <input ref={organizationAddressUnitRef} type="text" className="form-control" id="organization_address_unit" placeholder="Apartment, studio, or floor" onChange={handleNewClientFormData}/>
                     </div>
                     <div className="form-row">
                         <div className="form-group col-md-6">
-                        <label htmlFor="business_address_city">City</label>
-                        <input ref={businessAddressCityRef} type="text" className="form-control" id="business_address_city" onChange={handleNewClientFormData}/>
+                        <label htmlFor="organization_address_city">City</label>
+                        <input ref={organizationAddressCityRef} type="text" className="form-control" id="organization_address_city" onChange={handleNewClientFormData}/>
                         </div>
                         <div className="form-group col-md-4">
-                        <label htmlFor="business_address_state">State</label>
-                        <select ref={businessAddressStateRef} id="business_address_state" className="form-control" defaultValue='CA' onChange={handleNewClientFormData}>
+                        <label htmlFor="organization_address_state">State</label>
+                        <select ref={organizationAddressStateRef} id="organization_address_state" className="form-control" defaultValue='CA' onChange={handleNewClientFormData}>
                             <FiftyStatesAbbrev />
                         </select>
                         </div>
                         <div className="form-group col-md-2">
-                        <label htmlFor="business_address_zip">Zip</label>
-                        <input ref={businessAddressZipRef} type="text" className="form-control" id="business_address_zip"/>
+                        <label htmlFor="organization_address_zip">Zip</label>
+                        <input ref={organizationAddressZipRef} type="text" className="form-control" id="organization_address_zip"/>
                         </div>
                     </div>
                 </div>

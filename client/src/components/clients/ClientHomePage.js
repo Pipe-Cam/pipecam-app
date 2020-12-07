@@ -41,7 +41,7 @@ function ClientHomePage() {
                     </div>
                     <div className="pt-4">
                         <h3>
-                            Recent Clients
+                            Recent Clients <button className="btn btn-success float-right" onClick={()=>{window.location.reload()}}>Refresh</button>
                         </h3>
                         <div className="py-2">
                             <AlternatingList {...{

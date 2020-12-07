@@ -128,7 +128,7 @@ function JobOverview() {
             searchResultObj = JSON.parse(searchResults)
             console.log(searchResultObj)
             setDropdownClients(searchResultObj.map(item => {
-                return({name: (item.business_name || item.client_name), id: item._id})
+                return({name: (item.organization_name || item.client_name), id: item._id})
             }))
     
             clientDropdownRef.current.classList.add('show')
