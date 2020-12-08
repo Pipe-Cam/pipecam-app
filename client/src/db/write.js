@@ -82,8 +82,9 @@ export const deleteClientById = async (data) => {
 
 //PUT /inspection/:id
 export const updateInspectionById = async (id, data) => {
+    console.log('write-data', JSON.stringify(data))
     let response = await fetch(`http://${host}/inspection/${id}`, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
@@ -113,8 +114,6 @@ export const deleteInspectionById = async (id, data) => {
     console.log('inspection deleted from db')
     console.log(result)
 }
-
-
 
 
 
