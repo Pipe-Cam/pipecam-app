@@ -20,9 +20,9 @@ function InspectionAccess() {
 
     const getInspectionDataOnLoad = async (id) => {
         let inspectionDataJSON = await getInspectionById(id)
-        let inspectionDataObj;
-        if(inspectionDataJSON){
-            inspectionDataObj = JSON.parse(inspectionDataJSON)
+        let inspectionDataObj
+        if (inspectionDataJSON) {
+            inspectionDataObj = inspectionDataJSON
             setInspectionData(inspectionDataObj[0])
         }
         
