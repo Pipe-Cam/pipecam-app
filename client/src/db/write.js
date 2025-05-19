@@ -84,7 +84,7 @@ export const deleteClientById = async (data) => {
 export const updateInspectionById = async (id, data) => {
     console.log('write-data', JSON.stringify(data))
     let response = await fetch(`http://${host}/inspection/${id}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
