@@ -17,7 +17,7 @@ function InspectionLocation(props) {
     const outbuildingDivRef = useRef(null)
     const hasPlumbingDivRef = useRef(null)
     const pipeDiameterOtherDivRef= useRef(null)
-    const ccusdDivRef = useRef(null)
+    const cccsdDivRef = useRef(null)
 
     const handleOutbuilding = () => {
         if(outbuildingRef.current.value === 'yes'){
@@ -45,9 +45,9 @@ function InspectionLocation(props) {
 
     const handleCCCSD = () => {
         if(cccsdRef.current.value === 'yes'){
-            ccusdDivRef.current.style.display = 'block'
+            cccsdDivRef.current.style.display = 'block'
         } else {
-            ccusdDivRef.current.style.display = 'none'
+            cccsdDivRef.current.style.display = 'none'
         }
     }
 
@@ -183,7 +183,7 @@ function InspectionLocation(props) {
                         <option value="yes">Yes</option>                    
                         <option value="no">No</option>                    
                     </select>
-                    <div ref={ccusdDivRef} className="my-5 ml-5 p-4 border" style={{ display: 'none', backgroundColor: 'white' }}>
+                    <div ref={cccsdDivRef} className="my-5 ml-5 p-4 border" style={{ display: 'none', backgroundColor: 'white' }}>
                         <div className="h6">> Unpermitted Work</div>
                         <select ref={cccsdUnpermittedRef} className="custom-select" id="cccsd_unpermitted_work" onChange={handleUpdateLocationStateOnChange}>
                             <option>Select...</option>

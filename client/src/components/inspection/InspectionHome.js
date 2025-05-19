@@ -19,8 +19,8 @@ function InspectionHome() {
         "outbuilding_has_plumbing": "",
         "outbuilding_has_cleanout": "",
         "outbuilding_pipe_diameter": "",
-        "cccusd": "",
-        "cccusd_unpermitted_work": "",
+        "cccsd": "",
+        "cccsd_unpermitted_work": "",
         "opening_observations": "",
         "usb_num": ""
     })

@@ -249,12 +249,12 @@
 //             </div>
 //             {(job.location.outbuilding === 'yes') ? (<OutbuildingModifiers />) : <div className="row" style={{display: 'none'}}>&nbsp;</div>} 
 //             <div className="row">
-//                 <div className="text-right py-2 col col-md-3 col-sm-6 border-bottom border-top">CCUSD?</div>
-//                 <div className="py-2 col col-md-9 col-sm-6 border-bottom border-top border-left">{job.location.cccusd}</div>
-//             </div> 
-//             {(job.location.cccusd === 'yes') ? (<div className="row">
-//                 <div className="text-right py-2 col col-md-3 col-sm-6 border-top">CCUSD - Unpermitted Work?</div>
-//                 <div className="py-2 col col-md-9 col-sm-6 border-top border-left">{job.location.cccusd_unpermitted_work}</div>
+//                 <div className="text-right py-2 col col-md-3 col-sm-6 border-bottom border-top">CCCSD?</div>
+//                 <div className="py-2 col col-md-9 col-sm-6 border-bottom border-top border-left">{job.location.cccsd}</div>
+//             </div>
+//             {(job.location.cccsd === 'yes') ? (<div className="row">
+//                 <div className="text-right py-2 col col-md-3 col-sm-6 border-top">CCCSD - Unpermitted Work?</div>
+//                 <div className="py-2 col col-md-9 col-sm-6 border-top border-left">{job.location.cccsd_unpermitted_work}</div>
 //             </div> ) : <div className="row" style={{display: 'none'}}>&nbsp;</div>} 
 //         </>
 //     )
