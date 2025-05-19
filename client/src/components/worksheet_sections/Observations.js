@@ -746,7 +746,7 @@ const ObservationNew = (props) => {
         }
 
         if(dataObservation === 'roots'){
-            tmpRootsObservation.roots = JSON.parse(dataActive)
+            tmpRootsObservation.roots = dataActive
         } else {
             tmpRootsObservation.modifier[dataObservation] = dataActive
         }
@@ -796,7 +796,7 @@ const ObservationNew = (props) => {
         }
  
         if(dataObservation === 'offset_joint'){
-            tmpOjObservation.oj = JSON.parse(dataActive)
+            tmpOjObservation.oj = dataActive
         } else {
             tmpOjObservation.modifier.minor = false
             tmpOjObservation.modifier.severe = false
@@ -834,7 +834,7 @@ const ObservationNew = (props) => {
         }
 
         if(dataObservation === 'debris'){
-            tmpDebObservation.deb = JSON.parse(dataActive)
+            tmpDebObservation.deb = dataActive
         } else {
             tmpDebObservation.modifier[dataObservation] = dataActive
         }
@@ -893,7 +893,7 @@ const ObservationNew = (props) => {
         }
 
         if(dataObservation === 'standing_water'){
-            tmpSwObservation.sw = JSON.parse(dataActive)
+            tmpSwObservation.sw = dataActive
         } else {
             tmpSwObservation.modifier['start'] = false
             tmpSwObservation.modifier['end'] = false
@@ -947,7 +947,7 @@ const ObservationNew = (props) => {
         }
 
         if(dataObservation === 'under_water'){
-            tmpUwObservation.uw = JSON.parse(dataActive)
+            tmpUwObservation.uw = dataActive
         } else {
             tmpUwObservation.modifier['start'] = false
             tmpUwObservation.modifier['end'] = false
@@ -1009,28 +1009,28 @@ const ObservationNew = (props) => {
         }
 
         if(dataObservation === 'break'){
-            tmpPipeBreakObservation.break = JSON.parse(dataActive)
+            tmpPipeBreakObservation.break = dataActive
             setPipeBreakObservation(tmpPipeBreakObservation)
         }
         if(dataObservation === 'crack'){
-            tmpPipeCrackObservation.crack = JSON.parse(dataActive)
+            tmpPipeCrackObservation.crack = dataActive
             setPipeCrackObservation(tmpPipeCrackObservation)
         }
         if(dataObservation === 'hole'){
-            tmpPipeHoleObservation.hole = JSON.parse(dataActive)
+            tmpPipeHoleObservation.hole = dataActive
             setPipeHoleObservation(tmpPipeHoleObservation)
         }
         if(dataObservation === 'separated_joint'){
-            tmpPipeSeparatedJointObservation.separated_joint = JSON.parse(dataActive)
+            tmpPipeSeparatedJointObservation.separated_joint = dataActive
             setPipeSeparatedJointObservation(tmpPipeSeparatedJointObservation)
         }
 
         if(dataObservation === 'break_multiple'){
-            tmpPipeBreakObservation.modifier.break_multiple = JSON.parse(dataActive)
+            tmpPipeBreakObservation.modifier.break_multiple = dataActive
             setPipeBreakObservation(tmpPipeBreakObservation)
         }
         if(dataObservation === 'crack_multiple'){
-            tmpPipeCrackObservation.modifier.crack_multiple = JSON.parse(dataActive)
+            tmpPipeCrackObservation.modifier.crack_multiple = dataActive
             setPipeCrackObservation(tmpPipeCrackObservation)
         }
     }
