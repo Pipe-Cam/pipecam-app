@@ -11,42 +11,42 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/client/:id', function(req, res, next) {
-  DB.client.model.find({_id: req.params.id}, function(err, response){
-    if(err){
+  DB.client.model.find({ _id: req.params.id }, function (err, response) {
+    if (err) {
       console.log(err)
-    } else{
-      res.json(JSON.stringify(response))
+    } else {
+      res.json(response)
     }
   })
 });
 
 router.get('/inspection/:id', function(req, res, next) {
-  DB.inspection.model.find({_id: req.params.id}, function(err, response){
-    if(err){
+  DB.inspection.model.find({ _id: req.params.id }, function (err, response) {
+    if (err) {
       console.log(err)
       res.status(500).send()
-    } else{
+    } else {
       console.log(response)
-      res.status(200).json(JSON.stringify(response))
+      res.status(200).json(response)
     }
   })
 });
 
 router.get('/recent-clients', function(req, res, next) {
-  DB.client.model.find({client_status: "active"})
-    .sort("-last_modified")
+  DB.client.model
+    .find({ client_status: 'active' })
+    .sort('-last_modified')
     .limit(10)
-    .exec(function(err, response) {
-        // console.log(response)
-        res.status(200).json(JSON.stringify(response));
-  })
+    .exec(function (err, response) {
+      // console.log(response)
+      res.status(200).json(response)
+    })
 });
 
 router.get('/archived-clients', function(req, res, next) {
-  DB.client.model.find({client_status: "archived"})
-    .exec(function(err, response) {
-        // console.log(response)
-        res.status(200).json(JSON.stringify(response));
+  DB.client.model.find({ client_status: 'archived' }).exec(function (err, response) {
+    // console.log(response)
+    res.status(200).json(response)
   })
 });
 
@@ -58,20 +58,20 @@ router.get('/search-for-client', function(req, res, next) {
         if(err) {
             console.log(err);
         } else {
-          if(!foundclients.length){
-            DB.client.model.find({ "contact_name": regex }, function(err, foundclients2) {
-              if(err) {
-                  console.log(err);
+          if (!foundclients.length) {
+            DB.client.model.find({ contact_name: regex }, function (err, foundclients2) {
+              if (err) {
+                console.log(err)
               } else {
-                if(!foundclients2.length){
-                  res.send('no such client exists');
+                if (!foundclients2.length) {
+                  res.send('no such client exists')
                 } else {
-                  res.json(JSON.stringify(foundclients2));
+                  res.json(foundclients2)
                 }
               }
-          }); 
+            })
           } else {
-            res.json(JSON.stringify(foundclients));
+            res.json(foundclients)
           }
         }
     }); 
@@ -81,23 +81,25 @@ router.get('/search-for-client', function(req, res, next) {
 });
 
 router.get('/scheduled-inspections', function(req, res, next) {
-  DB.inspection.model.find({status: "scheduled_inspection"})
-    .sort("overview.inspection_date")
+  DB.inspection.model
+    .find({ status: 'scheduled_inspection' })
+    .sort('overview.inspection_date')
     .limit(20)
-    .exec(function(err, response) {
-        // console.log(response)
-        res.status(200).json(JSON.stringify(response));
-  })
+    .exec(function (err, response) {
+      // console.log(response)
+      res.status(200).json(response)
+    })
 });
 
 router.get('/recent-inspections', function(req, res, next) {
-  DB.inspection.model.find({status: ["active_inspection", "completed_inspection"]})
-    .sort("-overview.inspection_date")
+  DB.inspection.model
+    .find({ status: ['active_inspection', 'completed_inspection'] })
+    .sort('-overview.inspection_date')
     .limit(20)
-    .exec(function(err, response) {
-        // console.log(response)
-        res.status(200).json(JSON.stringify(response));
-  })
+    .exec(function (err, response) {
+      // console.log(response)
+      res.status(200).json(response)
+    })
 });
 
 /* POST ROUTES */

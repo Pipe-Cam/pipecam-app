@@ -32,16 +32,16 @@ function ReportOverview() {
     const [inspectionData, setInspectionData] = useState(null)
     const [plusOneYear, setPlusOneYear] = useState(null)
 
-    const getInspectionByIdOnLoad = async(id) => {
+    const getInspectionByIdOnLoad = async (id) => {
         let inspectionDataJSON = await getInspectionById(id)
-        let inspectionObj;
+        let inspectionObj
 
-        try{
-            inspectionObj = JSON.parse(inspectionDataJSON)
+        try {
+            inspectionObj = inspectionDataJSON
             console.log(inspectionObj[0])
             setInspectionData(inspectionObj[0])
             console.log(inspectionData)
-        } catch(err){
+        } catch (err) {
             console.log(err)
         }
     }

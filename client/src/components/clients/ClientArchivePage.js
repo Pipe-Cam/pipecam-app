@@ -14,8 +14,7 @@ function ClientArchivePage() {
     },[])
 
     const clientArchivePageOnLoad = async () => {
-        let archivedClientsJSON = await getArchivedClientsFromDB()
-        let archivedClients = JSON.parse(archivedClientsJSON)
+        let archivedClients = await getArchivedClientsFromDB()
 
         let filteredArchivedClients = archivedClients.filter(item => {
             return item.client_status === 'archived'

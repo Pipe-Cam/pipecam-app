@@ -3,7 +3,7 @@ import ClientContext from '../../context/ClientContext'
 
 function SearchResults(props) {
     const {handleEditClient} = useContext(ClientContext)
-    let searchResult = JSON.parse(props.searchResult)
+    let searchResult = props.searchResult
     console.log(searchResult)
 
     return(

@@ -73,13 +73,13 @@ function NewAccess() {
         console.log(id)
         console.log(accessNum)
         let inspectionDataJSON = await getInspectionById(id)
-        var inspectionDataObj;
+        var inspectionDataObj
 
         try {
-            inspectionDataObj = JSON.parse(inspectionDataJSON)[0]
+            inspectionDataObj = inspectionDataJSON[0]
             // console.log(inspectionDataObj)
             setInspectionData(inspectionDataObj)
-        } catch(err){
+        } catch (err) {
             console.log(err)
         } 
     }
