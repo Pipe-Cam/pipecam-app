@@ -73,10 +73,10 @@ function Observations() {
 
     const getInspectionData = async (id) => {
         if(id){
-            let inspectionJSON = await getInspectionById(id)
-            console.log(inspectionJSON)
-            return JSON.parse(inspectionJSON)[0]
-            // return JSON.parse(inspectionJSON)
+            let inspectionData = await getInspectionById(id)
+            console.log(inspectionData)
+            return inspectionData[0]
+            // return inspectionData
         }
     }
 

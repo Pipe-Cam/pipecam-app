@@ -14,8 +14,8 @@ function Home() {
         let scheduledInspections = await getScheduledInspectionsFromDB()
         let recentInspections = await getRecentInspectionsFromDB()
 
-        setScheduledInspectionsFromDB(JSON.parse(scheduledInspections))
-        setRecentInspectionsFromDB(JSON.parse(recentInspections))
+        setScheduledInspectionsFromDB(scheduledInspections)
+        setRecentInspectionsFromDB(recentInspections)
     }
 
     useEffect(()=>{

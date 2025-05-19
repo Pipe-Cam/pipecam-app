@@ -12,7 +12,7 @@ function ClientViewPage() {
     
     const clientViewPageOnLoad = async (id) => {
         let clientData = await getClientById(id)
-        setClientViewData(JSON.parse(clientData)[0])
+        setClientViewData(clientData[0])
     }
 
     useEffect(()=>{

@@ -50,11 +50,11 @@ function Clients() {
 
     const getClientsOnLoad = async () => {
         let clientList = await getClientsFromDB()
-        setClientsFromDb(JSON.parse(clientList))
+        setClientsFromDb(clientList)
     }
     const getClientArchiveOnLoad = async () => {
         let clientList = await getArchivedClientsFromDB()
-        setArchivedClientsFromDb(JSON.parse(clientList))
+        setArchivedClientsFromDb(clientList)
     }
     
     useEffect(()=>{
