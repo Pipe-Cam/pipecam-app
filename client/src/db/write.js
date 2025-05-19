@@ -45,9 +45,8 @@ export const newInspection = async (data) => {
 
 
 //PUT /client/:id
-export const updateClientById = async (data) => {
+export const updateClientById = async (id, data) => {
     data.last_modified = new Date();
-    let id = 1234 // get id from data obj
 
     let response = await fetch(`http://${host}/client/${id}`, {
         method: 'PUT',
@@ -63,9 +62,8 @@ export const updateClientById = async (data) => {
 }
 
 //DELETE /client/:id
-export const deleteClientById = async (data) => {
+export const deleteClientById = async (id, data) => {
     data.last_modified = new Date();
-    let id = 1234 // get id from data obj
 
     let response = await fetch(`http://${host}/client/${id}`, {
         method: 'DELETE',
