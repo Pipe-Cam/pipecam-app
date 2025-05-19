@@ -19,9 +19,9 @@ export const jobLocation = {
             if__pipe_diameter__other: {input_type: 'text', name: 'if__pipe_diameter__other', id: 'if__pipe_diameter__other_text_input', placeholder: 'Other', value_datatype: 'string', value_choices: [], depends_on_id: 'has_plumbing_radio_input', has_children: false, display: 'none'}
         }
     },
-    cccusd: {input_type: 'radio', name: 'cccusd', id: 'cccusd_radio_input', placeholder: 'CCCUSD', value_datatype: 'boolean', value_choices: ['yes', 'no'], depends_on_id: '', has_children: false, display: 'inherit'},
+    cccsd: {input_type: 'radio', name: 'cccsd', id: 'cccsd_radio_input', placeholder: 'CCCSD', value_datatype: 'boolean', value_choices: ['yes', 'no'], depends_on_id: '', has_children: false, display: 'inherit'},
     if__cccsd: {
-        unpermitted_work: {input_type: 'radio', name: 'unpermitted_work', id: 'unpermitted_work_radio_input', placeholder: 'Unpermitted Work', value_datatype: 'boolean', value_choices: ['yes', 'no'], depends_on_id: 'cccusd_radio_input', has_children: false, display: 'none'}
+        unpermitted_work: {input_type: 'radio', name: 'unpermitted_work', id: 'unpermitted_work_radio_input', placeholder: 'Unpermitted Work', value_datatype: 'boolean', value_choices: ['yes', 'no'], depends_on_id: 'cccsd_radio_input', has_children: false, display: 'none'}
     }
     // push_to_main_rewrite: {input_type: 'radio', name: 'push_to_main_rewrite', id: 'push_to_main_rewrite_radio_input', placeholder: 'Push To Main Rewrite', value_datatype: 'boolean', value_choices: ['yes', 'no'], depends_on_id: '', has_children: false, display: 'inherit'}
 }

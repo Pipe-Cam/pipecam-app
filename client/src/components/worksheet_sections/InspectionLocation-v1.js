@@ -15,8 +15,8 @@ function InspectionLocation(props) {
     const pipeDiameterOtherTextRef = useRef(null)
     const hasPlumbingRadioRef = useRef(null)
     const hasPlumbingDivRef = useRef(null)
-    const ccusdRadioRef = useRef(null)
-    const ccusdDivRef = useRef(null)
+    const cccsdRadioRef = useRef(null)
+    const cccsdDivRef = useRef(null)
     const outbuildingRadioRef = useRef(null)
     const outbuildingDivRef = useRef(null)
     const openingObservationsRef = useRef(null)
@@ -24,8 +24,8 @@ function InspectionLocation(props) {
     // for setting default values to state
     const occupancyRef = useRef(null)
     const outbuildingRef = useRef(null)
-    const cccusdRef = useRef(null)
-    const cccusdUnpermittedRef = useRef(null)
+    const cccsdRef = useRef(null)
+    const cccsdUnpermittedRef = useRef(null)
 
     const checkRef = useRef(null)
     const usbRef = useRef(null)
@@ -58,11 +58,11 @@ function InspectionLocation(props) {
         }
     }
 
-    const handleCCUSD = (e) => {
-        if(ccusdRadioRef.current.checked){
-            ccusdDivRef.current.style.display = 'block'
+    const handleCCCSD = (e) => {
+        if(cccsdRadioRef.current.checked){
+            cccsdDivRef.current.style.display = 'block'
         } else {
-            ccusdDivRef.current.style.display = 'none'
+            cccsdDivRef.current.style.display = 'none'
         }
     }
     
@@ -144,19 +144,19 @@ function InspectionLocation(props) {
     // useEffect(()=>{
     //     // [occupancyRef,
     //     // outbuildingRef,
-    //     // cccusdRef,
-    //     // cccusdUnpermittedRef,
+    //     // cccsdRef,
+    //     // cccsdUnpermittedRef,
     //     // pipeDiameterOtherRadioRef,
     //     // pipeDiameterOtherTextRef,
     //     // hasPlumbingRadioRef,
-    //     // ccusdRadioRef,
+    //     // cccsdRadioRef,
     //     // outbuildingRadioRef,
     //     // openingObservationsRef]
 
     //     [occupancyRef,
     //     outbuildingRef,
-    //     cccusdRef,
-    //     cccusdUnpermittedRef].forEach(item=>{
+    //     cccsdRef,
+    //     cccsdUnpermittedRef].forEach(item=>{
     //         handleUpdateJobOverviewStateDefault(item.current)
     //     })
 
@@ -250,23 +250,23 @@ function InspectionLocation(props) {
                 </div>
 
                 <div className="mt-5 mb-3">
-                    <div className="h6">CCCUSD</div>
+                    <div className="h6">CCCSD</div>
                     <div className="form-check form-check-inline mr-5">
-                        <input ref={ccusdRadioRef} {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccusd', id: 'cccusd__yes', value: 'yes' }} onClick={handleCCUSD} onChange={handleUpdateLocationStateOnChange} />
-                        <label className="form-check-label radio-button-label">Yes</label>
+                        <input ref={cccsdRadioRef} {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccsd', id: 'cccsd__yes', value: 'yes' }} onClick={handleCCCSD} onChange={handleUpdateLocationStateOnChange} />
+                    <label className="form-check-label radio-button-label">Yes</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
-                        <input ref={cccusdRef} {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccusd', id: 'cccusd__no', value: 'no', defaultChecked: 'checked' }} onClick={handleCCUSD} onChange={handleUpdateLocationStateOnChange} />
+                        <input ref={cccsdRef} {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccsd', id: 'cccsd__no', value: 'no', defaultChecked: 'checked' }} onClick={handleCCCSD} onChange={handleUpdateLocationStateOnChange} />
                         <label className="form-check-label radio-button-label">No</label>
                     </div>
-                    <div ref={ccusdDivRef} className="my-5 ml-5 p-4 border" style={{ display: 'none', backgroundColor: 'white' }}>
+                    <div ref={cccsdDivRef} className="my-5 ml-5 p-4 border" style={{ display: 'none', backgroundColor: 'white' }}>
                         <div className="h6">> Unpermitted Work</div>
                         <div className="form-check form-check-inline mr-5">
-                            <input ref={cccusdUnpermittedRef} {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccusd_unpermitted_work', id: 'cccusd_unpermitted_work__yes', value: 'yes' }} onChange={handleUpdateLocationStateOnChange} />
+                            <input ref={cccsdUnpermittedRef} {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccsd_unpermitted_work', id: 'cccsd_unpermitted_work__yes', value: 'yes' }} onChange={handleUpdateLocationStateOnChange} />
                             <label className="form-check-label radio-button-label">Yes</label>
                         </div>
                         <div className="form-check form-check-inline mr-5">
-                            <input {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccusd_unpermitted_work', id: 'cccusd_unpermitted_work__no', value: 'no', defaultChecked: 'checked' }} onChange={handleUpdateLocationStateOnChange} />
+                            <input {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccsd_unpermitted_work', id: 'cccsd_unpermitted_work__no', value: 'no', defaultChecked: 'checked' }} onChange={handleUpdateLocationStateOnChange} />
                             <label className="form-check-label radio-button-label">No</label>
                         </div>
                     </div>
