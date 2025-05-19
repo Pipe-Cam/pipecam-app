@@ -72,16 +72,16 @@ function NewAccess() {
     const getInspectionDataOnLoad = async (id, accessNum) => {
         console.log(id)
         console.log(accessNum)
-        let inspectionDataJSON = await getInspectionById(id)
+        let inspectionData = await getInspectionById(id)
         var inspectionDataObj;
 
         try {
-            inspectionDataObj = JSON.parse(inspectionDataJSON)[0]
+            inspectionDataObj = inspectionData[0]
             // console.log(inspectionDataObj)
             setInspectionData(inspectionDataObj)
         } catch(err){
             console.log(err)
-        } 
+        }
     }
 
     const preloadFormData = () => {

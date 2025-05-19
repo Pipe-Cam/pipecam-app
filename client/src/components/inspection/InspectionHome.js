@@ -32,9 +32,9 @@ function InspectionHome() {
     },[])
 
     const getInspectionData = async (id) => {
-        let inspectionDataJSON = await getInspectionByIdFromDB(id)
-        if(inspectionDataJSON){
-            setInspectionData(JSON.parse(inspectionDataJSON)[0])
+        let inspectionData = await getInspectionByIdFromDB(id)
+        if(inspectionData){
+            setInspectionData(inspectionData[0])
         }
     }
 
