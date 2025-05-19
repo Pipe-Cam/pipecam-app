@@ -7,7 +7,7 @@ const DB = require('../db/dbAssets')
 /* GET ROUTES */
 
 router.get('/', function(req, res, next) {
-  res.send('Hey! Quit snooping. Go away and mind your own business!')
+  res.json({ message: 'Hey! Quit snooping. Go away and mind your own business!' })
 });
 
 router.get('/client/:id', function(req, res, next) {
@@ -15,7 +15,7 @@ router.get('/client/:id', function(req, res, next) {
     if(err){
       console.log(err)
     } else{
-      res.json(JSON.stringify(response))
+      res.json(response)
     }
   })
 });
@@ -27,7 +27,7 @@ router.get('/inspection/:id', function(req, res, next) {
       res.status(500).send()
     } else{
       console.log(response)
-      res.status(200).json(JSON.stringify(response))
+      res.status(200).json(response)
     }
   })
 });
@@ -38,7 +38,7 @@ router.get('/recent-clients', function(req, res, next) {
     .limit(10)
     .exec(function(err, response) {
         // console.log(response)
-        res.status(200).json(JSON.stringify(response));
+        res.status(200).json(response);
   })
 });
 
@@ -46,7 +46,7 @@ router.get('/archived-clients', function(req, res, next) {
   DB.client.model.find({client_status: "archived"})
     .exec(function(err, response) {
         // console.log(response)
-        res.status(200).json(JSON.stringify(response));
+        res.status(200).json(response);
   })
 });
 
@@ -64,19 +64,19 @@ router.get('/search-for-client', function(req, res, next) {
                   console.log(err);
               } else {
                 if(!foundclients2.length){
-                  res.send('no such client exists');
+                  res.json({ message: 'no such client exists' });
                 } else {
-                  res.json(JSON.stringify(foundclients2));
+                  res.json(foundclients2);
                 }
               }
           }); 
           } else {
-            res.json(JSON.stringify(foundclients));
+            res.json(foundclients);
           }
         }
     }); 
   } else {
-    res.send('query failed')
+    res.json({ message: 'query failed' })
   }
 });
 
@@ -86,7 +86,7 @@ router.get('/scheduled-inspections', function(req, res, next) {
     .limit(20)
     .exec(function(err, response) {
         // console.log(response)
-        res.status(200).json(JSON.stringify(response));
+        res.status(200).json(response);
   })
 });
 
@@ -96,20 +96,20 @@ router.get('/recent-inspections', function(req, res, next) {
     .limit(20)
     .exec(function(err, response) {
         // console.log(response)
-        res.status(200).json(JSON.stringify(response));
+        res.status(200).json(response);
   })
 });
 
 /* POST ROUTES */
 router.post('/new-client', function(req, res, next) {
   DB.client.new(req.body)
-  res.send('new client added')
+  res.json({ message: 'new client added' })
 });
 
 router.post('/new-inspection', function(req, res, next) {
   console.log(req.body)
   DB.inspection.new(req.body)
-  res.send('new inspection added')
+  res.json({ message: 'new inspection added' })
 });
 
 
@@ -123,7 +123,7 @@ router.post('/inspection/:id', function(req, res, next) {
     DB.inspection.model.findOneAndUpdate({_id: id}, {$set: bodyData}, function(err, updateData){
       if(err){
         console.log(err)
-        res.status(500).send('update failed')
+        res.status(500).json({ message: 'update failed' })
       } else {
         console.log(Object.keys(updateData))
         res.status(200).json(updateData)
@@ -137,16 +137,16 @@ router.put('/client-all', function(req, res, next) {
   DB.client.model.updateMany({client_status: 'Active'}, {client_status: 'active'}, function(err){
     if(err){
       console.log(err)
-      return res.status(500).send("delete inspection: failure");
+      return res.status(500).json({ message: "delete inspection: failure" });
     } else {
-      return res.status(200).send("delete inspection: success");
+      return res.status(200).json({ message: "delete inspection: success" });
     }
   });
 });
 
 router.put('/client/:id', function(req, res, next) {
   DB.client.update(req.params.id, req.body)
-  res.send('client updated')
+  res.json({ message: 'client updated' })
 });
 
 /* DELETE ROUTES */
@@ -154,9 +154,9 @@ router.delete('/inspection/:id', function(req, res, next) {
   DB.inspection.model.findOneAndDelete({_id: req.params.id}, function(err){
     if(err){
       console.log(err)
-      return res.status(500).send("delete inspection: failure");
+      return res.status(500).json({ message: "delete inspection: failure" });
     } else {
-      return res.status(200).send("delete inspection: success");
+      return res.status(200).json({ message: "delete inspection: success" });
     }
   });
 });
@@ -165,9 +165,9 @@ router.delete('/client/:id', function(req, res, next) {
   DB.client.model.findOneAndUpdate({_id: req.params.id}, {client_status: 'archived', last_modified: new Date()}, function(err){
     if(err){
       console.log(err)
-      return res.status(500).send("delete client: failure");
+      return res.status(500).json({ message: "delete client: failure" });
     } else {
-      return res.status(200).send("delete client: success");
+      return res.status(200).json({ message: "delete client: success" });
     }
   });
 });
