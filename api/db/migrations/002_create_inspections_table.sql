@@ -1,0 +1,36 @@
+-- Enable pgcrypto for UUID generation
+create extension if not exists "pgcrypto";
+
+create table if not exists inspections (
+  id uuid primary key default gen_random_uuid(),
+  status text,
+  client_id uuid references clients(id),
+  inspection_date timestamptz,
+  client text,
+  property_address text,
+  property_address_street text,
+  property_address_unit text,
+  property_address_city text,
+  property_address_state text,
+  property_address_zip text,
+  prelisting boolean,
+  root_cut boolean,
+  client_located_access boolean,
+  length_of_lateral text,
+  payment_status text,
+  payment_status_amount numeric,
+  office_notes text,
+  occupancy text,
+  outbuilding text,
+  outbuilding_has_plumbing text,
+  outbuilding_has_cleanout text,
+  outbuilding_pipe_diameter text,
+  outbuilding_pipe_diameter_other text,
+  cccsd text,
+  cccsd_unpermitted_work text,
+  opening_observations text,
+  usb_num text,
+  access jsonb,
+  created timestamptz default now(),
+  last_modified timestamptz default now()
+);
