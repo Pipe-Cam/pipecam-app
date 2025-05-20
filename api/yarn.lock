@@ -2554,6 +2554,7 @@ mongodb@3.6.2:
   optionalDependencies:
     saslprep "^1.0.0"
 
+<<<<<<< HEAD
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz"
@@ -2580,6 +2581,8 @@ mongoose@*, mongoose@^5.10.9:
     safe-buffer "5.2.1"
     sift "7.0.1"
     sliced "1.0.1"
+=======
+>>>>>>> origin/codex/integrate-supabase-client-and-refactor-db-code
 
 morgan@~1.9.1:
   version "1.9.1"
