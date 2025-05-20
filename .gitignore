@@ -105,3 +105,6 @@ dist
 
 #VS Code workspace config
 fullstack-boilerplate.code-workspace
+
+# .roo files
+.roo
