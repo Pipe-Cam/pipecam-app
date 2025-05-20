@@ -2,10 +2,10 @@
   "name": "pipecam-app",
   "version": "1.0.0",
   "description": "[node + express + supabase] backend api & [react] frontend",
-  "main": "index.js",
+  "main": "api/app.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node api/bin/www",
+    "dev": "nodemon api/bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "npm start --prefix client",
     "build": "npm run build --prefix client"
