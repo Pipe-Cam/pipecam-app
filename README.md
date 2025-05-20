@@ -43,6 +43,7 @@ The API expects the following variables to be available at runtime:
 SUPABASE_URL=<your-supabase-project-url>
 SUPABASE_KEY=<your-supabase-service-key>
 ```
+The React client reads `REACT_APP_API_HOST` to determine the API host. If omitted, it defaults to `localhost:5000`.
 
 These values are used to initialize the Supabase client in `api/db/supabaseClient.js`.
 
