@@ -1309,4 +1309,5 @@ const ObservationList = (props) => {
         </Modal>
         </>
     )
+    }
 }
