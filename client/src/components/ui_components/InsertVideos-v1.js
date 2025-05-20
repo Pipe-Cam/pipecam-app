@@ -15,21 +15,17 @@ function InsertVideos() {
     }])
 
     useEffect(()=>{
-        console.log(mediaElementArr)
     },[])
 
     useEffect(()=>{
-        console.log(mediaElementArr)
     },[mediaElementArr])
 
     useEffect(()=>{
-        console.log(mediaElementArr)
     },[,mediaElementArr])
 
 
 
     const addElement = (e) => {
-        console.log("addElement")
         let elemNumber = mediaElementArr.length + 1
         let tmpMediaElementArr = mediaElementArr
 
@@ -109,11 +105,9 @@ const MediaElements = (props) => {
 
     useEffect(()=>{
         setElementCount(inputCount + 1)
-        console.log(generateElementArr(5))
     },[])
 
     useEffect(()=>{
-        console.log(videoURLs)
     },[videoURLs])
 return (
         <div>

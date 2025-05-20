@@ -88,21 +88,17 @@ function JobOverview() {
 
         if(type === 'text' || type === 'number' || type === 'date' || elementType === 'textarea' || type === 'checkbox'){
             if(name === 'client') {
-                console.log('client: ', `${name} / ${value}`)
                 tmpJob.client_id = e.target.getAttribute('data-id')
             }
 
             if(type === 'checkbox'){
-                console.log(e.target.value, e.target.checked)
                 value = Boolean(e.target.checked)
             }
 
-            console.log('value: ', value)
             tmpJob[objBranch][name] = value
             
             if(type === 'date'){
                 let date = value.split('-')
-                console.log(date)
                 let year = Number(date[0])
                 let month = Number(date[1]) -1
                 let day = Number(date[2])
@@ -110,15 +106,12 @@ function JobOverview() {
                 let dateTime = new Date(year, month, day, 12, 0, 0, 0).toLocaleString('en-US', {timeZoneName: 'short', hour12: false})
 
                 tmpJob[objBranch][name] = dateTime
-                console.log(e.target.value)
-                console.log(tmpJob[objBranch][name])
             }
             setJob(tmpJob)
         }
     }
 
     const handleClientDropDown = async (e) => {
-        console.log(clientTextRef.current.value)
         let searchValue = clientTextRef.current.value
         let searchResults = await searchForClientInDB(encodeURI(searchValue))
 
@@ -126,7 +119,6 @@ function JobOverview() {
 
         try{
             searchResultObj = searchResults
-            console.log(searchResultObj)
             setDropdownClients(searchResultObj.map(item => {
                 return({name: (item.organization_name || item.client_name), id: item._id})
             }))
@@ -134,8 +126,6 @@ function JobOverview() {
             clientDropdownRef.current.classList.add('show')
         } catch (err) {
             clientTextRef.current.setAttribute('data-id', '')
-            console.log('searchResults', searchResults)
-            console.log(err)
         }
     }
 
@@ -143,7 +133,6 @@ function JobOverview() {
         // console.log(e.target)
         let id = e.target.getAttribute('data-id')
         let name = e.target.innerHTML
-        console.log(name, id)
         clientTextRef.current.value = ''
         clientTextRef.current.value = name
         

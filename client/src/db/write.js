@@ -24,7 +24,6 @@ export const newClient = async (data) => {
     })
 
     let result = await response.json();
-    console.log(result)
 }
 
 export const newInspection = async (data) => {
@@ -57,8 +56,6 @@ export const updateClientById = async (id, data) => {
     })
 
     let result = await response.json();
-    console.log('client updated in db')
-    console.log(result)
 }
 
 //DELETE /client/:id
@@ -74,13 +71,10 @@ export const deleteClientById = async (id, data) => {
     })
 
     let result = await response.json();
-    console.log('client deleted from db')
-    console.log(result)
 }
 
 //PUT /inspection/:id
 export const updateInspectionById = async (id, data) => {
-    console.log('write-data', JSON.stringify(data))
     let response = await fetch(`http://${host}/inspection/${id}`, {
         method: 'PUT',
         headers: {
@@ -90,8 +84,6 @@ export const updateInspectionById = async (id, data) => {
     })
 
     let result = await response.json();
-    console.log('inspection updated in db')
-    console.log(result)
 }
 
 //DELETE /inspection/:id
@@ -108,9 +100,6 @@ export const deleteInspectionById = async (id, data) => {
     })
 
     let result = await response.json();
-    console.log(response.status)
-    console.log('inspection deleted from db')
-    console.log(result)
 }
 
 

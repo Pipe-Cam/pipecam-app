@@ -10,9 +10,7 @@ const SearchClients = (props) =>{
     const handleClientSearch = async (e) => {
         e.preventDefault();
         let searchValue = clientSearchInputRef.current.value
-        console.log(searchValue)
         if(searchValue){
-            console.log('valid search')
             let clientSearchResult = await searchForClientInDB(encodeURI(searchValue))
             setSearchResult(clientSearchResult)
         } 

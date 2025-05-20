@@ -30,7 +30,6 @@ function ObservationHome(props) {
         setJob(tmpJob)
         setCurrentObservation({})
         setAppNav('observations')
-        console.log('job', job)
     }
 
     const handleNewObservationOnChange = (e) => {
@@ -47,11 +46,9 @@ function ObservationHome(props) {
     }
 
     const handleEditObservation = () => {
-        console.log('handleObservation')
     }
 
     const handleDeleteObservation = () => {
-        console.log('handleObservation')
     }
 
 

@@ -24,7 +24,6 @@ function Home() {
 
 
     const handleEditInspection = () => {
-        console.log('handleEditInspection')
     }
 
     const handleAssignActiveClient = (clientId) => {

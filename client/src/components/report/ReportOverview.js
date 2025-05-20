@@ -38,11 +38,8 @@ function ReportOverview() {
 
         try {
             inspectionObj = inspectionData
-            console.log(inspectionObj[0])
             setInspectionData(inspectionObj[0])
-            console.log(inspectionData)
         } catch (err) {
-            console.log(err)
         }
     }
 
@@ -490,7 +487,6 @@ const SewerAccess = (props) => {
 
 const SewerAccessBlurb = (props) => {
     const {location, details} = props
-    console.log(location, details)
     return(
         <>  
             {/* {JSON.stringify(data.details)} */}
