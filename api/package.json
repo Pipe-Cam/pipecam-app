@@ -21,7 +21,11 @@
     "nodemon": "^2.0.4"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "jest": "^29.5.0",
+=======
+    "jest": "^29.6.2",
+>>>>>>> origin/codex/add-jest-and-supertest-for-api-tests
     "supertest": "^6.3.3"
   }
 }
