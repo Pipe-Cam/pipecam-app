@@ -1,0 +1,30 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS clients (
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    created TIMESTAMPTZ NOT NULL DEFAULT now(),
+    last_modified TIMESTAMPTZ NOT NULL DEFAULT now(),
+    client_type TEXT,
+    client_type_other TEXT,
+    client_status TEXT,
+    client_source TEXT,
+    client_source_other TEXT,
+    preferred_payment_type TEXT,
+    organization_name TEXT,
+    organization_phone TEXT,
+    organization_address_street TEXT,
+    organization_address_unit TEXT,
+    organization_address_city TEXT,
+    organization_address_state TEXT,
+    organization_address_zip TEXT,
+    contact_name TEXT,
+    contact_phone TEXT,
+    contact_email_primary TEXT,
+    contact_email_secondary TEXT,
+    client_address_street TEXT,
+    client_address_unit TEXT,
+    client_address_city TEXT,
+    client_address_state TEXT,
+    client_address_zip TEXT,
+    notes JSONB
+);
