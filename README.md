@@ -1,5 +1,5 @@
 # fullstack-boilerplate
-[node + express + mongo] backend api &amp; [react] frontend
+[node + express + Supabase] backend api & [react] frontend
 
 ## Database setup (Supabase)
 
@@ -11,3 +11,25 @@
 4. After executing the scripts, the `clients` and `inspections` tables will be available in your database.
 
 The scripts use the `pgcrypto` extension so UUID values can be generated via `gen_random_uuid()`.
+
+## Development Setup
+
+Install dependencies in both the backend and frontend projects:
+
+```bash
+cd api && npm install
+cd ../client && npm install
+```
+
+Start the backend server:
+
+```bash
+cd api
+npm start
+```
+
+Start the React client in a separate terminal:
+
+```bash
+cd client
+npm start
