@@ -60,7 +60,7 @@ const bulkActivateClients = async () => {
   const { error } = await supabase
     .from('clients')
     .update({ client_status: 'active' })
-    .eq('client_status', 'Active');
+    .eq('client_status', 'active');
   if (error) console.log(error);
 };
 
