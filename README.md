@@ -21,10 +21,9 @@ cd api && npm install
 cd ../client && npm install
 ```
 
-Start the backend server:
+Start the backend server from the project root:
 
 ```bash
-cd api
 npm start
 ```
 
@@ -37,14 +36,17 @@ npm start
 
 ## Environment Variables
 
-The API expects the following variables to be available at runtime:
+Create a `.env` file at the project root with the following variables:
 
 ```
 SUPABASE_URL=<your-supabase-project-url>
 SUPABASE_KEY=<your-supabase-service-key>
+REACT_APP_API_HOST=<url-where-the-api-runs>
 ```
 
-These values are used to initialize the Supabase client in `api/db/supabaseClient.js`.
+`REACT_APP_API_HOST` tells the React client where it can reach the API. The
+Supabase variables are used to initialize the client in
+`api/db/supabaseClient.js`.
 
 ## Testing
 

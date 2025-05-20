@@ -4,8 +4,8 @@
   "description": "[node + express + supabase] backend api & [react] frontend",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "npm start --prefix api",
+    "dev": "nodemon api/bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "npm start --prefix client",
     "build": "npm run build --prefix client"
