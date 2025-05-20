@@ -5,12 +5,10 @@ function IconDownArrow(props) {
     let height = '1em'; 
 
     if(props.width){
-        console.log(props.width)
         width = props.width
     }
 
     if(props.height){
-        console.log(props.height)
         height = props.height
     }
 

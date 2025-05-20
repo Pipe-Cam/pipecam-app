@@ -19,7 +19,6 @@ function NewInspection() {
         e.preventDefault()
 
         let clientId = newInspectionFormRef.current.elements['client'].getAttribute('data-id')
-        console.log('clientId', clientId)
 
         if(clientId === ''){
             return
@@ -31,36 +30,29 @@ function NewInspection() {
 
         if(formMode === 'create') {
             // create
-            console.log('create')
             handleCreateJob()
         } else if(formMode === 'save') {
             // save
-            console.log('save')
             handleSaveJob()
         } else {
             // do nothing
-            console.log(formMode)
         }
     }
 
     const handleCreateJob = async () => {
-        console.log("handleCreateJob")
         let tmpJob = job
         tmpJob.status = 'active_inspection'
         setJob(tmpJob)
         // create new job in DB
         let savedInspection = await saveNewInspectionToDB(job)
-        console.log('savedInspection: ', savedInspection)
     }
 
     const handleSaveJob = async () => {
-        console.log("handleSaveJob")
         let tmpJob = job
         tmpJob.status = 'scheduled_inspection'
         setJob(tmpJob)
         // create new job in DB
         let savedInspection = await saveNewInspectionToDB(job)
-        console.log('savedInspection: ', savedInspection)
         // redirect to job-dashboard
         history.push('/')
         window.location.reload();
@@ -69,8 +61,6 @@ function NewInspection() {
     const handleChangeFormMode = (e) => {
         let mode = e.target.getAttribute('data-name');
         setFormMode(mode)
-        console.log('mode:', mode)
-        console.log('formMode:', formMode)
     }
 
 

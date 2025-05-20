@@ -72,7 +72,6 @@ const NewClientForm = (props) => {
         let id = e.target.id
         let refName = (e.target.id === 'client_type') ? (clientTypeOtherRef) : (clientSourceOtherRef);
         let val = e.target.value
-        console.log(id, val)
 
         if(val === 'Other'){
             refName.current.classList.remove('d-none')
@@ -109,7 +108,6 @@ const NewClientForm = (props) => {
         }
 
         setNewClientFormData(tmpNewClientFormData)
-        console.log(newClientFormData)
     }
 
     const handleDefaultValue = () => {
@@ -131,7 +129,6 @@ const NewClientForm = (props) => {
 
     const handleSaveNewClientToDB = async (e) => {
         e.preventDefault()
-        console.log(newClientFormData)
         saveNewClientToDB(newClientFormData)
         getClientsOnLoad()
         history.push('/clients')

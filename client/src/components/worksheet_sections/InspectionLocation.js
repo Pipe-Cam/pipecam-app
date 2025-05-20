@@ -67,7 +67,6 @@ function InspectionLocation(props) {
 
     useEffect(()=>{
         let locationKeys = Object.keys(locationData)
-        console.log(locationKeys)
         try{
             locationKeys.forEach(item => {
                 if(JSON.stringify(locationData[item]) !== ""){
@@ -79,12 +78,10 @@ function InspectionLocation(props) {
                 }
             })
         } catch(err){
-            console.log(err)
         }
     },[locationData])
 
     const handleUpdateLocationStateOnChange = (e)=>{
-        console.log({name: e.target.id, value: e.target.value})
         let name = e.target.id
         let value = e.target.value
 
@@ -110,7 +107,6 @@ function InspectionLocation(props) {
             document.getElementById('outbuilding_pipe_diameter_other').value = ''
         }
 
-        console.log(JSON.stringify(tmpLocationData))
 
         setLocationData(tmpLocationData)
     }

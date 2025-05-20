@@ -7,7 +7,6 @@ const direction = (directionAbbr) => {
         toilet: "Toilet access",
         roof: "Roof access"
     }
-    console.log(directionAbbr)
 
     return directionTypes[directionAbbr]
 }

@@ -27,7 +27,6 @@ function ClientViewPage() {
     const BreadCrumbClientView = (props)=>{
         const {clientViewData} = props
 
-        console.log(clientViewData)
         
         return(
             <>
