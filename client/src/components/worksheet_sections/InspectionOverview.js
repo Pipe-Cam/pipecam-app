@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect, useRef} from 'react'
+import React, {useContext, useState, useEffect, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import InspectionContext from '../../context/InspectionContext'
 import {searchForClient as searchForClientInDB} from '../../db/read'
@@ -31,6 +31,19 @@ function JobOverview() {
     const clientTextRef = useRef(null)
     const clientDropdownRef = useRef(null)
 
+
+    const handleUpdateJobOverviewStateDefault = useCallback((elem) => {
+        let objBranch = 'overview'
+        let name = elem.name || elem.id
+        
+        let tmpJob = job
+        if(elem.type === 'checkbox'){
+            tmpJob[objBranch][name] = Boolean(elem.checked)
+        } else {
+            tmpJob[objBranch][name] = elem.value
+        }
+        setJob(tmpJob)
+    }, [job, setJob]);
 
     useEffect(()=>{
         [
@@ -102,19 +115,6 @@ function JobOverview() {
             }
             setJob(tmpJob)
         }
-    }
-
-    const handleUpdateJobOverviewStateDefault = (elem) => {
-        let objBranch = 'overview'
-        let name = elem.name || elem.id
-        
-        let tmpJob = job
-        if(elem.type === 'checkbox'){
-            tmpJob[objBranch][name] = Boolean(elem.checked)
-        } else {
-            tmpJob[objBranch][name] = elem.value
-        }
-        setJob(tmpJob)
     }
 
     const handleClientDropDown = async (e) => {
