@@ -19,8 +19,8 @@ function InspectionHome() {
         "outbuilding_has_plumbing": "",
         "outbuilding_has_cleanout": "",
         "outbuilding_pipe_diameter": "",
-        "cccusd": "",
-        "cccusd_unpermitted_work": "",
+        "cccsd": "",
+        "cccsd_unpermitted_work": "",
         "opening_observations": "",
         "usb_num": ""
     })
@@ -32,9 +32,15 @@ function InspectionHome() {
     },[])
 
     const getInspectionData = async (id) => {
+<<<<<<< HEAD
         let inspectionData = await getInspectionByIdFromDB(id)
         if(inspectionData){
             setInspectionData(inspectionData[0])
+=======
+        let inspectionDataJSON = await getInspectionByIdFromDB(id)
+        if (inspectionDataJSON) {
+            setInspectionData(inspectionDataJSON[0])
+>>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
         }
     }
 

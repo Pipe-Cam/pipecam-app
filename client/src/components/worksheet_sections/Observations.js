@@ -72,11 +72,19 @@ function Observations() {
     },[inspectionData])
 
     const getInspectionData = async (id) => {
+<<<<<<< HEAD
         if(id){
             let inspectionData = await getInspectionById(id)
             console.log(inspectionData)
             return inspectionData[0]
             // return inspectionData
+=======
+        if (id) {
+            let inspectionJSON = await getInspectionById(id)
+            console.log(inspectionJSON)
+            return inspectionJSON[0]
+            // return JSON.parse(inspectionJSON)
+>>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
         }
     }
 

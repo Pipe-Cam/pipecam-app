@@ -32,16 +32,25 @@ function ReportOverview() {
     const [inspectionData, setInspectionData] = useState(null)
     const [plusOneYear, setPlusOneYear] = useState(null)
 
+<<<<<<< HEAD
     const getInspectionByIdOnLoad = async(id) => {
         let inspectionData = await getInspectionById(id)
         let inspectionObj;
 
         try{
             inspectionObj = inspectionData
+=======
+    const getInspectionByIdOnLoad = async (id) => {
+        let inspectionDataJSON = await getInspectionById(id)
+        let inspectionObj
+
+        try {
+            inspectionObj = inspectionDataJSON
+>>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
             console.log(inspectionObj[0])
             setInspectionData(inspectionObj[0])
             console.log(inspectionData)
-        } catch(err){
+        } catch (err) {
             console.log(err)
         }
     }
