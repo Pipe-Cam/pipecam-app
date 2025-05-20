@@ -816,14 +816,6 @@ minimist@^1.2.0:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
-  integrity sha512-Yo/7qQU4/EyIS8YDFSeenIvXxZN+ld7YdV9LqFVQJzTLye8unujAWPZ4NWKfFA+RNjh+wvTWKY9Z3E5XM6ZZiQ==
-
-mongoose-partial-full-search@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/mongoose-partial-full-search/-/mongoose-partial-full-search-0.0.4.tgz#9b57b59df9578b4e0a99da6388c1c56faa362d25"
-  integrity sha512-lwGofAuX0t194LTmnXWvpHg3fiLcUgIYjNLZ4vXm8QW3uCH/ozBBp0flfwB49gl7dQIi/zOO1xXPGM6B8JqtrQ==
 
 morgan@~1.9.1:
   version "1.9.1"

@@ -13,3 +13,12 @@ npm test
 ```
 
 This will execute all tests under `api/test`.
+
+## Environment Variables
+
+The API requires the following variables to connect to Supabase:
+
+```bash
+SUPABASE_URL=<your-supabase-project-url>
+SUPABASE_KEY=<your-service-role-key>
+```
