@@ -14,11 +14,7 @@ router.get('/client/:id', function(req, res, next) {
   DB.client.model.find({ _id: req.params.id }, function (err, response) {
     if (err) {
       console.log(err)
-<<<<<<< HEAD
-    } else{
-=======
     } else {
->>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
       res.json(response)
     }
   })
@@ -41,19 +37,6 @@ router.get('/recent-clients', function(req, res, next) {
     .find({ client_status: 'active' })
     .sort('-last_modified')
     .limit(10)
-<<<<<<< HEAD
-    .exec(function(err, response) {
-        // console.log(response)
-        res.status(200).json(response);
-  })
-});
-
-router.get('/archived-clients', function(req, res, next) {
-  DB.client.model.find({client_status: "archived"})
-    .exec(function(err, response) {
-        // console.log(response)
-        res.status(200).json(response);
-=======
     .exec(function (err, response) {
       // console.log(response)
       res.status(200).json(response)
@@ -64,7 +47,6 @@ router.get('/archived-clients', function(req, res, next) {
   DB.client.model.find({ client_status: 'archived' }).exec(function (err, response) {
     // console.log(response)
     res.status(200).json(response)
->>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
   })
 });
 
@@ -81,26 +63,15 @@ router.get('/search-for-client', function(req, res, next) {
               if (err) {
                 console.log(err)
               } else {
-<<<<<<< HEAD
                 if(!foundclients2.length){
                   res.json({ message: 'no such client exists' });
                 } else {
                   res.json(foundclients2);
-=======
-                if (!foundclients2.length) {
-                  res.send('no such client exists')
-                } else {
-                  res.json(foundclients2)
->>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
                 }
               }
             })
           } else {
-<<<<<<< HEAD
             res.json(foundclients);
-=======
-            res.json(foundclients)
->>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
           }
         }
     }); 
@@ -114,17 +85,10 @@ router.get('/scheduled-inspections', function(req, res, next) {
     .find({ status: 'scheduled_inspection' })
     .sort('overview.inspection_date')
     .limit(20)
-<<<<<<< HEAD
-    .exec(function(err, response) {
-        // console.log(response)
-        res.status(200).json(response);
-  })
-=======
     .exec(function (err, response) {
       // console.log(response)
       res.status(200).json(response)
     })
->>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
 });
 
 router.get('/recent-inspections', function(req, res, next) {
@@ -132,17 +96,10 @@ router.get('/recent-inspections', function(req, res, next) {
     .find({ status: ['active_inspection', 'completed_inspection'] })
     .sort('-overview.inspection_date')
     .limit(20)
-<<<<<<< HEAD
-    .exec(function(err, response) {
-        // console.log(response)
-        res.status(200).json(response);
-  })
-=======
     .exec(function (err, response) {
       // console.log(response)
       res.status(200).json(response)
     })
->>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
 });
 
 /* POST ROUTES */
