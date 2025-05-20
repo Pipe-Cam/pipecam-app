@@ -50,8 +50,6 @@ function Observations() {
     const [observationState, setObservationState] = useState({})
 
     useEffect(()=>{
-        console.log('inspectionId', inspectionId)
-        console.log('accessNumber', accessNumber)
         setInspectionDataOnLoad(inspectionId)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -60,13 +58,11 @@ function Observations() {
         try{
             if(inspectionData){
                 let obsQty = getObservationQty(inspectionData)
-                console.log('obsQty(useEffect) = ', obsQty)
                 setObservationQty(obsQty)
             } else {
                 throw new Error('inspectionData has not yet loaded')
             }
         } catch (err) {
-            console.log(err)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[inspectionData])
@@ -74,7 +70,6 @@ function Observations() {
     const getInspectionData = async (id) => {
         if(id){
             let inspectionData = await getInspectionById(id)
-            console.log(inspectionData)
             return inspectionData[0]
             // return inspectionData
         }
@@ -84,7 +79,6 @@ function Observations() {
         if(id){
             let inspectionObj = await getInspectionData(id)
             setInspectionData(inspectionObj)
-            console.log(inspectionObj)
         }
     }
 
@@ -98,7 +92,6 @@ function Observations() {
                 throw new Error('object does not contain observation data Function(getObservationQty)')
             }
         } catch(err){
-            console.log(err)
             return 1
         }
     }
@@ -124,7 +117,6 @@ function Observations() {
                 return(observationQty - num)
             }
         } catch(err){
-            console.log(err)
         }
     }
 
@@ -135,7 +127,6 @@ function Observations() {
             setInspectionData(tmpInspectionData)
             updateObservationQty('add', 1)
         } catch(err){
-            console.log(err)
         }
         updateInspectionById(inspectionId, tmpInspectionData)
         setObservationState({})
@@ -171,7 +162,6 @@ const ObservationHome = (props) => {
     // const {getObservationQty} = props
 
     const handleNavToNewObservation = ()=>{
-        console.log('observationQty', observationQty)
 
         history.push(`/observations/new?inspection_id=${inspectionId}&access_num=${accessNumber}&observation_num=${observationQty}`)
         window.location.reload()
@@ -311,36 +301,7 @@ const ObservationList = (props) => {
         JSON.stringify(inspectionData.access[accessNumber].observations) !== '[]'){
 
             let observationArray = sortByFootage(inspectionData.access[accessNumber].observations)
-            // console.log(observationArray)
-
-            return(
-                <div>{observationArray.map((item, index)=>{
-                    return(<div key={item + Math.random(9999).toString() + index.toString()}><Link to={`/observations/view?inspection_id=${inspectionId}&access_num=${accessNumber}&observation_num=${index+1}`}>{item.footage.toString()} Ft {(item.upstream) ? ('(upstream)') : ('')}</Link></div>)
-                })}</div>
-            )
-        } else {
-            return(
-                <>
-                    <div className="text-center">no recorded observations</div>
-                    {/* {JSON.stringify(inspectionData)} */}
-                </>
-            )
-    }
-}
-const ObservationNew = (props) => {
-    const {inspectionId, accessNumber, history, /*observationState, setObservationState, observationQty*/} = props
-    const {handleUpdateInspectionDataState, updateObservationQty} = props
-
-    const [footageVal, setFootageVal] = useState([])
-    const [upstream, setUpstream] = useState(false)
-    const [lossOfCrossection, setLossOfCrossection] = useState(0)
-    const [pipeHoleObservation, setPipeHoleObservation] = useState({hole: false})
-    const [pipeSeparatedJointObservation, setPipeSeparatedJointObservation] = useState({separated_joint: false})
-    const [locateDepth, setLocateDepth] = useState(null)
-    const [materialX2, setMaterialX2] = useState(null)
-    const [observationNotes, setObservationNotes] = useState(null)
-    
-    const [show, setShow] = useState(false);
+            // 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -490,25 +451,23 @@ const ObservationNew = (props) => {
     const observationNumber = Number(urlParams.get('observation_num'))
     
     // useEffect(() => {console.log(upstream)}, [upstream])
-    useEffect(() => {console.log(lineNotation)}, [lineNotation])
-    useEffect(() => {console.log(rootsObservation)}, [rootsObservation])
-    useEffect(() => {console.log(ojObservation)}, [ojObservation])
-    useEffect(() => {console.log(debObservation)}, [debObservation])
-    useEffect(() => {console.log(swObservation)}, [swObservation])
-    useEffect(() => {console.log(uwObservation)}, [uwObservation])
-    useEffect(() => {console.log(pipeBreakObservation)}, [pipeBreakObservation])
-    useEffect(() => {console.log(pipeCrackObservation)}, [pipeCrackObservation])
-    useEffect(() => {console.log(pipeHoleObservation)}, [pipeHoleObservation])
-    useEffect(() => {console.log(pipeSeparatedJointObservation)}, [pipeSeparatedJointObservation])
-    useEffect(() => {console.log(observationNotes)}, [observationNotes])
-    useEffect(() => {console.log(locateRef.current.getAttribute('data-active'))}, [locateRef])
+    useEffect(() => {}, [lineNotation])
+    useEffect(() => {}, [rootsObservation])
+    useEffect(() => {}, [ojObservation])
+    useEffect(() => {}, [debObservation])
+    useEffect(() => {}, [swObservation])
+    useEffect(() => {}, [uwObservation])
+    useEffect(() => {}, [pipeBreakObservation])
+    useEffect(() => {}, [pipeCrackObservation])
+    useEffect(() => {}, [pipeHoleObservation])
+    useEffect(() => {}, [pipeSeparatedJointObservation])
+    useEffect(() => {}, [observationNotes])
+    useEffect(() => {}, [locateRef])
 
     const handleNewObservationFormSubmit = async (e) => {
         e.preventDefault()
-        console.log('formSubmit')
         
         let btnAction = e.target.getAttribute('data-btnclicked')
-        console.log(btnAction)
 
         let historyRedirect = `/observations/home?inspection_id=${inspectionId}&access_num=${accessNumber}`
 
@@ -541,7 +500,6 @@ const ObservationNew = (props) => {
                 notes: observationNotes
             }
 
-            console.log(observationData)
     
             await handleUpdateInspectionDataState(observationData)
         }
@@ -552,7 +510,6 @@ const ObservationNew = (props) => {
     }
 
     const handleNewObservationFormSubmitClick = (e) => {
-        console.log(e.target)
 
         let btnAction = null
         // eslint-disable-next-line
@@ -568,7 +525,6 @@ const ObservationNew = (props) => {
             btnAction = e.target.getAttribute('data-action')
         }
 
-        console.log('btnAction', btnAction)
 
         if(btnAction) {
             document.getElementById('observationForm').setAttribute('data-btnclicked', btnAction)
@@ -606,7 +562,6 @@ const ObservationNew = (props) => {
 
         tmpFootageVal = [...tmpFootageVal, btnValue]
         setFootageVal(tmpFootageVal)
-        console.log(btnValue)
     }
 
     const handleClearFootage = (e) => {
@@ -727,7 +682,6 @@ const ObservationNew = (props) => {
         let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
         e.target.setAttribute('data-active', dataActive)
 
-        console.log(dataObservation, dataActive)
 
         if(dataObservation === 'roots'){
             if(dataActive === true){
@@ -751,7 +705,6 @@ const ObservationNew = (props) => {
             tmpRootsObservation.modifier[dataObservation] = dataActive
         }
 
-        console.log(tmpRootsObservation)
         setRootsObservation(tmpRootsObservation)
     }
 
@@ -763,7 +716,6 @@ const ObservationNew = (props) => {
         let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
         e.target.setAttribute('data-active', dataActive)
 
-        console.log(dataObservation, dataActive)
 
         let minor = 'warning'
         let severe = 'danger'
@@ -814,7 +766,6 @@ const ObservationNew = (props) => {
         let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
         e.target.setAttribute('data-active', dataActive)
 
-        console.log(dataObservation, dataActive)
 
         if(dataObservation === 'debris'){
 
@@ -850,7 +801,6 @@ const ObservationNew = (props) => {
         let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
         e.target.setAttribute('data-active', dataActive)
 
-        console.log(dataObservation, dataActive)
 
         let start = 'warning' 
         let end = 'danger'
@@ -913,7 +863,6 @@ const ObservationNew = (props) => {
         let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
         e.target.setAttribute('data-active', dataActive)
 
-        console.log(dataObservation, dataActive)
 
         let start = 'warning'
         let end = 'danger'
@@ -968,7 +917,6 @@ const ObservationNew = (props) => {
         let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
         e.target.setAttribute('data-active', dataActive)
 
-        console.log(dataObservation, dataActive)
 
         if(dataObservation === 'break'){
             if(dataActive === true){
@@ -1042,7 +990,6 @@ const ObservationNew = (props) => {
 
     const handleLocateDepth = (e) => {
         e.preventDefault()
-        console.log(e.target.value)
         setLocateDepth(Number(e.target.value.trim()))
     }
 
@@ -1052,7 +999,6 @@ const ObservationNew = (props) => {
         let dataActive = !JSON.parse(e.target.getAttribute('data-active'))
         e.target.setAttribute('data-active', dataActive)
 
-        console.log(dataObservation, dataActive)
 
         let color = {
             'ci': 'warning',
@@ -1105,7 +1051,6 @@ const ObservationNew = (props) => {
 
     const handleToggleChangeProxyUp = (e) => {
         const value = true
-        console.log(value)
         streamToggleRef.current.checked = value
         setUpstream(value)
 
@@ -1113,7 +1058,6 @@ const ObservationNew = (props) => {
 
     const handleToggleChangeProxyDown = (e) => {
         const value = false
-        console.log(value)
         streamToggleRef.current.checked = value
         setUpstream(value)
     }

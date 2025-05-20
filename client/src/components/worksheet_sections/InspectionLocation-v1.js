@@ -35,7 +35,6 @@ function InspectionLocation(props) {
         if(inspectionData){
             let objkeys = Object.keys(inspectionData)
             if(objkeys.includes('location')){
-                console.log(inspectionData.location)
                 setLocationData(inspectionData.location)
                 preloadLocationData(inspectionData.location)
             }
@@ -76,7 +75,6 @@ function InspectionLocation(props) {
 
     const preloadLocationData = (locData) => {
         if(locData){
-            console.log(locData)
 
             // non-radio
             let refList = [ 
@@ -88,7 +86,6 @@ function InspectionLocation(props) {
 
             for(let i=0, max=refList.length; i < max; i++){
                 let name = refList[i].current.name
-                console.log(name)
                 if(refList[i].current.type === 'number'){
                     refList[i].current.defaultValue = Number(locData[name])
                 } else {

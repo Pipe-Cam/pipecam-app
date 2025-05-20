@@ -55,7 +55,6 @@ function InspectionHome() {
     
     const handleUpdateLocation = async (e)=>{
         e.preventDefault()
-        console.log('handleUpdateLocation: ', JSON.stringify(locationData))
         // await updateInspectionById(id, {location: locationData, last_modified: new Date(), status: 'active_inspection'})
         await updateInspectionById(id, {location: locationData, last_modified: new Date()})
         history.push(`/access/${id}`)

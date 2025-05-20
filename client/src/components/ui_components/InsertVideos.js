@@ -7,7 +7,6 @@ function InsertVideos() {
 
     const handleAddLink = () => {
         if(videoUrlRef.current.value && JSON.stringify(videoUrlRef.current.value) !== ""){
-            console.log(videoUrlRef.current.value)
             setVideoLinks([...videoLinks, videoUrlRef.current.value])
             videoUrlRef.current.value = ''
         }

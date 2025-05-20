@@ -4,7 +4,6 @@ import ClientContext from '../../context/ClientContext'
 function SearchResults(props) {
     const {handleEditClient} = useContext(ClientContext)
     let searchResult = props.searchResult
-    console.log(searchResult)
 
     return(
         <div className="ml-1 row">

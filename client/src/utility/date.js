@@ -4,7 +4,6 @@ export const monthNumberToName = (monthNumber) => {
             return(MONTH_REFERENCE[monthNumber - 1])
         }
     } catch(err) {
-        console.log(err)
     }
 }
 
