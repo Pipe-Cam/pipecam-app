@@ -51,7 +51,7 @@ function JobOverview() {
         ].forEach(item =>{
             handleUpdateJobOverviewStateDefault(item.current)
         })
-    },[])
+    },[handleUpdateJobOverviewStateDefault])
 
     const handleRedirectToNewClient = () => {
         history.push('/clients/new')
@@ -162,7 +162,7 @@ function JobOverview() {
             return(
                 <>
                     {dropdownClients.map(item => {
-                        return (<a key={item.id} className="dropdown-item" data-id={item.id} href="#" onClick={handleClientDropDownSelect}>{item.name}</a>)
+                        return (<button type="button" key={item.id} className="dropdown-item" data-id={item.id} onClick={handleClientDropDownSelect}>{item.name}</button>)
                     })}
     
                 </>

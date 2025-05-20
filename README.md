@@ -1,5 +1,5 @@
 # fullstack-boilerplate
-[node + express + mongo] backend api &amp; [react] frontend
+[node + express + Supabase] backend api &amp; [react] frontend
 
 ## Testing
 

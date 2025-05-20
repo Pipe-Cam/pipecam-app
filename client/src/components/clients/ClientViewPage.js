@@ -46,19 +46,19 @@ function ClientViewPage() {
         return (
             <>
             <BreadCrumbClientView {...{clientViewData}}/>
-            {Object.keys(clientViewData).map(item => {
-                    if(!exclusionList.includes(item) && clientViewData[item].toString() !== ''){
-                        return(
-                            <div className="row" key={item + clientViewData._id}>
-                                <div className="col-3" key={item + clientViewData._id + 1}>
-                                    {capitalizeEachWord(item.split('_').join(' '))}:
-                                </div>
-                                <div className="col-9" key={item + clientViewData._id + 2}>
-                                    {capitalizeEachWord(clientViewData[item].toString())}
-                                </div>
+            {Object.keys(clientViewData)
+                .filter(item => !exclusionList.includes(item) && clientViewData[item].toString() !== '')
+                .map(item => {
+                    return(
+                        <div className="row" key={item + clientViewData._id}>
+                            <div className="col-3" key={item + clientViewData._id + 1}>
+                                {capitalizeEachWord(item.split('_').join(' '))}:
                             </div>
-                        )
-                    }
+                            <div className="col-9" key={item + clientViewData._id + 2}>
+                                {capitalizeEachWord(clientViewData[item].toString())}
+                            </div>
+                        </div>
+                    )
                 })}
             </>
         )

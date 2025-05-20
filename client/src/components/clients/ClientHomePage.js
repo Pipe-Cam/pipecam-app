@@ -45,12 +45,12 @@ function ClientHomePage() {
                         </h3>
                         <div className="py-2">
                             <AlternatingList {...{
-                                dataObject: ((!clientsFromDb)? ([]) : (clientsFromDb.map(item => { 
-                                        console.log(item)
-                                        if(item.client_status !== 'archived'){
-                                            return ({value: (item.business_name || item.contact_name), _id: item._id, invocationValue: item._id, pathname: `/clients/view`})
-                                        }
-                                    }))), 
+                                dataObject: ((!clientsFromDb)? ([]) : (clientsFromDb
+                                    .filter(item => item.client_status !== 'archived')
+                                    .map(item => {
+                                        console.log(item);
+                                        return ({value: (item.business_name || item.contact_name), _id: item._id, invocationValue: item._id, pathname: `/clients/view`});
+                                    }))),
                                 edit: handleEditClient, 
                                 _delete: handleDeleteClient,
                                 invocation: ()=>{}, 

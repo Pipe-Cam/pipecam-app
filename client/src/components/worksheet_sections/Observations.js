@@ -24,7 +24,6 @@ import {todaysDate} from '../../utility/date'
 import material from '../../utility/materials'
 import direction from '../../utility/direction'
 import bopd from '../../utility/bopd'
-import { useDebugValue } from 'react'
 
 const _ = require('lodash')
 
@@ -556,14 +555,14 @@ const ObservationNew = (props) => {
 
         let btnAction = null
         // eslint-disable-next-line
-        let btnElem = e
+        // let btnElem = e // Original assignment, now removed
 
         if(e.target.nodeName === 'path'){
             btnAction = e.target.parentElement.parentElement.getAttribute('data-action')
-            btnElem = e.target.parentElement.parentElement
+            // btnElem = e.target.parentElement.parentElement // Original assignment, now removed
         } else if(e.target.nodeName === 'svg') {
             btnAction = e.target.parentElement.getAttribute('data-action')
-            btnElem = e.target.parentElement
+            // btnElem = e.target.parentElement // Original assignment, now removed
         } else {
             btnAction = e.target.getAttribute('data-action')
         }
