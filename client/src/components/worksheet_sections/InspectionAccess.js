@@ -19,15 +19,8 @@ function InspectionAccess() {
     const [nextAccessNumber, setNextAccessNumber] = useState(0)
 
     const getInspectionDataOnLoad = async (id) => {
-<<<<<<< HEAD
         let inspectionDataObj = await getInspectionById(id)
         if(inspectionDataObj){
-=======
-        let inspectionDataJSON = await getInspectionById(id)
-        let inspectionDataObj
-        if (inspectionDataJSON) {
-            inspectionDataObj = inspectionDataJSON
->>>>>>> origin/master
             setInspectionData(inspectionDataObj[0])
         }
         
