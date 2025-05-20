@@ -16,8 +16,9 @@
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.4",
-    "@supabase/supabase-js": "^2.49.5"
+    "@supabase/supabase-js": "^2.49.5",
+    "nodemon": "^2.0.4"
+
   },
   "devDependencies": {
     "jest": "^29.6.2",
