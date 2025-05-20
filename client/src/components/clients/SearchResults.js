@@ -18,11 +18,11 @@ function SearchResults(props) {
                             {searchResult.map(item=>{
                                 if(item.client_type === 'Resident'){
                                     return(
-                                        <li key={item._id}><a href="#" className="text-primary" data-value={item.contact_name} data-id={item._id} data-action="edit" onClick={handleEditClient}>{item.contact_name}</a></li>
+                                        <li key={item._id}><button type="button" className="btn btn-link text-primary p-0" data-value={item.contact_name} data-id={item._id} data-action="edit" onClick={handleEditClient}>{item.contact_name}</button></li>
                                     )
                                 } else {
                                     return(
-                                        <li key={item._id}><a href="#" className="text-primary" data-value={item.organization_name} data-id={item._id} data-action="edit" onClick={handleEditClient}>{item.organization_name}</a></li>
+                                        <li key={item._id}><button type="button" className="btn btn-link text-primary p-0" data-value={item.organization_name} data-id={item._id} data-action="edit" onClick={handleEditClient}>{item.organization_name}</button></li>
                                     )
                                 }
                             })}

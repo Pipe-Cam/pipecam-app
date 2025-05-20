@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect, useRef} from 'react'
+import React, {useContext, useState, useEffect, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import InspectionContext from '../../context/InspectionContext'
 import {searchForClient as searchForClientInDB} from '../../db/read'
@@ -32,6 +32,19 @@ function JobOverview() {
     const clientDropdownRef = useRef(null)
 
 
+    const handleUpdateJobOverviewStateDefault = useCallback((elem) => {
+        let objBranch = 'overview'
+        let name = elem.name || elem.id
+        
+        let tmpJob = job
+        if(elem.type === 'checkbox'){
+            tmpJob[objBranch][name] = Boolean(elem.checked)
+        } else {
+            tmpJob[objBranch][name] = elem.value
+        }
+        setJob(tmpJob)
+    }, [job, setJob]);
+
     useEffect(()=>{
         [
             dateRef,
@@ -51,7 +64,7 @@ function JobOverview() {
         ].forEach(item =>{
             handleUpdateJobOverviewStateDefault(item.current)
         })
-    },[])
+    },[handleUpdateJobOverviewStateDefault])
 
     const handleRedirectToNewClient = () => {
         history.push('/clients/new')
@@ -104,19 +117,6 @@ function JobOverview() {
         }
     }
 
-    const handleUpdateJobOverviewStateDefault = (elem) => {
-        let objBranch = 'overview'
-        let name = elem.name || elem.id
-        
-        let tmpJob = job
-        if(elem.type === 'checkbox'){
-            tmpJob[objBranch][name] = Boolean(elem.checked)
-        } else {
-            tmpJob[objBranch][name] = elem.value
-        }
-        setJob(tmpJob)
-    }
-
     const handleClientDropDown = async (e) => {
         console.log(clientTextRef.current.value)
         let searchValue = clientTextRef.current.value
@@ -162,7 +162,7 @@ function JobOverview() {
             return(
                 <>
                     {dropdownClients.map(item => {
-                        return (<a key={item.id} className="dropdown-item" data-id={item.id} href="#" onClick={handleClientDropDownSelect}>{item.name}</a>)
+                        return (<button type="button" key={item.id} className="dropdown-item" data-id={item.id} onClick={handleClientDropDownSelect}>{item.name}</button>)
                     })}
     
                 </>

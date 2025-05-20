@@ -24,7 +24,10 @@ import {todaysDate} from '../../utility/date'
 import material from '../../utility/materials'
 import direction from '../../utility/direction'
 import bopd from '../../utility/bopd'
+<<<<<<< HEAD
 // import { useDebugValue } from 'react' // Removed unused import
+=======
+>>>>>>> origin/master
 
 const _ = require('lodash')
 
@@ -72,11 +75,19 @@ function Observations() {
     },[inspectionData])
 
     const getInspectionData = async (id) => {
+<<<<<<< HEAD
         if(id){
             let inspectionData = await getInspectionById(id)
             console.log(inspectionData)
             return inspectionData[0]
             // return inspectionData
+=======
+        if (id) {
+            let inspectionJSON = await getInspectionById(id)
+            console.log(inspectionJSON)
+            return inspectionJSON[0]
+            // return JSON.parse(inspectionJSON)
+>>>>>>> origin/master
         }
     }
 

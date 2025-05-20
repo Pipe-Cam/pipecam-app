@@ -1,4 +1,5 @@
 # fullstack-boilerplate
+<<<<<<< HEAD
 [node + express + mongo] backend api & [react] frontend
 
 ## Development Setup
@@ -34,6 +35,9 @@ SUPABASE_KEY=<your-supabase-service-key>
 ```
 
 These values are used to initialize the Supabase client in `api/db/supabaseClient.js`.
+=======
+[node + express + Supabase] backend api &amp; [react] frontend
+>>>>>>> origin/master
 
 ## Testing
 
