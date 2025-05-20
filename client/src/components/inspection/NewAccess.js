@@ -81,7 +81,7 @@ function NewAccess() {
             setInspectionData(inspectionDataObj)
         } catch (err) {
             console.log(err)
-        } 
+        }
     }
 
     const preloadFormData = () => {

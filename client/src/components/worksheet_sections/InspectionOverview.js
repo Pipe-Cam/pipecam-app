@@ -122,10 +122,10 @@ function JobOverview() {
         let searchValue = clientTextRef.current.value
         let searchResults = await searchForClientInDB(encodeURI(searchValue))
 
-        let searchResultObj; 
-        
+        let searchResultObj;
+
         try{
-            searchResultObj = JSON.parse(searchResults)
+            searchResultObj = searchResults
             console.log(searchResultObj)
             setDropdownClients(searchResultObj.map(item => {
                 return({name: (item.organization_name || item.client_name), id: item._id})
