@@ -70,17 +70,14 @@ function NewAccess() {
     }
 
     const getInspectionDataOnLoad = async (id, accessNum) => {
-        console.log(id)
-        console.log(accessNum)
-        let inspectionDataJSON = await getInspectionById(id)
-        var inspectionDataObj
+        let inspectionData = await getInspectionById(id)
+        var inspectionDataObj;
 
         try {
-            inspectionDataObj = inspectionDataJSON[0]
+            inspectionDataObj = inspectionData[0]
             // console.log(inspectionDataObj)
             setInspectionData(inspectionDataObj)
-        } catch (err) {
-            console.log(err)
+        } catch(err){
         }
     }
 
@@ -93,7 +90,6 @@ function NewAccess() {
                 document.getElementById(item).value = accessData[item]
             })
         } catch (err) {
-            console.log(err)
         }
     }
 
@@ -102,7 +98,6 @@ function NewAccess() {
         
         tmpAccessState[objBranch] = locationString
         setNewAccessState({...tmpAccessState})
-        console.log(tmpAccessState)
     }
 
     const handleNewAccessLocationState = (locationString) => {
@@ -123,9 +118,6 @@ function NewAccess() {
         e.preventDefault()
         disableButton('add_access_btn')
 
-        console.log("inspection id: ", id)
-        console.log(newAccessState)
-        console.log('accessNumber: ', accessNumber)
 
         var tmpAccessObj = {};
         if(inspectionData.access){
@@ -139,7 +131,6 @@ function NewAccess() {
 
         tmpAccessObj[useNumber] = newAccessState
 
-        console.log(tmpAccessObj[useNumber])
         await updateInspectionById(id, {access: tmpAccessObj, last_modified: new Date()})
         history.push(`/access/${id}`)
         window.location.reload()
@@ -186,7 +177,6 @@ const AccessLocation = (props) => {
     const accessLocationRef = useRef(null)
 
     useEffect(()=>{
-        console.log(accessLocationState)
         handleNewAccessLocationState(accessLocationState)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[accessLocationState])
@@ -207,7 +197,6 @@ const AccessLocation = (props) => {
     }
 
     const handleAccessLocation = (e) => {
-        console.log(e.target.value)
         setAccessLocationState(e.target.value.trim())
     }
 

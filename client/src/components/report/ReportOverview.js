@@ -33,16 +33,13 @@ function ReportOverview() {
     const [plusOneYear, setPlusOneYear] = useState(null)
 
     const getInspectionByIdOnLoad = async (id) => {
-        let inspectionDataJSON = await getInspectionById(id)
-        let inspectionObj
+        let inspectionData = await getInspectionById(id)
+        let inspectionObj;
 
         try {
-            inspectionObj = inspectionDataJSON
-            console.log(inspectionObj[0])
+            inspectionObj = inspectionData
             setInspectionData(inspectionObj[0])
-            console.log(inspectionData)
         } catch (err) {
-            console.log(err)
         }
     }
 
@@ -490,7 +487,6 @@ const SewerAccess = (props) => {
 
 const SewerAccessBlurb = (props) => {
     const {location, details} = props
-    console.log(location, details)
     return(
         <>  
             {/* {JSON.stringify(data.details)} */}
@@ -518,6 +514,10 @@ const SewerAccessBlurb = (props) => {
                     {location.walk ? <li><Rosetta pre="to the" post="of the walk">{location.walk}</Rosetta></li> : ''}
                 </ul>
             </div>
+
+
+
+
 
 
 

@@ -28,16 +28,12 @@ export const getArchivedClients = async () => {
 }
 
 export const searchForClient = async (clientName) => {
-    console.log('searchForClient: ', clientName)
     var result;
 
     try {
         let response = await fetch(`http://${host}/search-for-client?client_search=${clientName}`)
         result = await response.json();
-        console.log(response.status)
-        console.log(result)
     } catch (err){
-        console.log('ERROR', err)
     } finally {
         return result
     }
@@ -53,7 +49,6 @@ export const getInspectionById = async (id) => {
         let response = await fetch(`http://${host}/inspection/${id}`)
         result = await response.json();
     } catch(err){
-        console.log(err)
     } finally{
         return result
     }

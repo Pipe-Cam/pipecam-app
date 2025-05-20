@@ -18,7 +18,6 @@ const material = (material) => {
             throw new Error('invalid material type')
         }
     } catch(err){
-        console.log(err)
         return err
     }
 }

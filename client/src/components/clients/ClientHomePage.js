@@ -48,7 +48,6 @@ function ClientHomePage() {
                                 dataObject: ((!clientsFromDb)? ([]) : (clientsFromDb
                                     .filter(item => item.client_status !== 'archived')
                                     .map(item => {
-                                        console.log(item);
                                         return ({value: (item.business_name || item.contact_name), _id: item._id, invocationValue: item._id, pathname: `/clients/view`});
                                     }))),
                                 edit: handleEditClient, 

@@ -19,8 +19,8 @@ function InspectionHome() {
         "outbuilding_has_plumbing": "",
         "outbuilding_has_cleanout": "",
         "outbuilding_pipe_diameter": "",
-        "cccsd": "",
-        "cccsd_unpermitted_work": "",
+        "cccusd": "",
+        "cccusd_unpermitted_work": "",
         "opening_observations": "",
         "usb_num": ""
     })
@@ -32,9 +32,9 @@ function InspectionHome() {
     },[])
 
     const getInspectionData = async (id) => {
-        let inspectionDataJSON = await getInspectionByIdFromDB(id)
-        if (inspectionDataJSON) {
-            setInspectionData(inspectionDataJSON[0])
+        let inspectionData = await getInspectionByIdFromDB(id)
+        if(inspectionData){
+            setInspectionData(inspectionData[0])
         }
     }
 
@@ -55,7 +55,6 @@ function InspectionHome() {
     
     const handleUpdateLocation = async (e)=>{
         e.preventDefault()
-        console.log('handleUpdateLocation: ', JSON.stringify(locationData))
         // await updateInspectionById(id, {location: locationData, last_modified: new Date(), status: 'active_inspection'})
         await updateInspectionById(id, {location: locationData, last_modified: new Date()})
         history.push(`/access/${id}`)
@@ -82,6 +81,11 @@ function InspectionHome() {
                         <div className="pt-3 container">
                             <form onSubmit={handleUpdateOverview}>
                                 {Object.keys(inspectionData.overview).map(item => {
+                                    // eslint-disable-next-line
+                                    let disabledAttribute = ''
+                                    if(item === 'client'){
+                                        disabledAttribute = 'disabled'
+                                    }
                                     return(
                                         <div className="row" key={item}>
                                             <div className="col-sm-12 col-md-3 col-lg-3 pt-sm-0 pt-md-2 pt-lg-2 text-sm-left text-md-right">{capitalizeEachWord(item.split('_').join(' '))}</div>
