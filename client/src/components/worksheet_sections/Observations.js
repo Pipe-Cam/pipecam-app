@@ -24,7 +24,7 @@ import {todaysDate} from '../../utility/date'
 import material from '../../utility/materials'
 import direction from '../../utility/direction'
 import bopd from '../../utility/bopd'
-import { useDebugValue } from 'react'
+// import { useDebugValue } from 'react' // Removed unused import
 
 const _ = require('lodash')
 
@@ -72,19 +72,11 @@ function Observations() {
     },[inspectionData])
 
     const getInspectionData = async (id) => {
-<<<<<<< HEAD
         if(id){
             let inspectionData = await getInspectionById(id)
             console.log(inspectionData)
             return inspectionData[0]
             // return inspectionData
-=======
-        if (id) {
-            let inspectionJSON = await getInspectionById(id)
-            console.log(inspectionJSON)
-            return inspectionJSON[0]
-            // return JSON.parse(inspectionJSON)
->>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
         }
     }
 
@@ -564,14 +556,14 @@ const ObservationNew = (props) => {
 
         let btnAction = null
         // eslint-disable-next-line
-        let btnElem = e
+        // let btnElem = e // Original assignment, now removed
 
         if(e.target.nodeName === 'path'){
             btnAction = e.target.parentElement.parentElement.getAttribute('data-action')
-            btnElem = e.target.parentElement.parentElement
+            // btnElem = e.target.parentElement.parentElement // Original assignment, now removed
         } else if(e.target.nodeName === 'svg') {
             btnAction = e.target.parentElement.getAttribute('data-action')
-            btnElem = e.target.parentElement
+            // btnElem = e.target.parentElement // Original assignment, now removed
         } else {
             btnAction = e.target.getAttribute('data-action')
         }

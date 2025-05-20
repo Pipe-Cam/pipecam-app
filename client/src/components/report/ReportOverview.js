@@ -32,21 +32,12 @@ function ReportOverview() {
     const [inspectionData, setInspectionData] = useState(null)
     const [plusOneYear, setPlusOneYear] = useState(null)
 
-<<<<<<< HEAD
     const getInspectionByIdOnLoad = async(id) => {
         let inspectionData = await getInspectionById(id)
         let inspectionObj;
 
         try{
             inspectionObj = inspectionData
-=======
-    const getInspectionByIdOnLoad = async (id) => {
-        let inspectionDataJSON = await getInspectionById(id)
-        let inspectionObj
-
-        try {
-            inspectionObj = inspectionDataJSON
->>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
             console.log(inspectionObj[0])
             setInspectionData(inspectionObj[0])
             console.log(inspectionData)
@@ -527,6 +518,10 @@ const SewerAccessBlurb = (props) => {
                     {location.walk ? <li><Rosetta pre="to the" post="of the walk">{location.walk}</Rosetta></li> : ''}
                 </ul>
             </div>
+
+
+
+
 
 
 

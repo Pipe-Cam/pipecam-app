@@ -72,19 +72,11 @@ function NewAccess() {
     const getInspectionDataOnLoad = async (id, accessNum) => {
         console.log(id)
         console.log(accessNum)
-<<<<<<< HEAD
         let inspectionData = await getInspectionById(id)
         var inspectionDataObj;
 
         try {
             inspectionDataObj = inspectionData[0]
-=======
-        let inspectionDataJSON = await getInspectionById(id)
-        var inspectionDataObj
-
-        try {
-            inspectionDataObj = inspectionDataJSON[0]
->>>>>>> origin/codex/create-sql-migration-files-for-clients-and-inspections
             // console.log(inspectionDataObj)
             setInspectionData(inspectionDataObj)
         } catch (err) {
