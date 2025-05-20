@@ -204,7 +204,7 @@ function InspectionLocation(props) {
                     </div>
                 </div>
                 <div ref={outbuildingDivRef} id="outbuilding_yes" className="my-5 ml-5 p-4 border" style={{ display: 'none', backgroundColor: 'white' }}>
-                    <div className="h6">> Has Plumbing</div>
+                    <div className="h6">{"> Has Plumbing"}</div>
                     <div className="form-check form-check-inline mr-5">
                         <input ref={hasPlumbingRadioRef} {...{ className: 'form-check-input radio-button', type: 'radio', name: 'outbuilding_has_plumbing', id: 'outbuilding_has_plumbing__yes', value: 'yes' }} onClick={handleHasPlumbingYes} onChange={handleUpdateLocationStateOnChange} />
                         <label className="form-check-label radio-button-label">Yes</label>
@@ -215,7 +215,7 @@ function InspectionLocation(props) {
                     </div>
                     <div ref={hasPlumbingDivRef} id="has_plumbing_yes" className="pt-3" style={{ display: 'none' }}>
                         <div className="pl-5 py-2">
-                            <div className="h6">>> Cleanout</div>
+                            <div className="h6">{">> Cleanout"}</div>
                             <div className="form-check form-check-inline mr-5">
                                 <input {...{ className: 'form-check-input radio-button', type: 'radio', name: 'outbuilding_has_cleanout', id: 'outbuilding_has_cleanout__yes', value: 'yes' }} onChange={handleUpdateLocationStateOnChange} />
                                 <label className="form-check-label radio-button-label">Yes</label>
@@ -226,7 +226,7 @@ function InspectionLocation(props) {
                             </div>
                         </div>
                         <div className="pl-5 py-2">
-                            <div className="h6">>> Pipe Diameter</div>
+                            <div className="h6">{">> Pipe Diameter"}</div>
                             <div className="form-check form-check-inline mr-5">
                                 <input {...{ className: 'form-check-input radio-button', type: 'radio', name: 'outbuilding_pipe_diameter', id: 'outbuilding_pipe_diameter__3', value: '3', defaultChecked: 'checked' }} onClick={handlePipeDiameterOther} onChange={handleUpdateLocationStateOnChange} />
                                 <label className="form-check-label radio-button-label">3</label>
@@ -241,7 +241,7 @@ function InspectionLocation(props) {
                             </div>
                             <div ref={pipeDiameterOtherTextRef} id="pipe_diameter_other" className="my-2" style={{ display: 'none' }}>
                                 <div className="form-inline mr-5">
-                                    <label className="pr-2">>>> Other: </label>
+                                    <label className="pr-2">{">>> Other: "}</label>
                                     <input ref={outbuilding_pipe_diameter_other} {...{ className: 'form-control', type: 'text', name: 'outbuilding_pipe_diameter_other', id: 'outbuilding_pipe_diameter_other_text' }} onChange={handleUpdateLocationStateOnChange} />
                                 </div>
                             </div>
@@ -253,14 +253,14 @@ function InspectionLocation(props) {
                     <div className="h6">CCCSD</div>
                     <div className="form-check form-check-inline mr-5">
                         <input ref={cccsdRadioRef} {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccsd', id: 'cccsd__yes', value: 'yes' }} onClick={handleCCCSD} onChange={handleUpdateLocationStateOnChange} />
-                    <label className="form-check-label radio-button-label">Yes</label>
+                        <label className="form-check-label radio-button-label">Yes</label>
                     </div>
                     <div className="form-check form-check-inline mr-5">
                         <input ref={cccsdRef} {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccsd', id: 'cccsd__no', value: 'no', defaultChecked: 'checked' }} onClick={handleCCCSD} onChange={handleUpdateLocationStateOnChange} />
                         <label className="form-check-label radio-button-label">No</label>
                     </div>
                     <div ref={cccsdDivRef} className="my-5 ml-5 p-4 border" style={{ display: 'none', backgroundColor: 'white' }}>
-                        <div className="h6">> Unpermitted Work</div>
+                        <div className="h6">{"> Unpermitted Work"}</div>
                         <div className="form-check form-check-inline mr-5">
                             <input ref={cccsdUnpermittedRef} {...{ className: 'form-check-input radio-button', type: 'radio', name: 'cccsd_unpermitted_work', id: 'cccsd_unpermitted_work__yes', value: 'yes' }} onChange={handleUpdateLocationStateOnChange} />
                             <label className="form-check-label radio-button-label">Yes</label>
@@ -284,4 +284,3 @@ function InspectionLocation(props) {
 }
 
 export default InspectionLocation
-
