@@ -114,7 +114,7 @@ router.post('/new-inspection', function(req, res, next) {
 
 
 /* PUT ROUTES */
-router.post('/inspection/:id', function(req, res, next) {
+router.put('/inspection/:id', function(req, res, next) {
     let id = req.params.id
     console.log(id)
     let bodyData = req.body
