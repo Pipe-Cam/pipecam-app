@@ -14,12 +14,15 @@ The scripts use the `pgcrypto` extension so UUID values can be generated via `ge
 
 ## Development Setup
 
-Install dependencies in both the backend and frontend projects:
+Install dependencies using the setup script:
 
 ```bash
-cd api && npm install
-cd ../client && npm install
+./.codex/setup.sh
 ```
+
+Run this once after cloning the repository. It installs packages in the root,
+`api`, and `client` directories if their `node_modules` folders are missing.
+If the script isn't executable, run `chmod +x .codex/setup.sh` first.
 
 Start the backend server:
 
