@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo - Sewer Inspection Report Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .todo-section { margin-bottom: 3rem; }
+        .todo-section h2 { text-decoration: underline; margin-bottom: 1.5rem; }
+        .todo-section h1 { text-decoration: underline; margin-bottom: 2rem; }
+        .todo-item { margin-bottom: 1rem; }
+        .text-success { color: #28a745!important; }
+        .text-warning { color: #ffc107!important; }
+        .text-danger { color: #dc3545!important; text-decoration: line-through; }
+        .pl-3 { padding-left: 1rem!important; }
+        ol, ul { padding-left: 2rem; }
+        li { margin-bottom: 0.5rem; }
+        .done-item { text-decoration: line-through; color: #dc3545; }
+        .category { font-weight: bold; }
+        .notes { font-style: italic; color: #6c757d; }
+        .report-notes { background-color: #f8f9fa; padding: 1rem; border-radius: 0.5rem; margin-top: 2rem; }
+        .report-notes h3 { margin-bottom: 1rem; }
+        .report-notes ol { margin-bottom: 0; }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <nav class="fixed-top navbar-light bg-light mb-5 px-4 pt-2">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 justify-content-center font-weight-bold">
+                <a class="navbar-brand" href="index.html" style="font-size: 1.75em;">Sewer Inspection Report Generator</a>
+            </div>
+            <div class="col-12 justify-content-center">            
+                <div class="float-right">
+                    <a href="settings.html">
+                        <svg class="icon icon-gear" viewBox="0 0 24 24">
+                            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                        </svg>
+                    </a>
+                </div>
+                <ul class="nav nav-tabs justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="clients.html">Clients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="todo.html">Todo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container pt-5">
+        <div id="mainBody" class="container pt-5 mt-5">
+            <div class="todo-section">
+                <h1>TODO LIST - INPUT</h1>
+                <ol>
+                    <li>
+                        <span class="category text-success">[OBSERVATION HOME]</span> add done button
+                    </li>
+                    <li>
+                        <span class="category text-success">[JOB HOME]</span> add done button
+                    </li>
+                    <li>
+                        <span class="category text-success">[INSPECTION HOME]</span> add done button
+                    </li>
+                    <li>
+                        <span class="category text-success">[REACT]</span> update new Job from ACTIVE → COMPLETED
+                    </li>
+                    <li>
+                        <span class="category text-success">[JOB HOME]</span>
+                        <br><span class="pl-3"><strong>(A)</strong> Job Details (overview & location) should be editable.</span>
+                        <br><span class="pl-3 done-item"><strong>(B)</strong> Scheduled Jobs should only have Overview prefilled.</span>
+                        <br><span class="pl-3 done-item"><strong>(C)</strong> Job Location component should be accessed from Job Home.</span>
+                    </li>
+                    <li>
+                        <span class="category text-success">[JOB HOME]</span> Enable Edit and Delete Buttons in Alternating List
+                    </li>
+                    <li>
+                        <span class="category text-success">[JOB HOME]</span> Fix Alternating List
+                    </li>
+                    <li>
+                        <span class="category text-success">[OBSERVATION HOME]</span> Enable Edit and Delete Buttons in Alternating List
+                    </li>
+                    <li>
+                        <span class="category text-success">[OBSERVATION HOME]</span> Fix Alternating List
+                    </li>
+                    <li>
+                        <span class="category text-success">[API / DB]</span> put update Access Details
+                    </li>
+                    <li>
+                        <span class="category text-success">[API / DB]</span> put update Observation Details
+                    </li>
+                    <li>
+                        <span class="category text-success">[CLIENTS]</span> Format Client Info
+                    </li>
+                    <li>
+                        <span class="category text-success">[JOB HOME]</span> Inputs for image and video URLs
+                    </li>
+                </ol>
+            </div>
+
+            <div class="todo-section">
+                <h2>BACKLOG</h2>
+                <ol>
+                    <li>
+                        <span class="category text-warning">[API / DB]</span> simple auth. compare unique hash from cookie with stored unique hash -- if valid, then allow db access, else, reply with error.
+                    </li>
+                    <li>
+                        <span class="category text-warning">[REACT]</span> simple auth. localStorage.authenticated = true & httpOnly cookie contains unique hash
+                    </li>
+                    <li>
+                        <span class="category text-warning">[API / DB]</span> registration (copy from business listing)
+                    </li>
+                    <li>
+                        <span class="category text-warning">[REACT]</span> registration form (copy from business listing)
+                    </li>
+                    <li>
+                        attach images to job
+                    </li>
+                </ol>
+            </div>
+
+            <div class="todo-section">
+                <h2>DONE</h2>
+                <ul>
+                    <li class="done-item">
+                        <span class="category text-success">[JOB OVERVIEW]</span> add "root cut"
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[JOB OVERVIEW]</span> add "distance from cleanout to sewer main"
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[JOB OVERVIEW]</span> "street, unit, city, state, zip for property address"
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[JOB OVERVIEW]</span> Move Opening Observations from Job Overview to Job Home
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[API / DB]</span> get client info
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[API / DB]</span> put update Job Overview
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[API / DB]</span> put update Job Location
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[REACT]</span> update new Job from SCHEDULED → ACTIVE
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[CLIENTS]</span> Add New Client
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[CLIENTS]</span> search box
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[API / DB]</span> create db, implement schema, abstraction
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[API / DB]</span> post new client
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[API / DB]</span> post new Job SCHEDULED
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[CLIENTS]</span> View Client Info <span class="notes">(still unformatted)</span>
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-warning">[CLIENTS]</span> Display list of recently modified clients
+                    </li>
+                    <li class="done-item">
+                        decide whether to call an inspection a Job or an Inspection <span class="notes">it'll be called an INSPECTION</span>
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[API / DB]</span> get recent completed jobs
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[API / DB]</span> get scheduled / active jobs
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-warning">[HOME]</span> Display list of scheduled inspections
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-warning">[HOME]</span> Display list of recent inspections
+                    </li>
+                    <li class="done-item">
+                        <span class="category text-success">[API / DB]</span> get clients by name
+                    </li>
+                </ul>
+            </div>
+
+            <div class="report-notes">
+                <h3>REPORT LAYOUT NOTES:</h3>
+                <ol>
+                    <li>Pipecam Logo</li>
+                    <li>METADATA:
+                        <ul>
+                            <li>Date of Inspection</li>
+                            <li>Inspection Ordered By</li>
+                            <li>Property Address</li>
+                            <li>Inspected by</li>
+                        </ul>
+                    </li>
+                    <li>Links to video files</li>
+                    <li>Certificate of Completion / Root Cut Warranty
+                        <ul>
+                            <li>boilerplate</li>
+                            <li>calculate 1-yr warrant date</li>
+                        </ul>
+                    </li>
+                    <li>Opening Notes
+                        <ul>
+                            <li>The City of .... boilerplate</li>
+                            <li>General notes of the inspection and its purpose</li>
+                            <li>Specific notes about this property having 1-way or 2-way cleanouts</li>
+                            <li>Specific notes about 2-way sewer access</li>
+                            <li>if no BOPD, boilerplate recommending one</li>
+                            <li>etc...</li>
+                        </ul>
+                    </li>
+                    <li>Guidelines for proper use of the line
+                        <ul>
+                            <li>boilerplate</li>
+                        </ul>
+                    </li>
+                    <li>Conclusions of Serviceability
+                        <ul>
+                            <li>boilerplate for all potential outcomes</li>
+                            <li>general info about break-ins, cleanouts, 1-way configuration</li>
+                            <li>Defects as an area of concern</li>
+                        </ul>
+                    </li>
+                    <li>Recommendations
+                        <ul>
+                            <li>Maintenance (boilerplate)</li>
+                            <li>Immediate Corrective Action w/ price (boilerplate)</li>
+                        </ul>
+                    </li>
+                    <li>Recommendations for Repair (Estimate will be sent under separate cover)
+                        <ul>
+                            <li>Maintenance w/ price (boilerplate)</li>
+                            <li>Immediate Corrective Action w/ price (boilerplate)</li>
+                        </ul>
+                    </li>
+                    <li>Areas of Concern Downstream Toward the Municipal Sewer Main</li>
+                    <li>Areas of Concern Upstream Toward the Residence</li>
+                    <li>Description of Sewer Line</li>
+                    <li>Summary of Scope and Limitations of this Inspection (notes)</li>
+                    <li>Definitions & Explanation of Conclusions (boilerplate)</li>
+                </ol>
+
+                <h4 class="mt-3">TRIGGERS:</h4>
+                <p><strong>Certificate of Completion/ Root Cut Warranty</strong><br>
+                - only for stage-the-sewer-inspections</p>
+                
+                <p><strong>Opening Notes:</strong><br>
+                - City<br>
+                - Central San<br>
+                - 1-Way vs 2-way vs Break-in Access vs Stub-out<br>
+                - BOPD</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div id="copyright" class="w-100 text-muted text-center mt-4 pt-2">
+                Sewer Inspection Report Generator<br>&copy; 2020 Pipe Cam, Inc.
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

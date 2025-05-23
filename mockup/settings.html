@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Sewer Inspection Report Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .settings-section { margin-bottom: 2rem; padding: 1.5rem; background-color: #f8f9fa; border-radius: 0.5rem; }
+        .settings-section h3 { margin-bottom: 1rem; color: #333; }
+        .form-group { margin-bottom: 1rem; }
+        .form-label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        .form-control { width: 100%; padding: 0.375rem 0.75rem; font-size: 1rem; line-height: 1.5; color: #495057; background-color: #fff; background-clip: padding-box; border: 1px solid #ced4da; border-radius: 0.25rem; }
+        .form-control:focus { color: #495057; background-color: #fff; border-color: #80bdff; outline: 0; box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); }
+        .btn-save { background-color: #28a745; color: white; }
+        .btn-save:hover { background-color: #218838; }
+        .btn-cancel { background-color: #6c757d; color: white; }
+        .btn-cancel:hover { background-color: #5a6268; }
+        .custom-control { position: relative; display: block; min-height: 1.5rem; padding-left: 1.5rem; }
+        .custom-control-input { position: absolute; left: 0; z-index: -1; width: 1rem; height: 1.25rem; opacity: 0; }
+        .custom-control-label { position: relative; margin-bottom: 0; vertical-align: top; }
+        .custom-control-label::before { position: absolute; top: 0.25rem; left: -1.5rem; display: block; width: 1rem; height: 1rem; pointer-events: none; content: ""; background-color: #fff; border: #adb5bd solid 1px; }
+        .custom-checkbox .custom-control-label::before { border-radius: 0.25rem; }
+        .custom-control-input:checked ~ .custom-control-label::before { color: #fff; border-color: #007bff; background-color: #007bff; }
+        .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after { position: absolute; top: 0.25rem; left: -1.5rem; display: block; width: 1rem; height: 1rem; content: ""; background: no-repeat 50% / 50% 50%; background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26l2.974 2.99L8 2.193z'/%3e%3c/svg%3e"); }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <nav class="fixed-top navbar-light bg-light mb-5 px-4 pt-2">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 justify-content-center font-weight-bold">
+                <a class="navbar-brand" href="index.html" style="font-size: 1.75em;">Sewer Inspection Report Generator</a>
+            </div>
+            <div class="col-12 justify-content-center">            
+                <div class="float-right">
+                    <a href="settings.html" class="active">
+                        <svg class="icon icon-gear" viewBox="0 0 24 24">
+                            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                        </svg>
+                    </a>
+                </div>
+                <ul class="nav nav-tabs justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="clients.html">Clients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="todo.html">Todo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container pt-5">
+        <div id="mainBody" class="container pt-5 mt-5">
+            <h1>Settings</h1>
+
+            <!-- Company Information -->
+            <div class="settings-section">
+                <h3>Company Information</h3>
+                <div class="form-group">
+                    <label class="form-label" for="companyName">Company Name</label>
+                    <input type="text" class="form-control" id="companyName" value="Pipe Cam, Inc.">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="companyEmail">Email</label>
+                    <input type="email" class="form-control" id="companyEmail" value="info@pipecaminc.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="companyPhone">Phone</label>
+                    <input type="tel" class="form-control" id="companyPhone" value="925.371.7500">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="licenseNumber">License Number</label>
+                    <input type="text" class="form-control" id="licenseNumber" value="CSLB License # 838101">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="companyWebsite">Website</label>
+                    <input type="url" class="form-control" id="companyWebsite" value="https://www.pipecaminc.com/">
+                </div>
+            </div>
+
+            <!-- Default Inspector -->
+            <div class="settings-section">
+                <h3>Default Inspector</h3>
+                <div class="form-group">
+                    <label class="form-label" for="inspectorName">Inspector Name</label>
+                    <input type="text" class="form-control" id="inspectorName" value="Jim Brooks">
+                </div>
+            </div>
+
+            <!-- Report Settings -->
+            <div class="settings-section">
+                <h3>Report Settings</h3>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="includeWarranty" checked>
+                        <label class="custom-control-label" for="includeWarranty">
+                            Include Root Cut Warranty Section
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="includePhotos" checked>
+                        <label class="custom-control-label" for="includePhotos">
+                            Include Photo Sections
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="includeVideos" checked>
+                        <label class="custom-control-label" for="includeVideos">
+                            Include Video Links
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="defaultCity">Default City</label>
+                    <select class="form-control" id="defaultCity">
+                        <option value="livermore_ca">Livermore, CA</option>
+                        <option value="tracy_ca">Tracy, CA</option>
+                        <option value="brentwood_ca">Brentwood, CA</option>
+                        <option value="antioch_ca">Antioch, CA</option>
+                        <option value="pittsburg_ca">Pittsburg, CA</option>
+                        <option value="vallejo_ca">Vallejo, CA</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Database Settings -->
+            <div class="settings-section">
+                <h3>Database Settings</h3>
+                <div class="form-group">
+                    <label class="form-label" for="dbHost">Database Host</label>
+                    <input type="text" class="form-control" id="dbHost" value="localhost" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="dbStatus">Database Status</label>
+                    <input type="text" class="form-control" id="dbStatus" value="Connected" disabled style="color: green;">
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row mt-4 mb-5">
+                <div class="col-12">
+                    <button class="btn btn-save" onclick="alert('Settings saved successfully!')">Save Settings</button>
+                    <button class="btn btn-cancel ml-2" onclick="window.location.href='index.html'">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div id="copyright" class="w-100 text-muted text-center mt-4 pt-2">
+                Sewer Inspection Report Generator<br>&copy; 2020 Pipe Cam, Inc.
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

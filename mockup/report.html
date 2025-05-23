@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report - Sewer Inspection Report Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .report-container { padding: 2rem; border: 2px solid #000099; }
+        .ml-5 { margin-left: 3rem!important; }
+        .mt-3 { margin-top: 1rem!important; }
+        .mb-4 { margin-bottom: 1.5rem!important; }
+        .lead { font-size: 1.25rem; font-weight: 300; }
+        .h3 { font-size: 1.75rem; }
+        .font-weight-light { font-weight: 300!important; }
+        .text-success { color: #28a745!important; }
+        .text-info { color: #17a2b8!important; }
+        .text-danger { color: #dc3545!important; }
+        .font-weight-bold { font-weight: 700!important; }
+        .font-italic { font-style: italic!important; }
+        .text-uppercase { text-transform: uppercase!important; }
+        .section-title { color: #000099; border-bottom: 1px solid #000099; margin-bottom: 1.5rem; padding-bottom: 0.5rem; }
+        .border { border: 1px solid #dee2e6!important; }
+        .py-3 { padding-top: 1rem!important; padding-bottom: 1rem!important; }
+        .pl-3 { padding-left: 1rem!important; }
+        .col-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+        .col-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+        .col-auto { flex: 0 0 auto; width: auto; max-width: 100%; }
+        .justify-content-center { justify-content: center!important; }
+        .logo-container { margin-bottom: 2rem; }
+        .defect-icon { width: 24px; height: 24px; display: inline-block; vertical-align: middle; }
+        .defect-icon svg { fill: #dc3545; }
+        pre { background-color: #f8f9fa; padding: 0.5rem; border-radius: 0.25rem; font-size: 0.875rem; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <nav class="fixed-top navbar-light bg-light mb-5 px-4 pt-2">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 justify-content-center font-weight-bold">
+                <a class="navbar-brand" href="index.html" style="font-size: 1.75em;">Sewer Inspection Report Generator</a>
+            </div>
+            <div class="col-12 justify-content-center">            
+                <div class="float-right">
+                    <a href="settings.html">
+                        <svg class="icon icon-gear" viewBox="0 0 24 24">
+                            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                        </svg>
+                    </a>
+                </div>
+                <ul class="nav nav-tabs justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="clients.html">Clients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="todo.html">Todo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container pt-5">
+        <div id="mainBody" class="container pt-5 mt-5">
+            <div class="report-container">
+                <!-- Logo and Header -->
+                <div class="row logo-container">
+                    <div class="col-12">
+                        <img src="client/public/images/PipeCamLogo-Transparent-500x177.png" alt="Pipe Cam Logo" style="width: 450px;">
+                    </div>
+                </div>
+
+                <div class="ml-5">
+                    <div class="row">
+                        <div class="col-12 h3 font-weight-light" style="text-shadow: 1.5px 1.5px 1px gray">
+                            Residential Sewer Inspection Report
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 lead">
+                            <span>Date Of Inspection</span>: <span>January 15, 2025</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 lead">
+                            <span>Inspection Ordered by</span>: <span>ABC Realty Group</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 lead">
+                            <span>Property address</span>: <span>123 Main St, San Francisco, CA 94105</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 lead">
+                            <span>Inspected by</span>: <span>Jim Brooks</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ml-5 mt-3">
+                    <!-- Link to Video Files -->
+                    <div class="section-title text-uppercase">LINK TO VIDEO FILES</div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <p>Video files will be inserted here</p>
+                        </div>
+                    </div>
+
+                    <!-- Certificate of Completion -->
+                    <div class="section-title text-uppercase">Certificate of Completion/ Root Cut Warranty</div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <p>This certifies that the sewer lateral servicing the above property has been inspected and/or serviced. 
+                            If roots were cut as part of this service, we warrant the line against root stoppages through January 15, 2026.</p>
+                        </div>
+                    </div>
+
+                    <!-- Opening Notes -->
+                    <div class="section-title text-uppercase">Opening Notes</div>
+                    <div class="row mb-4">
+                        <div class="col-12 text-success">
+                            The purpose of this inspection is to evaluate serviceability which is defined as the line's likelihood to convey waste to its end point. 
+                            Occasionally, we will address an issue outside the sewer line if it is germane to the inspection. 
+                            Whenever possible, the inspector will introduce water by flushing toilets inside the residence and observe the water travel past the camera. 
+                            It is important to understand that by introducing water, it is impossible to replicate the effects of waste and the line will perform differently when occupied. 
+                            The performance of a sewer line is greatly affected by the way in which it is used by the occupants. 
+                            You are selling or purchasing a preexisting property with a preexisting sewer system. 
+                            This means that we are likely to find imperfections, many of which often do not require repair. 
+                            Sewer laterals usually require some level of maintenance.
+                        </div>
+                    </div>
+
+                    <!-- Guidelines for Proper Use -->
+                    <div class="section-title text-uppercase">Guidelines for Proper Use Of the Line</div>
+                    <div class="row mb-4">
+                        <div class="col-12 text-success">
+                            In order to receive the best possible service from your sewer line it is important to use the line properly. This means that only organic human waste, 
+                            toilet tissue and minimal food scraps from the garbage disposal through the kitchen sink should be introduced into the line. 
+                            <span class="text-danger font-italic">Cooking grease, grout, paint or any other construction debris should never be disposed of into the residence's waste system 
+                            because of their tendency to accumulate in the line. Heavy or improper use of the garbage disposal can cause an accumulation of debris 
+                            that can adversely affect the performance of the sewer lateral and/or waste lines. The introduction of any other materials, including but not 
+                            limited to, "flushable" cleaning products or wipes as well as paper towels and feminine or contraceptive products should be strictly avoided.</span>
+                        </div>
+                    </div>
+
+                    <!-- Conclusions of Serviceability -->
+                    <div class="section-title text-uppercase">Conclusions of Serviceability</div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <p class="font-weight-bold">Serviceable With Maintenance Requirements</p>
+                            <p>The lateral is currently functioning but requires periodic maintenance to remain serviceable.</p>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="section-title text-uppercase">Recommendations</div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <ul>
+                                <li>Schedule root cutting service within 6 months</li>
+                                <li>Annual inspection recommended to monitor root growth</li>
+                                <li>Consider pipe lining for long-term solution</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Areas of Concern -->
+                    <div class="section-title text-uppercase">Areas of Concern Downstream Toward the Municipal Sewer Main</div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <p>Photos of downstream concerns will be inserted here</p>
+                        </div>
+                    </div>
+
+                    <div class="section-title text-uppercase">Areas of Concern Upstream Toward the Residence</div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <p>Photos of upstream concerns will be inserted here</p>
+                        </div>
+                    </div>
+
+                    <!-- Description of Sewer Line -->
+                    <div class="section-title text-uppercase">Description of Sewer Line</div>
+                    <div class="row mb-4 pl-3">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-4 border py-3">
+                                    <span class="font-weight-bold">Sewer Access #1</span>
+                                </div>
+                                <div class="col-8 border py-3">
+                                    4" Two-Way PVC cleanout<br>
+                                    Located:
+                                    <ul>
+                                        <li>at the front of residence</li>
+                                        <li>at the property line</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 border py-3">
+                                    <span class="font-weight-bold">Backwater Overflow Device</span>
+                                </div>
+                                <div class="col-8 border py-3">
+                                    Sewer Popper - Good Condition
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 border py-3">
+                                    <span class="font-weight-bold">Length of lateral Inspected</span>
+                                </div>
+                                <div class="col-8 border py-3">
+                                    89 feet
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 border py-3">
+                                    <span class="font-weight-bold">Distance from cleanout to sewer main</span>
+                                </div>
+                                <div class="col-8 border py-3">
+                                    89 feet
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 border py-3">
+                                    <span class="font-weight-bold">Estimated length of uninspected lateral</span>
+                                </div>
+                                <div class="col-8 border py-3">
+                                    N/A (Two-way cleanout allows full inspection)
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 border py-3">
+                                    <span class="font-weight-bold">Pipe Material(s)</span>
+                                </div>
+                                <div class="col-8 border py-3">
+                                    Cast Iron / Vitrified Clay Pipe / ABS
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4 border py-3">
+                                    <span class="font-weight-bold">Occupancy</span>
+                                </div>
+                                <div class="col-8 border py-3">
+                                    Occupied
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary of Scope -->
+                    <div class="section-title text-uppercase">Summary of Scope and Limitations of this Inspection</div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            This inspection examines the visual condition of the interior condition of the sewer lateral <u>at the time of the inspection</u>. 
+                            The purpose of this inspection is to evaluate serviceability which is defined as the line's likelihood to convey waste to its end point. 
+                            It does not determine the watertight integrity of the line nor does it provide information regarding the path and depth of the sewer lateral. 
+                            Pipe Cam, Inc. in no way warrants the performance, installation, materials, code compliance, longevity or watertight integrity of the sewer lateral. 
+                            This inspection is not intended to comply with any requirements that a given Sanitary District may have for the purpose of certifying a sewer lateral 
+                            as those criteria are dictated by and vary with each District.
+                        </div>
+                    </div>
+
+                    <!-- Definitions -->
+                    <div class="section-title text-uppercase">Definitions & Explanation of Conclusions</div>
+                    <div class="row mb-4 text-success">
+                        <div class="col-12">
+                            <p><span class="font-weight-bold">Sewer cleanout:</span> This is the name of the fitting that allows access into the sewer line. 
+                            This term is often confused with a cleaning of the line. A sewer cleanout can be 1-way that allows access in only one direction which is usually downstream. 
+                            A 2-way cleanout allows access both upstream and downstream and is far less common than a 1-way sewer cleanout.</p>
+
+                            <p><span class="font-weight-bold">Area of Concern:</span> This is an item or defect not properly installed or has developed over time that is notable and may or may not require repair 
+                            that is identified with <span class="defect-icon"><svg viewBox="0 0 24 24"><path d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"/></svg></span></p>
+
+                            <p><span class="font-weight-bold">Serviceable:</span> This lateral performs as it was designed and effectively conveys water to the end point of the line. 
+                            Although waste is not introduced into the line as a course of this inspection, it is expected to convey to the lateral's end point as designed.</p>
+
+                            <p><span class="font-weight-bold">Serviceable With Maintenance Requirements:</span> This lateral performs as designed for the most part and has defects that require maintenance, 
+                            the timeline of which are noted in the recommendations section of this report. The defects may or may not immediately affect the performance of the lateral.</p>
+
+                            <p><span class="font-weight-bold">Partially Serviceable:</span> This lateral has defects that are likely to prevent the line from fully operating as designed and is unlikely to 
+                            convey waste effectively to its end point. 
+                            <span class="text-danger font-italic">A <span class="font-weight-bold">Partially Serviceable</span> lateral is likely to require immediate maintenance or a repair in order to convey waste properly.</span></p>
+
+                            <p><span class="font-weight-bold">Not Serviceable:</span> This lateral has defects that prevent the line from fully operating as designed and is unable to convey waste to its end point.
+                            <span class="text-danger font-italic">A <span class="font-weight-bold">Not Serviceable</span> lateral will require immediate maintenance, repair or replacement in order to convey waste at all.</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="row justify-content-center font-weight-light mt-5">
+                        <div class="col-auto">
+                            <a href="mailto:info@pipecaminc.com">info@pipecaminc.com</a>
+                        </div>
+                        <div class="col-auto">
+                            <a href="tel:+19253717500" class="text-dark">P: 925.371.7500</a>
+                        </div>
+                        <div class="col-auto">
+                            CSLB License # 838101
+                        </div>
+                        <div class="col-auto">
+                            <a href="https://www.pipecaminc.com/">www.pipecaminc.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div id="copyright" class="w-100 text-muted text-center mt-4 pt-2">
+                Sewer Inspection Report Generator<br>&copy; 2020 Pipe Cam, Inc.
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

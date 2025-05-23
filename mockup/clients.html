@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients - Sewer Inspection Report Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <nav class="fixed-top navbar-light bg-light mb-5 px-4 pt-2">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 justify-content-center font-weight-bold">
+                <a class="navbar-brand" href="index.html" style="font-size: 1.75em;">Sewer Inspection Report Generator</a>
+            </div>
+            <div class="col-12 justify-content-center">            
+                <div class="float-right">
+                    <a href="settings.html">
+                        <svg class="icon icon-gear" viewBox="0 0 24 24">
+                            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                        </svg>
+                    </a>
+                </div>
+                <ul class="nav nav-tabs justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="clients.html">Clients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="todo.html">Todo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container pt-5">
+        <div id="mainBody" class="container pt-5 mt-5">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Clients</li>
+                </ol>
+            </nav>
+            
+            <div class="container my-4">
+                <!-- Search Clients -->
+                <div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search clients by business name or contact name..." id="searchInput">
+                    </div>
+                    <div id="searchResults" class="hide">
+                        <h4>Search Results</h4>
+                        <div class="list-group mb-4">
+                            <!-- Search results would appear here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- New Client Button -->
+                <div class="row pt-4">
+                    <div class="col-12 col-md-6 col-lg-6 my-2">
+                        <a href="clients-new.html" class="btn btn-info border-dark btn-lg btn-block">New Client</a>
+                    </div>
+                </div>
+                
+                <!-- Recent Clients -->
+                <div class="pt-4">
+                    <h3>
+                        Recent Clients 
+                        <button class="btn btn-success float-right" onclick="window.location.reload()">Refresh</button>
+                    </h3>
+                    <div class="py-2">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <a href="clients-view.html">ABC Realty Group</a>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <button class="btn btn-sm btn-primary">Edit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <a href="clients-view.html">John Smith - Homeowner</a>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <button class="btn btn-sm btn-primary">Edit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <a href="clients-view.html">Bay Area Property Management</a>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <button class="btn btn-sm btn-primary">Edit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <a href="clients-view.html">Sarah Johnson - Real Estate Agent</a>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <button class="btn btn-sm btn-primary">Edit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <a href="clients-view.html">Green Valley HOA</a>
+                                    </div>
+                                    <div class="col-4 text-right">
+                                        <button class="btn btn-sm btn-primary">Edit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Archive Button -->
+                <div class="row pt-4">
+                    <div class="col-12 col-md-6 col-lg-6 my-2">
+                        <a href="clients-archive.html" class="btn btn-warning">Archive</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div id="copyright" class="w-100 text-muted text-center mt-4 pt-2">
+                Sewer Inspection Report Generator<br>&copy; 2020 Pipe Cam, Inc.
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

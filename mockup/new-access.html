@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Access - Sewer Inspection Report Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .btn-group { display: inline-flex; }
+        .btn-group > .btn { position: relative; flex: 1 1 auto; }
+        .btn-group > .btn:not(:first-child) { margin-left: -1px; }
+        .btn-group > .btn:first-child { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+        .btn-group > .btn:last-child { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+        .btn-group > .btn:not(:first-child):not(:last-child) { border-radius: 0; }
+        .btn-group-lg > .btn { padding: .5rem 1rem; font-size: 1.25rem; line-height: 1.5; border-radius: .3rem; }
+        .btn-outline-primary { color: #007bff; border-color: #007bff; }
+        .btn-outline-primary:hover { color: #fff; background-color: #007bff; border-color: #007bff; }
+        .btn-outline-success { color: #28a745; border-color: #28a745; }
+        .btn-outline-success:hover { color: #fff; background-color: #28a745; border-color: #28a745; }
+        .btn-outline-info { color: #17a2b8; border-color: #17a2b8; }
+        .btn-outline-info:hover { color: #fff; background-color: #17a2b8; border-color: #17a2b8; }
+        .btn-outline-warning { color: #ffc107; border-color: #ffc107; }
+        .btn-outline-warning:hover { color: #212529; background-color: #ffc107; border-color: #ffc107; }
+        .btn-outline-danger { color: #dc3545; border-color: #dc3545; }
+        .btn-outline-danger:hover { color: #fff; background-color: #dc3545; border-color: #dc3545; }
+        .btn-outline-secondary { color: #6c757d; border-color: #6c757d; }
+        .btn-outline-secondary:hover { color: #fff; background-color: #6c757d; border-color: #6c757d; }
+        .border-left { border-left: 1px solid #dee2e6!important; }
+        .form-control-lg { height: calc(1.5em + 1rem + 2px); padding: .5rem 1rem; font-size: 1.25rem; line-height: 1.5; border-radius: .3rem; }
+        .h6 { font-size: 1rem; }
+        .text-white { color: #fff!important; }
+        .px-4 { padding-left: 1.5rem!important; padding-right: 1.5rem!important; }
+        .py-3 { padding-top: 1rem!important; padding-bottom: 1rem!important; }
+        .mt-3 { margin-top: 1rem!important; }
+        .mt-4 { margin-top: 1.5rem!important; }
+        .mb-5 { margin-bottom: 3rem!important; }
+        .my-2 { margin-top: .5rem!important; margin-bottom: .5rem!important; }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <nav class="fixed-top navbar-light bg-light mb-5 px-4 pt-2">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 justify-content-center font-weight-bold">
+                <a class="navbar-brand" href="index.html" style="font-size: 1.75em;">Sewer Inspection Report Generator</a>
+            </div>
+            <div class="col-12 justify-content-center">            
+                <div class="float-right">
+                    <a href="settings.html">
+                        <svg class="icon icon-gear" viewBox="0 0 24 24">
+                            <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                        </svg>
+                    </a>
+                </div>
+                <ul class="nav nav-tabs justify-content-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="clients.html">Clients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="todo.html">Todo</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container pt-5">
+        <div id="mainBody" class="container pt-5 mt-5">
+            <h1>New Access</h1>
+            <div class="px-4 py-3">
+                <form>
+                    <!-- Access Location Section -->
+                    <div class="row justify-content-center">
+                        <div class="col col-12">
+                            <div class="py-3 px-4 border bg-foreground">
+                                <h3>Access Location</h3>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button class="btn btn-danger float-right my-2" type="button" onclick="document.getElementById('access_location').value = ''">Clear</button>
+                                    </div>
+                                </div>
+                                <div class="row mb-5">
+                                    <div class="col-12">
+                                        <input class="form-control form-control-lg" type="text" id="access_location" name="access_location" value="">
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col btn-group btn-group-lg">
+                                        <button class="btn btn-success" type="button" onclick="addToLocation('Left')">Left</button>
+                                        <button class="btn btn-success border-left" type="button" onclick="addToLocation('Right')">Right</button>
+                                        <button class="btn btn-success border-left" type="button" onclick="addToLocation('Front')">Front</button>
+                                        <button class="btn btn-success border-left" type="button" onclick="addToLocation('Back')">Back</button>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center my-2">
+                                    <div class="col btn-group btn-group-lg">
+                                        <button class="btn btn-warning" type="button" onclick="addToLocation('@')">@</button>
+                                        <button class="btn btn-warning border-left" type="button" onclick="addToLocation('of')">of</button>
+                                        <button class="btn btn-warning border-left" type="button" onclick="addToLocation('in')">in</button>
+                                        <button class="btn btn-warning border-left" type="button" onclick="addToLocation('and')">and</button>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center my-2">
+                                    <div class="col btn-group btn-group-lg">
+                                        <button class="btn btn-warning" type="button" onclick="addToLocation('covered')">covered</button>
+                                        <button class="btn btn-warning border-left" type="button" onclick="addToLocation('side')">side</button>
+                                        <button class="btn btn-warning border-left" type="button" onclick="addToLocation('under')">under</button>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center my-2">
+                                    <div class="col btn-group btn-group-lg">
+                                        <button class="btn btn-primary" type="button" onclick="addToLocation('Foundation Edge')">Foundation Edge</button>
+                                        <button class="btn border-left btn-primary" type="button" onclick="addToLocation('Property Line')">Property Line</button>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center my-2">
+                                    <div class="col btn-group btn-group-lg">
+                                        <button class="btn btn-primary" type="button" onclick="addToLocation('Corner')">Corner</button>
+                                        <button class="btn border-left btn-primary" type="button" onclick="addToLocation('Residence')">Residence</button>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center my-2">
+                                    <div class="col btn-group btn-group-lg">
+                                        <button class="btn btn-danger" type="button" onclick="addToLocation('Entry')">Entry</button>
+                                        <button class="btn border-left btn-danger" type="button" onclick="addToLocation('Walk')">Walk</button>
+                                        <button class="btn border-left btn-danger" type="button" onclick="addToLocation('Window')">Window</button>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center my-2">
+                                    <div class="col btn-group btn-group-lg">
+                                        <button class="btn btn-danger" type="button" onclick="addToLocation('Porch')">Porch</button>
+                                        <button class="btn border-left btn-danger" type="button" onclick="addToLocation('Deck')">Deck</button>
+                                        <button class="btn border-left btn-danger" type="button" onclick="addToLocation('Hose Bib')">Hose Bib</button>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center my-2">
+                                    <div class="col btn-group btn-group-lg">
+                                        <button class="btn btn-info" type="button" onclick="addToLocation('Garage')">Garage</button>
+                                        <button class="btn border-left btn-info" type="button" onclick="addToLocation('Driveway')">Driveway</button>
+                                        <button class="btn border-left btn-info" type="button" onclick="addToLocation('Living Room')">Living Room</button>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col btn-group btn-group-lg">
+                                        <button class="btn btn-info" type="button" onclick="addToLocation('Bathroom')">Bathroom</button>
+                                        <button class="btn border-left btn-info" type="button" onclick="addToLocation('Closet')">Closet</button>
+                                        <button class="btn border-left btn-info" type="button" onclick="addToLocation('Kitchen')">Kitchen</button>
+                                        <button class="btn border-left btn-info" type="button" onclick="addToLocation('Bedroom')">Bedroom</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Access Details Section -->
+                    <div class="row justify-content-center mt-3">
+                        <div class="col col-12">
+                            <div class="py-3 px-4 border bg-foreground">
+                                <h3>Access Details</h3>
+                                
+                                <div class="row mt-4">
+                                    <div class="col h6">Pipe Diameter <span class="text-danger">*</span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col btn-group">
+                                        <button class="btn btn-outline-secondary font-weight-bold" type="button" onclick="selectButton(this, 'pipe_diameter')">3"</button>
+                                        <button class="btn btn-outline-success border-left-success font-weight-bold" type="button" onclick="selectButton(this, 'pipe_diameter')">4"</button>
+                                        <button class="btn btn-outline-danger border-left-danger font-weight-bold" type="button" onclick="selectButton(this, 'pipe_diameter')">6"</button>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col h6">Cleanout Direction <span class="text-danger">*</span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col btn-group">
+                                        <button class="btn btn-outline-primary font-weight-bold" type="button" onclick="selectButton(this, 'cleanout_direction')">1-Way</button>
+                                        <button class="btn btn-outline-success border-left-success font-weight-bold" type="button" onclick="selectButton(this, 'cleanout_direction')">2-Way</button>
+                                        <button class="btn btn-outline-danger border-left-danger font-weight-bold" type="button" onclick="selectButton(this, 'cleanout_direction')">Break-In</button>
+                                        <button class="btn btn-outline-warning border-left-warning font-weight-bold" type="button" onclick="selectButton(this, 'cleanout_direction')">Stub</button>
+                                        <button class="btn btn-outline-secondary border-left-secondary font-weight-bold" type="button" onclick="selectButton(this, 'cleanout_direction')">Toilet</button>
+                                        <button class="btn btn-outline-info border-left-info font-weight-bold" type="button" onclick="selectButton(this, 'cleanout_direction')">Roof</button>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col h6">Access Material <span class="text-danger">*</span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col btn-group">
+                                        <button class="btn btn-outline-warning font-weight-bold" type="button" onclick="selectButton(this, 'access_material')">CI</button>
+                                        <button class="btn btn-outline-secondary border-left-secondary font-weight-bold" type="button" onclick="selectButton(this, 'access_material')">AC</button>
+                                        <button class="btn btn-outline-primary border-left-primary font-weight-bold" type="button" onclick="selectButton(this, 'access_material')">ABS</button>
+                                        <button class="btn btn-outline-success border-left-success font-weight-bold" type="button" onclick="selectButton(this, 'access_material')">VCP</button>
+                                        <button class="btn btn-outline-info border-left-info font-weight-bold" type="button" onclick="selectButton(this, 'access_material')">PVC</button>
+                                        <button class="btn btn-outline-danger border-left-danger font-weight-bold" type="button" onclick="selectButton(this, 'access_material')">ORBG</button>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col h6">BOPD <span class="text-danger">*</span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col btn-group">
+                                        <button class="btn btn-outline-secondary font-weight-bold" type="button" onclick="selectButton(this, 'bopd_type'); toggleBopdCondition(this)">None</button>
+                                        <button class="btn btn-outline-primary border-left-primary font-weight-bold" type="button" onclick="selectButton(this, 'bopd_type'); toggleBopdCondition(this)">Popper</button>
+                                        <button class="btn btn-outline-success border-left-success font-weight-bold" type="button" onclick="selectButton(this, 'bopd_type'); toggleBopdCondition(this)">Mushroom</button>
+                                        <button class="btn btn-outline-info border-left-info font-weight-bold" type="button" onclick="selectButton(this, 'bopd_type'); toggleBopdCondition(this)">Check Valve</button>
+                                        <button class="btn btn-outline-danger border-left-danger font-weight-bold" type="button" onclick="selectButton(this, 'bopd_type'); toggleBopdCondition(this)">Relief Valve</button>
+                                    </div>
+                                </div>
+
+                                <div id="bopdConditionSection" style="display: none;">
+                                    <div class="row mt-4">
+                                        <div class="col h6">BOPD Condition <span class="text-danger">*</span></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col btn-group">
+                                            <button class="btn btn-outline-success font-weight-bold" type="button" onclick="selectButton(this, 'bopd_condition')">Good</button>
+                                            <button class="btn btn-outline-danger font-weight-bold" type="button" onclick="selectButton(this, 'bopd_condition')">Broken</button>
+                                            <button class="btn btn-outline-secondary border-left-secondary font-weight-bold" type="button" onclick="selectButton(this, 'bopd_condition')">Missing</button>
+                                            <button class="btn btn-outline-primary border-left-primary font-weight-bold" type="button" onclick="selectButton(this, 'bopd_condition')">Ball</button>
+                                            <button class="btn btn-outline-warning border-left-warning font-weight-bold" type="button" onclick="selectButton(this, 'bopd_condition')">Too Low</button>
+                                            <button class="btn btn-outline-info border-left-info font-weight-bold" type="button" onclick="selectButton(this, 'bopd_condition')">Too High</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col h6">Cleanout Issues</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col btn-group">
+                                        <button class="btn btn-outline-secondary font-weight-bold" type="button" onclick="selectButton(this, 'cleanout_issues')">Below Grade</button>
+                                        <button class="btn btn-outline-secondary border-left-secondary font-weight-bold" type="button" onclick="selectButton(this, 'cleanout_issues')">Excess Vegetation</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center mt-3">
+                        <div class="col col-12">
+                            <button class="btn-primary btn-lg float-right" type="submit">&nbsp; Add Access &nbsp;</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div id="copyright" class="w-100 text-muted text-center mt-4 pt-2">
+                Sewer Inspection Report Generator<br>&copy; 2020 Pipe Cam, Inc.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function addToLocation(text) {
+            var input = document.getElementById('access_location');
+            var currentValue = input.value.trim();
+            input.value = currentValue ? currentValue + ' ' + text : text;
+        }
+
+        function selectButton(button, group) {
+            // Remove active state from all buttons in the group
+            var buttons = button.parentElement.getElementsByTagName('button');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-secondary', 'text-white');
+                var outlineClass = buttons[i].className.match(/btn-outline-\w+/);
+                if (!outlineClass) {
+                    buttons[i].classList.add('btn-outline-secondary');
+                }
+            }
+            
+            // Add active state to clicked button
+            var colorClass = button.className.match(/btn-outline-(\w+)/);
+            if (colorClass) {
+                button.classList.remove('btn-outline-' + colorClass[1]);
+                button.classList.add('btn-' + colorClass[1], 'text-white');
+            }
+        }
+
+        function toggleBopdCondition(button) {
+            var conditionSection = document.getElementById('bopdConditionSection');
+            if (button.textContent === 'None') {
+                conditionSection.style.display = 'none';
+            } else {
+                conditionSection.style.display = 'block';
+            }
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
