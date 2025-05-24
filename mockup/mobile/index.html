@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Sewer Inspection Mobile</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Mobile-specific styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+        
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            z-index: 1000;
+            padding: 0.5rem;
+        }
+        
+        .mobile-header h1 {
+            font-size: 1.25rem;
+            margin: 0;
+            text-align: center;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            z-index: 1000;
+        }
+        
+        .mobile-nav a {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            text-decoration: none;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        
+        .mobile-nav a.active {
+            color: #007bff;
+            font-weight: bold;
+        }
+        
+        .mobile-content {
+            padding: 4rem 1rem 5rem 1rem;
+            min-height: 100vh;
+        }
+        
+        .mobile-card {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .mobile-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .mobile-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .mobile-list-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mobile-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .mobile-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+        }
+        
+        .badge-scheduled {
+            background-color: #ffc107;
+            color: #000;
+        }
+        
+        .badge-completed {
+            background-color: #28a745;
+            color: #fff;
+        }
+        
+        .mobile-fab {
+            position: fixed;
+            bottom: 5rem;
+            right: 1rem;
+            width: 56px;
+            height: 56px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            text-decoration: none;
+            font-size: 1.5rem;
+            z-index: 999;
+        }
+        
+        .mobile-search {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .mobile-empty {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
+        
+        .mobile-date {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        
+        .mobile-client {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+        
+        .mobile-address {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        
+        /* Responsive utilities */
+        @media (min-width: 768px) {
+            .mobile-content {
+                max-width: 768px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <h1>Sewer Inspection</h1>
+    </div>
+
+    <!-- Mobile Content -->
+    <div class="mobile-content">
+        <!-- Search -->
+        <input type="search" class="mobile-search" placeholder="Search inspections...">
+
+        <!-- Scheduled Inspections -->
+        <div class="mobile-card">
+            <h3>Scheduled Inspections</h3>
+            <ul class="mobile-list">
+                <li class="mobile-list-item">
+                    <div>
+                        <div class="mobile-client">Johnson Properties</div>
+                        <div class="mobile-address">456 Oak St, Oakland</div>
+                        <div class="mobile-date">Jan 20, 2025</div>
+                    </div>
+                    <span class="mobile-badge badge-scheduled">Scheduled</span>
+                </li>
+                <li class="mobile-list-item">
+                    <div>
+                        <div class="mobile-client">Bay Area Realty</div>
+                        <div class="mobile-address">789 Pine Ave, Berkeley</div>
+                        <div class="mobile-date">Jan 22, 2025</div>
+                    </div>
+                    <span class="mobile-badge badge-scheduled">Scheduled</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Recent Inspections -->
+        <div class="mobile-card">
+            <h3>Recent Inspections</h3>
+            <ul class="mobile-list">
+                <li class="mobile-list-item">
+                    <div>
+                        <div class="mobile-client">ABC Realty Group</div>
+                        <div class="mobile-address">123 Main St, San Francisco</div>
+                        <div class="mobile-date">Jan 15, 2025</div>
+                    </div>
+                    <span class="mobile-badge badge-completed">Completed</span>
+                </li>
+                <li class="mobile-list-item">
+                    <div>
+                        <div class="mobile-client">Smith & Associates</div>
+                        <div class="mobile-address">321 Elm St, San Jose</div>
+                        <div class="mobile-date">Jan 14, 2025</div>
+                    </div>
+                    <span class="mobile-badge badge-completed">Completed</span>
+                </li>
+                <li class="mobile-list-item">
+                    <div>
+                        <div class="mobile-client">Green Valley Properties</div>
+                        <div class="mobile-address">555 Market St, San Francisco</div>
+                        <div class="mobile-date">Jan 13, 2025</div>
+                    </div>
+                    <span class="mobile-badge badge-completed">Completed</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <a href="inspection.html" class="mobile-fab">+</a>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="active">
+            <div>🏠</div>
+            <div>Home</div>
+        </a>
+        <a href="clients.html">
+            <div>👥</div>
+            <div>Clients</div>
+        </a>
+        <a href="report.html">
+            <div>📄</div>
+            <div>Reports</div>
+        </a>
+        <a href="settings.html">
+            <div>⚙️</div>
+            <div>Settings</div>
+        </a>
+    </nav>
+</body>
+</html>

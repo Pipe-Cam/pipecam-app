@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Inspection - Sewer Inspection Mobile</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Mobile-specific styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            background-color: #f8f9fa;
+        }
+        
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-bottom: 1px solid #dee2e6;
+            z-index: 1000;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .mobile-header h1 {
+            font-size: 1.25rem;
+            margin: 0;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .mobile-back {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.5rem;
+        }
+        
+        .mobile-save {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: #007bff;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+        
+        .mobile-content {
+            padding: 4rem 0 2rem 0;
+            min-height: 100vh;
+        }
+        
+        .mobile-section {
+            background: #fff;
+            margin-bottom: 0.5rem;
+            padding: 1rem;
+        }
+        
+        .mobile-section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .mobile-form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .mobile-label {
+            display: block;
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mobile-input,
+        .mobile-select,
+        .mobile-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            background-color: #fff;
+            -webkit-appearance: none;
+        }
+        
+        .mobile-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .mobile-radio-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .mobile-radio-item {
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .mobile-radio-input {
+            display: none;
+        }
+        
+        .mobile-radio-label {
+            display: block;
+            padding: 0.75rem;
+            border: 2px solid #dee2e6;
+            border-radius: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+        
+        .mobile-radio-input:checked + .mobile-radio-label {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .mobile-button-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .mobile-button {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .mobile-button-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .mobile-button-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .mobile-progress {
+            background: #fff;
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mobile-progress-bar {
+            height: 4px;
+            background-color: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .mobile-progress-fill {
+            height: 100%;
+            background-color: #007bff;
+            width: 33%;
+            transition: width 0.3s;
+        }
+        
+        .mobile-progress-text {
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+        
+        .mobile-required {
+            color: #dc3545;
+        }
+        
+        /* Responsive utilities */
+        @media (min-width: 768px) {
+            .mobile-content {
+                max-width: 768px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <a href="index.html" class="mobile-back">←</a>
+        <h1>New Inspection</h1>
+        <button class="mobile-save">Save</button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="mobile-progress">
+        <div class="mobile-progress-bar">
+            <div class="mobile-progress-fill"></div>
+        </div>
+        <div class="mobile-progress-text">Step 1 of 3: Overview</div>
+    </div>
+
+    <!-- Mobile Content -->
+    <div class="mobile-content">
+        <!-- Client Selection -->
+        <div class="mobile-section">
+            <h2 class="mobile-section-title">Client Information</h2>
+            <div class="mobile-form-group">
+                <label class="mobile-label">Client <span class="mobile-required">*</span></label>
+                <select class="mobile-select">
+                    <option value="">Select a client...</option>
+                    <option value="1">ABC Realty Group</option>
+                    <option value="2">Johnson Properties</option>
+                    <option value="3">Bay Area Realty</option>
+                    <option value="4">Smith & Associates</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Property Information -->
+        <div class="mobile-section">
+            <h2 class="mobile-section-title">Property Information</h2>
+            <div class="mobile-form-group">
+                <label class="mobile-label">Street Address <span class="mobile-required">*</span></label>
+                <input type="text" class="mobile-input" placeholder="123 Main St">
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-label">Unit/Apt</label>
+                <input type="text" class="mobile-input" placeholder="Unit 2B">
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-label">City <span class="mobile-required">*</span></label>
+                <input type="text" class="mobile-input" placeholder="San Francisco">
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-label">State <span class="mobile-required">*</span></label>
+                <select class="mobile-select">
+                    <option value="CA" selected>California</option>
+                    <option value="NV">Nevada</option>
+                    <option value="OR">Oregon</option>
+                </select>
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-label">ZIP Code <span class="mobile-required">*</span></label>
+                <input type="text" class="mobile-input" placeholder="94105" pattern="[0-9]{5}">
+            </div>
+        </div>
+
+        <!-- Inspection Details -->
+        <div class="mobile-section">
+            <h2 class="mobile-section-title">Inspection Details</h2>
+            <div class="mobile-form-group">
+                <label class="mobile-label">Inspection Date <span class="mobile-required">*</span></label>
+                <input type="date" class="mobile-input" value="2025-01-23">
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-label">Prelisting</label>
+                <div class="mobile-radio-group">
+                    <div class="mobile-radio-item">
+                        <input type="radio" id="prelisting-yes" name="prelisting" class="mobile-radio-input" checked>
+                        <label for="prelisting-yes" class="mobile-radio-label">Yes</label>
+                    </div>
+                    <div class="mobile-radio-item">
+                        <input type="radio" id="prelisting-no" name="prelisting" class="mobile-radio-input">
+                        <label for="prelisting-no" class="mobile-radio-label">No</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-form-group">
+                <label class="mobile-label">Root Cut</label>
+                <div class="mobile-radio-group">
+                    <div class="mobile-radio-item">
+                        <input type="radio" id="rootcut-yes" name="rootcut" class="mobile-radio-input">
+                        <label for="rootcut-yes" class="mobile-radio-label">Yes</label>
+                    </div>
+                    <div class="mobile-radio-item">
+                        <input type="radio" id="rootcut-no" name="rootcut" class="mobile-radio-input" checked>
+                        <label for="rootcut-no" class="mobile-radio-label">No</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Opening Observations -->
+        <div class="mobile-section">
+            <h2 class="mobile-section-title">Opening Observations</h2>
+            <div class="mobile-form-group">
+                <label class="mobile-label">Notes</label>
+                <textarea class="mobile-textarea" placeholder="Enter any opening observations..."></textarea>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mobile-section">
+            <div class="mobile-button-group">
+                <button class="mobile-button mobile-button-secondary" onclick="window.location.href='index.html'">Cancel</button>
+                <button class="mobile-button mobile-button-primary" onclick="alert('Proceeding to Location Details'); window.location.href='inspection-location.html'">Next</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

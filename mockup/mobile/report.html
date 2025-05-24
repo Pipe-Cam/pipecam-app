@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report - Sewer Inspection Mobile</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Mobile-specific styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            background-color: #fff;
+        }
+        
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-bottom: 1px solid #dee2e6;
+            z-index: 1000;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .mobile-header h1 {
+            font-size: 1.25rem;
+            margin: 0;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .mobile-back {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.5rem;
+        }
+        
+        .mobile-actions {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: #007bff;
+            font-size: 1.5rem;
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            z-index: 1000;
+        }
+        
+        .mobile-nav a {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            text-decoration: none;
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        
+        .mobile-nav a.active {
+            color: #007bff;
+            font-weight: bold;
+        }
+        
+        .mobile-content {
+            padding: 4rem 1rem 5rem 1rem;
+            min-height: 100vh;
+        }
+        
+        .mobile-report-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+        }
+        
+        .mobile-logo {
+            max-width: 200px;
+            margin-bottom: 1rem;
+        }
+        
+        .mobile-report-title {
+            font-size: 1.25rem;
+            font-weight: 300;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .mobile-report-meta {
+            font-size: 0.875rem;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .mobile-section {
+            margin-bottom: 2rem;
+        }
+        
+        .mobile-section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #000099;
+            border-bottom: 2px solid #000099;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+        
+        .mobile-subsection {
+            margin-bottom: 1.5rem;
+        }
+        
+        .mobile-subsection-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mobile-text {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: justify;
+        }
+        
+        .mobile-list {
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+        
+        .mobile-list li {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .mobile-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+        
+        .mobile-table td {
+            padding: 0.75rem;
+            border: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+        
+        .mobile-table td:first-child {
+            font-weight: 600;
+            background-color: #f8f9fa;
+            width: 40%;
+        }
+        
+        .mobile-photo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .mobile-photo {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #666;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mobile-alert {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 0.75rem;
+            border-radius: 0.25rem;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+        
+        .mobile-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 0.75rem;
+            border-radius: 0.25rem;
+            margin: 1rem 0;
+            font-size: 0.875rem;
+        }
+        
+        .mobile-footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: #f8f9fa;
+            margin-top: 3rem;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        
+        .mobile-footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        
+        /* Print styles */
+        @media print {
+            .mobile-header,
+            .mobile-nav,
+            .mobile-actions {
+                display: none;
+            }
+            
+            .mobile-content {
+                padding: 0;
+            }
+            
+            .mobile-section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <a href="index.html" class="mobile-back">←</a>
+        <h1>Inspection Report</h1>
+        <button class="mobile-actions" onclick="window.print()">🖨️</button>
+    </div>
+
+    <!-- Mobile Content -->
+    <div class="mobile-content">
+        <!-- Report Header -->
+        <div class="mobile-report-header">
+            <img src="../client/public/images/PipeCamLogo-Transparent-500x177.png" alt="Pipe Cam Logo" class="mobile-logo">
+            <h2 class="mobile-report-title">Residential Sewer Inspection Report</h2>
+            <div class="mobile-report-meta">
+                <div><strong>Date:</strong> January 15, 2025</div>
+                <div><strong>Client:</strong> ABC Realty Group</div>
+                <div><strong>Property:</strong> 123 Main St, San Francisco, CA</div>
+                <div><strong>Inspector:</strong> Jim Brooks</div>
+            </div>
+        </div>
+
+        <!-- Serviceability Conclusion -->
+        <div class="mobile-section">
+            <h3 class="mobile-section-title">Serviceability Conclusion</h3>
+            <div class="mobile-success">
+                <strong>Serviceable With Maintenance Requirements</strong><br>
+                This lateral performs as designed for the most part and has defects that require maintenance as noted in the recommendations section.
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="mobile-section">
+            <h3 class="mobile-section-title">Recommendations</h3>
+            <ul class="mobile-list">
+                <li>Schedule root cutting service within 6 months</li>
+                <li>Annual inspection recommended to monitor root growth</li>
+                <li>Consider pipe lining for long-term solution</li>
+            </ul>
+        </div>
+
+        <!-- Areas of Concern -->
+        <div class="mobile-section">
+            <h3 class="mobile-section-title">Areas of Concern</h3>
+            <div class="mobile-subsection">
+                <h4 class="mobile-subsection-title">Downstream (Toward Main)</h4>
+                <div class="mobile-photo-grid">
+                    <div class="mobile-photo">Photo @ 15.5ft<br>Roots - 20% blockage</div>
+                    <div class="mobile-photo">Photo @ 32.0ft<br>Minor offset joint</div>
+                </div>
+            </div>
+            <div class="mobile-subsection">
+                <h4 class="mobile-subsection-title">Upstream (Toward Residence)</h4>
+                <div class="mobile-photo-grid">
+                    <div class="mobile-photo">Photo @ 45.8ft<br>Debris in flow line</div>
+                    <div class="mobile-photo">Photo @ 67.5ft<br>Lateral tie-in</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Line Description -->
+        <div class="mobile-section">
+            <h3 class="mobile-section-title">Line Description</h3>
+            <table class="mobile-table">
+                <tr>
+                    <td>Access Type</td>
+                    <td>4" Two-Way PVC cleanout at front of residence</td>
+                </tr>
+                <tr>
+                    <td>BOPD</td>
+                    <td>Sewer Popper - Good Condition</td>
+                </tr>
+                <tr>
+                    <td>Length Inspected</td>
+                    <td>89 feet</td>
+                </tr>
+                <tr>
+                    <td>Pipe Materials</td>
+                    <td>Cast Iron / VCP Clay / ABS</td>
+                </tr>
+                <tr>
+                    <td>Occupancy</td>
+                    <td>Occupied</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="mobile-section">
+            <h3 class="mobile-section-title">Important Notes</h3>
+            <div class="mobile-text">
+                <p>The purpose of this inspection is to evaluate serviceability which is defined as the line's likelihood to convey waste to its end point. This inspection examines the visual condition of the interior of the sewer lateral at the time of inspection.</p>
+                
+                <div class="mobile-alert">
+                    <strong>Guidelines for Proper Use:</strong> Only organic human waste, toilet tissue and minimal food scraps should be introduced into the line. Never dispose of grease, wipes, or construction debris into the sewer system.
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mobile-footer">
+            <div>Pipe Cam, Inc.</div>
+            <div><a href="tel:9253717500">925.371.7500</a> | <a href="mailto:info@pipecaminc.com">info@pipecaminc.com</a></div>
+            <div>CSLB License # 838101</div>
+            <div><a href="https://www.pipecaminc.com">www.pipecaminc.com</a></div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html">
+            <div>🏠</div>
+            <div>Home</div>
+        </a>
+        <a href="clients.html">
+            <div>👥</div>
+            <div>Clients</div>
+        </a>
+        <a href="report.html" class="active">
+            <div>📄</div>
+            <div>Reports</div>
+        </a>
+        <a href="settings.html">
+            <div>⚙️</div>
+            <div>Settings</div>
+        </a>
+    </nav>
+</body>
+</html>
