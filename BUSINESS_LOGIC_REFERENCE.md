@@ -21,7 +21,9 @@
   "vcp": "VCP Clay",
   "pvc": "PVC Plastic",
   "orbg": "Orangeburg",
-  "hdpe": "HDPE"
+  "hdpe": "HDPE",
+  "cipp": "Cure-in-place-pipe",
+  "dip": "Ductile Iron Pipe"
 }
 ```
 

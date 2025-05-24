@@ -436,6 +436,8 @@ const ObservationList = (props) => {
     const x2MaterialPvcRef = useRef(null)
     const x2MaterialOrbgRef = useRef(null)
     const x2MaterialHdpeRef = useRef(null)
+    const x2MaterialCippRef = useRef(null)
+    const x2MaterialDipRef = useRef(null)
 
     const rtsModifierDivRef = useRef(null)
     const ojModifierDivRef = useRef(null)
@@ -1007,7 +1009,9 @@ const ObservationList = (props) => {
             'vcp': 'success',
             'pvc': 'info',
             'orbg': 'danger',
-            'hdpe': 'dark'
+            'hdpe': 'dark',
+            'cipp': 'light',
+            'dip': 'secondary'
         }
 
         let materialRefs = [
@@ -1017,7 +1021,9 @@ const ObservationList = (props) => {
             x2MaterialVcpRef,
             x2MaterialPvcRef,
             x2MaterialOrbgRef,
-            x2MaterialHdpeRef
+            x2MaterialHdpeRef,
+            x2MaterialCippRef,
+            x2MaterialDipRef
         ]
 
         if(dataObservation === 'material_change'){
@@ -1214,9 +1220,11 @@ const ObservationList = (props) => {
                                     <button ref={x2MaterialAbsRef} className="btn btn-outline-primary w-100 my-1" data-active="false" data-observation="abs" onClick={handleMaterialX2}>ABS</button>
                                     <button ref={x2MaterialVcpRef} className="btn btn-outline-success w-100 my-1" data-active="false" data-observation="vcp" onClick={handleMaterialX2}>VCP</button>
                                     <button ref={x2MaterialPvcRef} className="btn btn-outline-info w-100 my-1" data-active="false" data-observation="pvc" onClick={handleMaterialX2}>PVC</button>
-                                    <button ref={x2MaterialOrbgRef} className="btn btn-outline-danger w-100 my-1" data-active="false" data-observation="orbg" onClick={handleMaterialX2}>ORBG</button>
-                                    <button ref={x2MaterialHdpeRef} className="btn btn-outline-dark w-100 my-1" data-active="false" data-observation="hdpe" onClick={handleMaterialX2}>HDPE</button>
-                                </div>
+            <button ref={x2MaterialOrbgRef} className="btn btn-outline-danger w-100 my-1" data-active="false" data-observation="orbg" onClick={handleMaterialX2}>ORBG</button>
+            <button ref={x2MaterialHdpeRef} className="btn btn-outline-dark w-100 my-1" data-active="false" data-observation="hdpe" onClick={handleMaterialX2}>HDPE</button>
+            <button ref={x2MaterialCippRef} className="btn btn-outline-light w-100 my-1" data-active="false" data-observation="cipp" onClick={handleMaterialX2}>CIPP</button>
+            <button ref={x2MaterialDipRef} className="btn btn-outline-secondary w-100 my-1" data-active="false" data-observation="dip" onClick={handleMaterialX2}>DIP</button>
+        </div>
                             </div>
                         </div>
                     </div>
