@@ -569,6 +569,10 @@ const Rosetta = (props) => {
             return ` ${pre} Orangeburg ${post}`
         case 'hdpe':
             return ` ${pre} HDPE (High-Density Polyethylene) ${post}`
+        case 'cipp':
+            return ` ${pre} CIPP (Cure In Place Pipe) ${post}`
+        case 'dip':
+            return ` ${pre} Ductile Iron Pipe ${post}`
         case 'stub':
             return ` ${pre} Stub ${post}`
         case 'break_in':

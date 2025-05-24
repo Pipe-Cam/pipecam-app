@@ -10,7 +10,9 @@ function PipeMaterials(props) {
         "vcp": "VCP (Vitrified Clay Pipe)",
         "pvc": "PVC",
         "orbg": "Orangeburg",
-        "hdpe": "HDPE (High-Density Polyethylene)"
+        "hdpe": "HDPE (High-Density Polyethylene)",
+        "cipp": "CIPP (Cure In Place Pipe)",
+        "dip": "Ductile Iron Pipe"
     }
 
     let materialsArr = material.map(item => materialNames[item])
